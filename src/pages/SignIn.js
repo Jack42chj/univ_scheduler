@@ -1,5 +1,5 @@
 import { InputBase, Button, InputAdornment, IconButton, Box, FormHelperText, Typography, Stack, Modal } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { LineAxisOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import SchoolIcon from '@mui/icons-material/School';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
@@ -28,8 +28,18 @@ const SignIn = () => {
         setValues({ ...values, [prop]: event.target.value });
     };
 
-    const onhandlePost = async ({ id, password }) => {
+    const onhandlePost = async (data) => {
+        const { id, passrowd } = data;
+        const postData = { id, password };
 
+        await axios
+        .post('http://localhost:4000/', postData)
+        .then((response) => {
+            console.log(response, "Success!");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     };
 
     const handleSubmit = (e) => {
@@ -67,7 +77,7 @@ const SignIn = () => {
                     <Box component="form" noValidate onSubmit={handleSubmit}>
                         <InputBase
                             required
-                            placeholder="ID"
+                            placeholder="아이디"
                             id="id"
                             name="id"
                             error={id !== "" || false}
@@ -82,7 +92,7 @@ const SignIn = () => {
                         <FormHelperText sx={{ color: 'red' }}>{id}</FormHelperText>
                         <InputBase
                             required
-                            placeholder="PASSWORD"
+                            placeholder="비밀번호"
                             id="password"
                             name="password"
                             error={password !== "" || false}
