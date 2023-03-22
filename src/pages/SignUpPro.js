@@ -1,17 +1,26 @@
-import { InputBase, Button, InputAdornment, IconButton, Box, FormHelperText, Typography, Stack } from "@mui/material";
+import { InputAdornment, IconButton, Box } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import React, { useState } from "react";
 import AuthBody from "../components/AuthBody";
+import Row from "../components/Grid/Row";
+import Column from "../components/Grid/Column";
+import CommonText from "../components/Text/CommonText";
+import AuthFormText from "../components/Text/AuthFormText";
+import AuthButton from "../components/Button/AuthButton";
+import MainTheme from "../styles/muiTheme";
+import AuthSchoolMenu from "../components/AuthSchoolMenu";
+import AuthInput from "../components/AuthInput";
+import ProLoginLogo from "../assets/ProLoginLogo.jpg";
 
 const SignUpPro = () => {
-
+    const theme = MainTheme;
     const [values, setValues] = useState({
         password: "",
         showPassword: false,
     });
     const [emailError, setEmailError] = useState("");
     const [passwordState, setPasswordState] = useState("");
-    const [registerError, setRegisterError] = useState("");
+    const [register, setRegister] = useState("");
 
     const handleClickShowPassword = () => {
         setValues({
@@ -58,187 +67,92 @@ const SignUpPro = () => {
             onhandlePost(joinData);
         }
         else
-            setRegisterError("SignUp Failed!");
+        setRegister("SignUp Failed!");
     };
 
     return (
-        <>
-            <AuthBody>
-                <Box sx={{ mt: 10 }}>
-                    <Typography variant="h5" my={6} fontWeight="700">
-                        교수로 시작할까요?
-                    </Typography>
-                    <Box component="form" noValidate onSubmit={handleSubmit}>
-                        <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                        >
-                            <InputBase
-                                required
-                                placeholder="아이디"
-                                id="id"
-                                name="id"
-                                sx={{
-                                    bgcolor: "#F4F4F4",
-                                    width: "72%",
-                                    height: 50,
-                                    borderRadius: 2,
-                                    px: 2,
-                                }}/>
-                            <Button
-                                variant="contained"
-                                sx={{
-                                    width:"30",
-                                    borderRadius: 2,
-                                    boxShadow: 0,
-                                    bgcolor: "#FFD056",
-                                }}
-                            >
-                                중복확인
-                            </Button>
-                        </Stack>
-                        
-                        <InputBase
-                            required
+        <Box sx={{ backgroundColor: theme.palette.primary.main }}>
+            <Row>
+                <Column sx={{ display: { xs: "none", md: "flex" }, width: "35%", minHeight: "100vh", background: `url(${ProLoginLogo})`, backgroundSize: 'cover' }}>
+                    <CommonText variant="h4" sx={{ color: "#DDDDDD", px: 2 }}>수업 및 학생 관리를<br/><br/>쉽고 빠르게<br/><br/>University Scheduler</CommonText>
+                </Column>
+                <AuthBody>
+                    <CommonText variant="h4">교수로 시작할까요?</CommonText>
+                    <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 5 }}>  
+                        <AuthInput 
+                            required 
                             placeholder="이름"
                             id="name"
                             name="name"
-                            type="name"
-                            error={ emailError !== "" || false }
-                            sx={{
-                                bgcolor: "#F4F4F4",
-                                width: "100%",
-                                height: 50,
-                                borderRadius: 2,
-                                px: 2,
-                                mt: 1
-                            }}/>
-                        
-                        <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                        >
-                            <InputBase
-                            required
-                            placeholder="학교"
-                            id=""
-                            name=""
-                            type=""
-                            error={emailError !== "" || false}
-                            sx={{
-                                bgcolor: "#F4F4F4",
-                                width: "43%",
-                                height: 50,
-                                borderRadius: 2,
-                                px: 2,
-                                mt: 1
-                            }}/>
-                            <InputBase
-                            required
-                            placeholder="전공"
-                            id=""
-                            name=""
-                            type=""
-                            error={emailError !== "" || false}
-                            sx={{
-                                bgcolor: "#F4F4F4",
-                                width: "55%",
-                                height: 50,
-                                borderRadius: 2,
-                                px: 2,
-                                mt: 1
-                            }}/>
-                        </Stack>
-
-                        <InputBase
-                            required
-                            placeholder="이메일"
+                        />
+                        <Row>
+                            <AuthInput 
+                                required 
+                                placeholder="아이디" 
+                                id="id"
+                                name="id"
+                                sx={{ width: "69%" }}
+                            />
+                            <AuthButton sx={{ width: "28%" }}>
+                                중복확인
+                            </AuthButton>
+                        </Row>
+                        <AuthInput 
+                            required 
+                            placeholder="비밀번호" 
+                            id="password" 
+                            name="password" 
+                            type={values.showPassword ? "text" : "password"}
+                            value={values.password}
+                            onChange={handleChange("password")}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton onClick={handleClickShowPassword} size="small">
+                                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                        <AuthInput 
+                            required 
+                            placeholder="비빌번호 확인" 
+                            id="check" 
+                            name="check" 
+                            type={values.showPassword ? "text" : "password"}
+                            value={values.password}
+                            onChange={handleChange("password")}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton onClick={handleClickShowPassword} size="small">
+                                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                        <Row>
+                            <AuthSchoolMenu />
+                            <AuthInput 
+                                required 
+                                placeholder="전공"
+                                id="major"
+                                name="major"
+                                sx={{ width: "50%" }}
+                            />
+                        </Row>
+                        <AuthInput 
+                            required 
+                            placeholder="이메일" 
                             id="email"
                             name="email"
-                            type="email"
-                            error={emailError !== "" || false}
-                            sx={{
-                                bgcolor: "#F4F4F4",
-                                width: "100%",
-                                height: 50,
-                                borderRadius: 2,
-                                px: 2,
-                                mt: 1
-                            }}/>
-                        <FormHelperText>{emailError}</FormHelperText>
-
-                        <InputBase
-                            required
-                            placeholder="비밀번호"
-                            id="password"
-                            name="password"
-                            error={passwordState !== "" || false}
-                            type={values.showPassword ? "text" : "password"}
-                            value={values.password}
-                            onChange={handleChange("password")}
-                            sx={{
-                                bgcolor: "#F4F4F4",
-                                width: "100%",
-                                height: 50,
-                                borderRadius: 2,
-                                px: 2,
-                                mt: 1
-                            }}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleClickShowPassword} size="small">
-                                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }/>
-                        <FormHelperText>{passwordState}</FormHelperText>
-                        <InputBase
-                            required
-                            placeholder="비밀번호 확인"
-                            id="password"
-                            name="password"
-                            error={passwordState !== "" || false}
-                            type={values.showPassword ? "text" : "password"}
-                            value={values.password}
-                            onChange={handleChange("password")}
-                            sx={{
-                                bgcolor: "#F4F4F4",
-                                width: "100%",
-                                height: 50,
-                                borderRadius: 2,
-                                px: 2,
-                                mt: 1
-                            }}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleClickShowPassword} size="small">
-                                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }/>
-                        <FormHelperText>{passwordState}</FormHelperText>
-
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            className="signup-btn"
-                            sx={{
-                                borderRadius: 8,
-                                bgcolor: "#F4F4F4",
-                                width: "100%",
-                                boxShadow: 0,
-                                height: 50,
-                                color: "#C4C4C4",
-                                fontSize: 14,
-                                my: 3,
-                            }}>
-                            회원가입
-                        </Button>
-                        <FormHelperText>{registerError}</FormHelperText>
+                        />
+                        <AuthButton type="submit" sx={{ mt: 2 }}>
+                            <CommonText variant="h6">회원가입</CommonText>
+                        </AuthButton>
+                        <AuthFormText>{register}</AuthFormText>
                     </Box>
-                </Box>
-            </AuthBody>
-        </>
+                </AuthBody>
+            </Row>
+        </Box>
     );
 };
 
