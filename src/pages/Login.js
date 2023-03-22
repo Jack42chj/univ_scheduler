@@ -9,17 +9,25 @@ import AuthBody from "../components/AuthBody";
 import AuthButton from "../components/Button/AuthButton";
 import MainLogo from "../assets/MainLogo.jpg";
 import AuthFormText from "../components/Text/AuthFormText";
-import AuthModal from "../components/AuthModal";
+import AuthModal from "../components/Modal/AuthModal";
 import MainTheme from "../styles/muiTheme";
 import CommonText from "../components/Text/CommonText";
+import FindPw from "../components/Modal/FindPw";
+import FindId from "../components/Modal/FindId";
 
 const Login = () => {
     const [id, setId] = useState('');
     const [password, setPw] = useState('');
     const [login] = useState('');
-    const [isOpen, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [signOpen, setSignOpen] = useState(false);
+    const signHandleOpen = () => setSignOpen(true);
+    const signHandleClose = () => setSignOpen(false);
+    const [pwOpen, setPwOpen] = useState(false);
+    const findpwHandleOpen = () => setPwOpen(true);
+    const findpwHandleClose = () => setPwOpen(false);
+    const [idOpen, setIdOpen] = useState(false);
+    const findidHandleOpen = () => setIdOpen(true);
+    const findidHandleClose = () => setIdOpen(false);
     const theme = MainTheme;
 
     const [values, setValues] = useState({
@@ -84,14 +92,14 @@ const Login = () => {
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 5 }}>  
                         <AuthInput 
                             required 
-                            placeholder="id" 
+                            placeholder="아이디" 
                             name="id" 
                             error={id !== "" || false}
                         />
                         <AuthFormText>{id}</AuthFormText>
                         <AuthInput 
                             required 
-                            placeholder="password" 
+                            placeholder="비밀번호" 
                             id="password" 
                             name="password" 
                             error={password !== "" || false} 
@@ -114,23 +122,25 @@ const Login = () => {
                         <AuthFormText>{login}</AuthFormText>
                     </Box>
                     <Row spacing={2} sx={{ my: 2 }}>
-                        <AuthButton>
+                        <AuthButton onClick={findidHandleOpen}>
                             <CommonText variant="h6">아이디 찾기</CommonText>
                         </AuthButton>
-                        <AuthButton>
+                        <AuthButton onClick={findpwHandleOpen}>
                             <CommonText variant="h6">비밀번호 찾기</CommonText>
                         </AuthButton>
                     </Row>
                     <CommonText variant="h6" sx={{ textAlign: 'center' }}>
                         아직 계정이 없으세요?&nbsp;&nbsp;
-                        <Button onClick={handleOpen} variant="text" sx={{ "&.MuiButtonBase-root:hover": { bgcolor: "transparent" }, p: 0 }}>
+                        <Button onClick={signHandleOpen} variant="text" sx={{ "&.MuiButtonBase-root:hover": { bgcolor: "transparent" }, p: 0 }}>
                             <CommonText variant="h6" sx={{ color: "#FFAE6D" }}>
                                 회원가입
                             </CommonText>
                         </Button>
                     </CommonText>
                 </AuthBody>
-                <AuthModal open={isOpen} onClose={handleClose} />
+                <AuthModal open={signOpen} onClose={signHandleClose} />
+                <FindId open={idOpen} onClose={findidHandleClose} />
+                <FindPw open={pwOpen} onClose={findpwHandleClose} />
             </Row>
         </Box>
     );

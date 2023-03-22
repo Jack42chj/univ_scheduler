@@ -42,11 +42,16 @@ const SignUpPro = () => {
 
         const data = new FormData(e.currentTarget);
         const joinData = {
-            email: data.get("email"),
-            bio: data.get("bio"),
+            name: data.get("name"),
+            id: data.get("id"),
             password: data.get("password"),
+            univ: data.get("univ"),
+            major: data.get("major"),
+            email: data.get("email"),
         };
-        const { email, bio, password } = joinData;
+        const { name, id, password, univ, major, email } = joinData;
+
+        console.log(joinData);
 
         const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
         if (!emailRegex.test(email))
@@ -82,14 +87,12 @@ const SignUpPro = () => {
                         <AuthInput 
                             required 
                             placeholder="이름"
-                            id="name"
                             name="name"
                         />
                         <Row>
                             <AuthInput 
                                 required 
                                 placeholder="아이디" 
-                                id="id"
                                 name="id"
                                 sx={{ width: "69%" }}
                             />
@@ -100,7 +103,6 @@ const SignUpPro = () => {
                         <AuthInput 
                             required 
                             placeholder="비밀번호" 
-                            id="password" 
                             name="password" 
                             type={values.showPassword ? "text" : "password"}
                             value={values.password}
@@ -116,7 +118,6 @@ const SignUpPro = () => {
                         <AuthInput 
                             required 
                             placeholder="비빌번호 확인" 
-                            id="check" 
                             name="check" 
                             type={values.showPassword ? "text" : "password"}
                             value={values.password}
@@ -133,8 +134,7 @@ const SignUpPro = () => {
                             <AuthSchoolMenu />
                             <AuthInput 
                                 required 
-                                placeholder="전공"
-                                id="major"
+                                placeholder="학과"
                                 name="major"
                                 sx={{ width: "50%" }}
                             />
@@ -142,7 +142,6 @@ const SignUpPro = () => {
                         <AuthInput 
                             required 
                             placeholder="이메일" 
-                            id="email"
                             name="email"
                         />
                         <AuthButton type="submit" sx={{ mt: 2 }}>

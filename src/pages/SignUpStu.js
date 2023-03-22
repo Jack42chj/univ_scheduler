@@ -14,6 +14,7 @@ import StudentLoginLogo from "../assets/StudentLoginLogo.jpg";
 
 const SignUpStu = () => {
     const theme = MainTheme;
+    const [selectedSchool, setSelectedSchool] = useState('');
     const [values, setValues] = useState({
         password: "",
         showPassword: false,
@@ -33,8 +34,10 @@ const SignUpStu = () => {
         setValues({ ...values, [prop]: event.target.value });
     };
 
-    const onhandlePost = async ({ email, bio, password }) => {
-
+    const onhandlePost = async (data) => {
+        const { name, id, password, univ, major, email } = data;
+        const postData = { name, id, password, univ, major, email };
+        console.log(postData);
     };
 
     const handleSubmit = (e) => {
@@ -42,32 +45,36 @@ const SignUpStu = () => {
 
         const data = new FormData(e.currentTarget);
         const joinData = {
-            email: data.get("email"),
-            bio: data.get("bio"),
+            name: data.get("name"),
+            id: data.get("id"),
             password: data.get("password"),
+            univ: data.get("univ"),
+            major: data.get("major"),
+            email: data.get("email"),
         };
-        const { email, bio, password } = joinData;
+        const { name, id, password, univ, major, email } = joinData;
 
-        const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        if (!emailRegex.test(email))
-            setEmailError("Incorrect Email Address!");
-        else setEmailError("");
+        console.log(joinData);
+        // const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        // if (!emailRegex.test(email))
+        //     setEmailError("Incorrect Email Address!");
+        // else setEmailError("");
 
-        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-        if (!passwordRegex.test(password))
-            setPasswordState(
-            "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!"
-        );
-        else setPasswordState("");
+        // const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+        // if (!passwordRegex.test(password))
+        //     setPasswordState(
+        //     "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!"
+        // );
+        // else setPasswordState("");
 
-        if (
-            emailRegex.test(email) &&
-            passwordRegex.test(password)
-        ) {
-            onhandlePost(joinData);
-        }
-        else
-        setRegister("SignUp Failed!");
+        // if (
+        //     emailRegex.test(email) &&
+        //     passwordRegex.test(password)
+        // ) {
+        //     onhandlePost(joinData);
+        // }
+        // else
+        // setRegister("SignUp Failed!");
     };
 
     return (
@@ -82,14 +89,12 @@ const SignUpStu = () => {
                         <AuthInput 
                             required 
                             placeholder="이름"
-                            id="name"
                             name="name"
                         />
                         <Row>
                             <AuthInput 
                                 required 
                                 placeholder="아이디" 
-                                id="id"
                                 name="id"
                                 sx={{ width: "69%" }}
                             />
@@ -100,7 +105,6 @@ const SignUpStu = () => {
                         <AuthInput 
                             required 
                             placeholder="비밀번호" 
-                            id="password" 
                             name="password" 
                             type={values.showPassword ? "text" : "password"}
                             value={values.password}
@@ -116,8 +120,8 @@ const SignUpStu = () => {
                         <AuthInput 
                             required 
                             placeholder="비빌번호 확인" 
-                            id="check" 
-                            name="check" 
+                            id="pwcheck"
+                            name="pwcheck"
                             type={values.showPassword ? "text" : "password"}
                             value={values.password}
                             onChange={handleChange("password")}
@@ -134,15 +138,13 @@ const SignUpStu = () => {
                             <AuthInput 
                                 required 
                                 placeholder="전공"
-                                id="major"
                                 name="major"
                                 sx={{ width: "50%" }}
                             />
                         </Row>
                         <AuthInput 
                             required 
-                            placeholder="이메일" 
-                            id="email"
+                            placeholder="이메일"
                             name="email"
                         />
                         <AuthButton type="submit" sx={{ mt: 2 }}>

@@ -3,7 +3,7 @@ import { styled } from "@mui/system";
 
 const CustomFormHelperText = styled(FormHelperText)({
     color: "#FF5858",
-    fontWeight: "800",
+    fontWeight: "600",
     fontSize: "14px",
 });
 

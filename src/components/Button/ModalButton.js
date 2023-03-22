@@ -3,7 +3,7 @@ import { styled } from "@mui/system";
 
 const CustomButton = styled(Button)(({ theme }) => ({
     borderRadius: 8,
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
     width: "50%",
     color: theme.palette.secondary.text,
 }));

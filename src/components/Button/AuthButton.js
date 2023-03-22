@@ -7,13 +7,11 @@ const CustomButton = styled(Button)(({theme}) => ({
     width: "100%",
     height: 50,
     color: theme.palette.secondary.text,
-    fontSize: "14px",
-    fontWeight: "800",
 }));
 
-const AuthButton = ({ children, sx, type }) => {
+const AuthButton = ({ children, sx, type, onClick }) => {
     return(
-        <CustomButton variant="contained" sx={sx} type={type}>
+        <CustomButton variant="contained" sx={sx} type={type} onClick={onClick}>
             {children}
         </CustomButton>
     );

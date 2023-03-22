@@ -12,20 +12,21 @@ const AuthSchoolMenu = () => {
     const handleChange = (e) => setName(e.target.value);
         
     return(
-        <FormControl sx={{ width: "47%", bgcolor: "#DDDDDD", borderRadius: 2, height: 50}}>
+        <FormControl sx={{ width: "47%", bgcolor: "#DDDDDD", borderRadius: 2, height: 50 }}>
             <Select
                 value={name}
+                name="univ"
                 onChange={handleChange}
                 displayEmpty
                 sx={{ color: "#858585" }}
             >
                 <MenuItem value="">대학교</MenuItem>
                 {Object.keys(SchoolName).map((school) => (
-                    <MenuItem value={SchoolName[school].name}>{SchoolName[school].name}</MenuItem>
+                    <MenuItem key={SchoolName[school].name} value={SchoolName[school].name}>{SchoolName[school].name}</MenuItem>
                 ))}
             </Select>
         </FormControl>
     );
 };
 
-export default AuthSchoolMenu
+export default AuthSchoolMenu;
