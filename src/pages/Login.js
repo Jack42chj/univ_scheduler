@@ -51,7 +51,7 @@ const Login = () => {
         const postData = { id, password };
 
         await axios
-        .post('http://localhost:4000/', postData)
+        .post('http://localhost:3001/', postData)
         .then((response) => {
             console.log(response, "Success!");
         })

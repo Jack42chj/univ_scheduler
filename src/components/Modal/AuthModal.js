@@ -5,6 +5,7 @@ import ModalButton from "../Button/ModalButton";
 import SchoolIcon from '@mui/icons-material/School';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import CommonText from "../Text/CommonText";
+import { Fragment } from "react";
 
 const IconButtons = [
     {icon: <SchoolIcon sx={{ width: 120, height: 110 }} />, text: "학생", link: "/signup/student"},
@@ -31,14 +32,14 @@ const AuthModal = ({ open, onClose }) => {
                 </Column>
                 <Row spacing={3}>
                     {Object.keys(IconButtons).map((item) => (
-                        <>
+                        <Fragment key={item}>
                             <ModalButton href={IconButtons[item].link}>
                                 <Column>
                                     {IconButtons[item].icon}
                                     <CommonText variant="h6">{IconButtons[item].text}</CommonText>
                                 </Column>
                             </ModalButton>
-                        </>
+                        </Fragment>
                     ))}
                 </Row>
             </Box>
