@@ -1,4 +1,4 @@
-import { Box, Modal } from "@mui/material";
+import { Box, IconButton, Modal } from "@mui/material";
 import Column from "../Grid/Column";
 import CommonText from "../Text/CommonText";
 import AuthInput from "../AuthInput";
@@ -6,6 +6,8 @@ import AuthButton from "../Button/AuthButton";
 import { useState } from "react";
 import axios from "axios";
 import AuthFormText from "../Text/AuthFormText";
+import CloseIcon from '@mui/icons-material/Close';
+import Row from "../Grid/Row";
 
 const FindPw = ({ open, onClose }) => {
     const [id, setId] = useState("");
@@ -51,7 +53,7 @@ const FindPw = ({ open, onClose }) => {
     };
 
     return(
-        <Modal open={open} onClose={onClose}>
+        <Modal open={open}>
             <Box
                 component="form" 
                 noValidate 
@@ -67,6 +69,9 @@ const FindPw = ({ open, onClose }) => {
                 boxShadow: 5,
                 padding: 4,
             }}>
+                <Row sx={{ justifyContent: "flex-end" }}>
+                    <IconButton onClick={onClose} sx={{ color: "#FCDEC0" }}><CloseIcon fontSize="large"/></IconButton>
+                </Row>
                 <Column sx={{ mb: 2 }}>
                     <CommonText variant="h4" sx={{ color: "#FFD56F" }}>비밀번호 찾기</CommonText>
                 </Column>
@@ -82,13 +87,13 @@ const FindPw = ({ open, onClose }) => {
                             placeholder="아이디" 
                             name="id" 
                         />
-                        <AuthFormText>{id}</AuthFormText>
+                        <AuthFormText sx={{ color: "#DFD3C3"}}>{id}</AuthFormText>
                         <AuthInput 
                             required 
                             placeholder="이메일" 
                             name="email" 
                         />
-                        <AuthFormText>{email}</AuthFormText>
+                        <AuthFormText sx={{ color: "#DFD3C3"}}>{email}</AuthFormText>
                         <AuthButton type="submit" sx={{ bgcolor: "#7D5A50" }}><CommonText variant="h6">비밀번호 재설정</CommonText></AuthButton>
                     </>
                 )}

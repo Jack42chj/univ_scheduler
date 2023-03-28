@@ -1,19 +1,19 @@
 import { Box, InputAdornment, IconButton, Button } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import Row from "../components/Grid/Row";
+import Row from "../../components/Grid/Row";
 import { useState } from "react";
-import Column from "../components/Grid/Column";
+import Column from "../../components/Grid/Column";
 import axios from "axios";
-import AuthInput from "../components/AuthInput";
-import AuthBody from "../components/AuthBody";
-import AuthButton from "../components/Button/AuthButton";
-import MainLogo from "../assets/MainLogo.jpg";
-import AuthFormText from "../components/Text/AuthFormText";
-import AuthModal from "../components/Modal/AuthModal";
-import MainTheme from "../styles/muiTheme";
-import CommonText from "../components/Text/CommonText";
-import FindPw from "../components/Modal/FindPw";
-import FindId from "../components/Modal/FindId";
+import AuthInput from "../../components/AuthInput";
+import AuthBody from "../../components/AuthBody";
+import AuthButton from "../../components/Button/AuthButton";
+import MainLogo from "../../assets/MainLogo.jpg";
+import AuthFormText from "../../components/Text/AuthFormText";
+import AuthModal from "../../components/Modal/AuthModal";
+import CommonText from "../../components/Text/CommonText";
+import FindPw from "../../components/Modal/FindPw";
+import FindId from "../../components/Modal/FindId";
+import BgcolorStack from "../../components/Box/BgcolorStack";
 
 const Login = () => {
     const [id, setId] = useState('');
@@ -28,7 +28,6 @@ const Login = () => {
     const [idOpen, setIdOpen] = useState(false);
     const findidHandleOpen = () => setIdOpen(true);
     const findidHandleClose = () => setIdOpen(false);
-    const theme = MainTheme;
 
     const [values, setValues] = useState({
         password: "",
@@ -82,7 +81,7 @@ const Login = () => {
     };
 
     return(
-        <Box sx={{ backgroundColor: theme.palette.primary.main }}>
+        <BgcolorStack>
             <Row>
                 <Column sx={{ display: { xs: "none", md: "flex" }, width: "35%", minHeight: "100vh", background: `url(${MainLogo})`, backgroundSize: 'cover' }}>
                     <CommonText variant="h4" sx={{ color: "#DDDDDD", px: 2 }}>즐겁고 편리한<br /><br />대학 생활을 위한 선택<br /><br />University Scheduler</CommonText>
@@ -142,7 +141,7 @@ const Login = () => {
                 <FindId open={idOpen} onClose={findidHandleClose} />
                 <FindPw open={pwOpen} onClose={findpwHandleClose} />
             </Row>
-        </Box>
+        </BgcolorStack>
     );
 };
 

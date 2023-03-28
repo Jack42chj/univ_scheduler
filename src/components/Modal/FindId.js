@@ -1,4 +1,4 @@
-import { Box, Modal } from "@mui/material";
+import { Box, IconButton, Modal } from "@mui/material";
 import Column from "../Grid/Column";
 import CommonText from "../Text/CommonText";
 import AuthInput from "../AuthInput";
@@ -6,6 +6,8 @@ import AuthButton from "../Button/AuthButton";
 import { useState } from "react";
 import axios from "axios";
 import AuthFormText from "../Text/AuthFormText";
+import CloseIcon from '@mui/icons-material/Close';
+import Row from "../Grid/Row";
 
 const FindId = ({ open, onClose }) => {
     const [name, setName] = useState("");
@@ -38,12 +40,12 @@ const FindId = ({ open, onClose }) => {
         const { name, email } = findData;
 
         if (name !== "") setName("");
-        else setName("이름을 입력해주세요");
+        else setName("이름을 입력해주세요.");
 
         const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        if (email === "") setEmail("이메일을 입력해주세요");
+        if (email === "") setEmail("이메일을 입력해주세요.");
         else {
-            if (!emailRegex.test(email)) setEmail("이메일이 올바르지 않습니다");
+            if (!emailRegex.test(email)) setEmail("이메일이 올바르지 않습니다.");
             else setEmail("");
         }
         
@@ -51,7 +53,7 @@ const FindId = ({ open, onClose }) => {
     };
 
     return(
-        <Modal open={open} onClose={onClose}>
+        <Modal open={open}>
             <Box 
                 component="form" 
                 noValidate 
@@ -67,6 +69,9 @@ const FindId = ({ open, onClose }) => {
                 boxShadow: 5,
                 padding: 4,
             }}>
+                <Row sx={{ justifyContent: "flex-end" }}>
+                    <IconButton onClick={onClose} sx={{ color: "#FCDEC0" }}><CloseIcon fontSize="large"/></IconButton>
+                </Row>
                 <Column sx={{ mb: 2 }}>
                     <CommonText variant="h4" sx={{ color: "#FFD56F" }}>아이디 찾기</CommonText>
                 </Column>
@@ -82,13 +87,13 @@ const FindId = ({ open, onClose }) => {
                             placeholder="이름"
                             name="name"
                         />
-                        <AuthFormText>{name}</AuthFormText>
+                        <AuthFormText sx={{ color: "#DFD3C3"}}>{name}</AuthFormText>
                         <AuthInput 
                             required 
                             placeholder="이메일" 
                             name="email" 
                         />
-                        <AuthFormText>{email}</AuthFormText>
+                        <AuthFormText sx={{ color: "#DFD3C3"}}>{email}</AuthFormText>
                         <AuthButton sx={{ bgcolor: "#7D5A50" }} type="submit"><CommonText variant="h6">아이디 조회</CommonText></AuthButton>
                     </>
                 )}

@@ -12,6 +12,19 @@ const MainTheme = createTheme({
             sub: "#E58299",
         },
     },
+    typography : {
+        fontFamily: "'Sunflower', sans-serif",
+        h4: {
+            '@media (max-width:600px)': {
+                fontSize: '1.7rem',
+            },
+        },
+        h6: {
+            '@media (max-width:600px)': {
+                fontSize: '1rem',
+            },
+        },
+    },
 });
 
 export default MainTheme;

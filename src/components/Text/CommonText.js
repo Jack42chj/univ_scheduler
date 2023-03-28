@@ -2,12 +2,12 @@ import { Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
 const StyledTypography = styled(Typography)(({theme}) => ({
-    fontWeight: "800",
+    fontWeight: "200",
     textTransform: "none",
     color: theme.palette.secondary.text,
     display: 'flex',
     alignItems: 'center', 
-    justifyContent: 'center'
+    justifyContent: 'center',
 }));
 
 const CommonText = ({ children, variant, sx }) => {
