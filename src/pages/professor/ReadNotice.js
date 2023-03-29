@@ -18,11 +18,16 @@ const SubjectList = [
     {name: "소프트웨어공학"}, {name: "소프트웨어공학"}, 
 ];
 
-const WriteNotice = () => {
+const ReadNotice = () => {
     const [semester, setSemester] = useState('');
     const [subject, setSubject] = useState('');
     const handleChangeSemester = (e) => setSemester(e.target.value);
     const handleChangeSubject = (e) => setSubject(e.target.value);
+
+    const handleSubmit = () => {
+        const title = document.getElementsByName("title")[0].value;
+        console.log(title);
+    };    
 
     return(
         <>
@@ -60,11 +65,12 @@ const WriteNotice = () => {
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center"}}>
                     <CommonText variant="h4">강의 공지사항</CommonText>
-                    <TextField label="제목" variant="outlined" sx={{ my: 3, width: "80%" }} defaultValue="" />
-                    <TextField label="내용" variant="outlined" multiline rows={8} sx={{ mb: 3, width: "80%" }} defaultValue="" />
-                    <TextField variant="outlined" type="file" sx={{ mb: 3, width: "80%" }} defaultValue="" />
+                    <TextField label="제목" name="title" variant="outlined" sx={{ my: 3, width: "80%" }} defaultValue="hello" />
+                    <TextField label="내용" name="content" variant="outlined" multiline rows={8} sx={{ mb: 3, width: "80%" }} defaultValue="" />
+                    <TextField variant="outlined" type="file" name="file" sx={{ mb: 3, width: "80%" }} defaultValue="" />
                     <Row spacing={3}>
-                        <CommonButton variant="contained">등록</CommonButton>
+                        <CommonButton onClick={handleSubmit} variant="contained">수정</CommonButton>
+                        <CommonButton variant="contained">삭제</CommonButton>
                         <CommonButton href="/professor/notice_list" variant="contained">취소</CommonButton>
                     </Row>
                 </OuterBox>
@@ -73,4 +79,4 @@ const WriteNotice = () => {
     );
 };
 
-export default WriteNotice;
+export default ReadNotice;

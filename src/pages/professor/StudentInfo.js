@@ -47,11 +47,11 @@ function createData(major, name, email, ph_num) {
 
 const rows = [
     createData("컴퓨터정보공학부", "최호진", "hojinch99@naver.com", "010-5064-8771"),
-    createData("컴퓨터정보공학부", "최호진", "hojinch99@naver.com", "010-5064-8771"),
-    createData("컴퓨터정보공학부", "최호진", "hojinch99@naver.com", "010-5064-8771"),
-    createData("컴퓨터정보공학부", "최호진", "hojinch99@naver.com", "010-5064-8771"),
-    createData("컴퓨터정보공학부", "최호진", "hojinch99@naver.com", "010-5064-8771"),
-    createData("컴퓨터정보공학부", "최호진", "hojinch99@naver.com", "010-5064-8771"),
+    createData("컴퓨터정보공학부", "김우곤", "asd123@naver.com", "010-5555-8771"),
+    createData("컴퓨터정보공학부", "이동익", "123asd@naver.com", "010-7777-8771"),
+    createData("컴퓨터정보공학부", "홍길동", "hjk123@naver.com", "010-1111-8771"),
+    createData("컴퓨터정보공학부", "이기훈", "khj142@naver.com", "010-2222-8771"),
+    createData("컴퓨터정보공학부", "사마의", "qpw525@naver.com", "010-3333-8771"),
 ];
 
 const collegeMajorMap = CollegeList.reduce((acc, curr) => {
@@ -137,7 +137,7 @@ const StudentInfo = () => {
                             </TableHead>
                             <TableBody>
                                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                                    <TableRow>
+                                    <TableRow key={row.name}>
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (

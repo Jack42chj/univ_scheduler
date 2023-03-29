@@ -77,7 +77,7 @@ const LectureList = () => {
                             </TableHead>
                             <TableBody>
                                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                                    <TableRow>
+                                    <TableRow key={row.name}>
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (

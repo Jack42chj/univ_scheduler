@@ -8,9 +8,9 @@ const StyledButton = styled(Button)(({theme}) => ({
     textTransform: "none",
 }));
 
-const CommonButton = ({ children, variant, key, sx, href }) => {
+const CommonButton = ({ children, variant, key, sx, href, onClick }) => {
     return(
-        <StyledButton disableRipple={Boolean(true)} variant={variant} key={key} sx={sx} href={href}>
+        <StyledButton disableRipple={Boolean(true)} variant={variant} key={key} sx={sx} href={href} onClick={onClick}>
             {children}
         </StyledButton>
     );

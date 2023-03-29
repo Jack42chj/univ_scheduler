@@ -1,10 +1,10 @@
 import { MenuItem, Pagination, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useState } from "react";
-import BgcolorBox from "../components/Box/BgcolorStack";
-import OuterBox from "../components/Box/OuterBox";
-import Row from "../components/Grid/Row";
-import HeaderPro from "../components/Header/HeaderPro";
-import CommonText from "../components/Text/CommonText";
+import BgcolorBox from "../../components/Box/BgcolorStack";
+import OuterBox from "../../components/Box/OuterBox";
+import Row from "../../components/Grid/Row";
+import HeaderPro from "../../components/Header/HeaderPro";
+import CommonText from "../../components/Text/CommonText";
 
 const SemesterList = [
     {semester: "2022-1"}, {semester: "2022-2"},
@@ -42,7 +42,7 @@ const rows = [
     createData("소프트웨어공학 공지", 1, "이기훈", "2023-03-27", 1),
 ];
 
-const ReadNotice = () => {
+const NoticeList = () => {
     const [semester, setSemester] = useState('');
     const [subject, setSubject] = useState('');
     const handleChangeSemester = (e) => setSemester(e.target.value);
@@ -108,7 +108,7 @@ const ReadNotice = () => {
                             </TableHead>
                             <TableBody>
                                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => (
-                                    <TableRow key={row.id}>
+                                    <TableRow key={i}>
                                         <TableCell align="center">{index + i}</TableCell>
                                         {columns.map((column) => {
                                             const value = row[column.id];
@@ -134,4 +134,4 @@ const ReadNotice = () => {
     );
 };
 
-export default ReadNotice;
+export default NoticeList;

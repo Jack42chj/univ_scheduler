@@ -24,6 +24,12 @@ const MainTheme = createTheme({
                 fontSize: '1rem',
             },
         },
+        overline: {
+            fontSize: "1rem",
+            '@media (max-width:600px)': {
+                fontSize: '0.5rem',
+            },
+        },
     },
 });
 

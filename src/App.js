@@ -3,8 +3,9 @@ import Login from "./pages/Auth/Login";
 import SignUpPro from "./pages/Auth/SignUpPro";
 import SignUpStu from "./pages/Auth/SignUpStu";
 import WriteNotice from "./pages/professor/WriteNotice";
-import ReadNotice from "./pages/ReadNotice";
+import NoticeList from "./pages/professor/NoticeList";
 import LectureList from "./pages/professor/LectureList";
+import ReadNotice from "./pages/professor/ReadNotice";
 import Lecture from "./pages/professor/Lecture";
 import StudentInfo from "./pages/professor/StudentInfo";
 import { ThemeProvider } from "@emotion/react";
@@ -22,7 +23,8 @@ const App = () => {
           <Route path = "/professor/lecture_list" element={<LectureList />} /> 
           <Route path = "/professor/student_info" element={<StudentInfo />} /> 
           <Route path = "/professor/lecture" element={<Lecture />} /> 
-          <Route path = "/read_notice" element={<ReadNotice />} />
+          <Route path = "/professor/notice_list" element={<NoticeList />} />
+          <Route path = "/professor/read_notice" element={<ReadNotice />} />
         </Routes>
       </ThemeProvider> 
     </>
