@@ -9,6 +9,7 @@ import EditNotice from "./pages/professor/EditNotice";
 import ReadNotice from "./pages/professor/ReadNotice";
 import Lecture from "./pages/professor/Lecture";
 import StudentInfo from "./pages/professor/StudentInfo";
+import StudentScore from "./pages/professor/StudentScore";
 import { ThemeProvider } from "@emotion/react";
 import MainTheme from "./styles/muiTheme";
 
@@ -27,6 +28,7 @@ const App = () => {
           <Route path = "/professor/notice_list" element={<NoticeList />} />
           <Route path = "/professor/edit_notice" element={<EditNotice />} />
           <Route path = "/professor/read_notice" element={<ReadNotice />} />
+          <Route path = "/professor/student_score" element={<StudentScore />} />
         </Routes>
       </ThemeProvider> 
     </>
