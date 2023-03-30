@@ -6,9 +6,9 @@ const StyledStack = styled(Stack)(({theme}) => ({
     justifyContent: "center",
 }));
 
-const Column = ({ children, sx }) => {
+const Column = ({ children, sx, spacing }) => {
     return (
-        <StyledStack direction="column" sx={sx}>
+        <StyledStack direction="column" sx={sx} spacing={spacing}>
             {children}
         </StyledStack>
     );

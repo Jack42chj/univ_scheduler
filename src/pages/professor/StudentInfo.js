@@ -38,7 +38,7 @@ const columns = [
     { id: "major", label: "학과" },
     { id: "name", label: "이름" },
     { id: "email", label: "이메일" },
-    { id: "ph_num", label: "휴데폰 번호" },
+    { id: "ph_num", label: "휴대폰" },
 ];
 
 function createData(major, name, email, ph_num) {
@@ -129,7 +129,7 @@ const StudentInfo = () => {
                             <TableHead>
                                 <TableRow>
                                     {columns.map((column) => (
-                                        <TableCell key={column.id} align="center">
+                                        <TableCell key={column.id} align="center" sx={{ fontSize: 18, color: "#7D5A50" }}>
                                             {column.label}
                                         </TableCell>
                                     ))}

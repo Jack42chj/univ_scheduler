@@ -6,6 +6,7 @@ import CommonButton from "../../components/Button/CommonButton";
 import Row from "../../components/Grid/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
 import CommonText from "../../components/Text/CommonText";
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 const SemesterList = [
     {semester: "2022-1"}, {semester: "2022-2"},
@@ -17,6 +18,8 @@ const SubjectList = [
     {name: "소프트웨어공학"}, {name: "소프트웨어공학"}, {name: "소프트웨어공학"}, 
     {name: "소프트웨어공학"}, {name: "소프트웨어공학"}, 
 ];
+
+const content = "hello\n\nworld\n\nhi\n\nmy name\n\nis\n\nchoi\n\nhojin";
 
 const ReadNotice = () => {
     const [semester, setSemester] = useState('');
@@ -63,11 +66,16 @@ const ReadNotice = () => {
                         </Select>
                     </Row>
                 </OuterBox>
-                <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center"}}>
+                <OuterBox sx={{ py: 5, alignItems: "center"}}>
                     <CommonText variant="h4">강의 공지사항</CommonText>
-                    <TextField label="제목" name="title" variant="outlined" sx={{ my: 3, width: "80%" }} defaultValue="hello" />
-                    <TextField label="내용" name="content" variant="outlined" multiline rows={8} sx={{ mb: 3, width: "80%" }} defaultValue="" />
-                    <TextField variant="outlined" type="file" name="file" sx={{ mb: 3, width: "80%" }} defaultValue="" />
+                    <Row sx={{ width: "100%", justifyContent: "space-evenly", mt: 3 }}>
+                        <CommonText variant="h6" sx={{ color: "#FA9A00" }}>작성자: 이기훈</CommonText>
+                        <CommonText variant="h6" sx={{ color: "#FA9A00" }}>등록일: 2023-03-17</CommonText>
+                        <CommonText variant="h6" sx={{ color: "#FA9A00" }}>조회수: 25</CommonText>
+                    </Row>
+                    <TextField label="제목" name="title" variant="outlined" sx={{ my: 3, width: "80%" }} defaultValue="소프트웨어공학 공지" disabled/>
+                    <TextField label="내용" name="content" variant="outlined" multiline rows={18} sx={{ width: "80%" }} defaultValue={content} disabled/>
+                    <CommonText sx={{ justifyContent: "flex-start", my: 3, width: "80%" }}><AttachFileIcon />파일: 소프트웨어공학.pdf</CommonText>
                     <Row spacing={3}>
                         <CommonButton onClick={handleSubmit} variant="contained">수정</CommonButton>
                         <CommonButton variant="contained">삭제</CommonButton>

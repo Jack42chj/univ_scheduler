@@ -69,7 +69,7 @@ const LectureList = () => {
                             <TableHead>
                                 <TableRow>
                                     {columns.map((column) => (
-                                        <TableCell key={column.id} align="center">
+                                        <TableCell key={column.id} align="center" sx={{ fontSize: 18, color: "#7D5A50" }}>
                                             {column.label}
                                         </TableCell>
                                     ))}

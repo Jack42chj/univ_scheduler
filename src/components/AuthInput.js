@@ -13,7 +13,7 @@ const CustomInput = styled(InputBase)(({theme}) => ({
     },
 }));
 
-const AuthInput = ({children, placeholder, id, name, error, type, value, onChange, endAdornment, sx}) => {
+const AuthInput = ({children, placeholder, id, name, error, type, value, onChange, endAdornment, sx }) => {
     return(
         <CustomInput 
             required 

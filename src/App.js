@@ -5,6 +5,7 @@ import SignUpStu from "./pages/Auth/SignUpStu";
 import WriteNotice from "./pages/professor/WriteNotice";
 import NoticeList from "./pages/professor/NoticeList";
 import LectureList from "./pages/professor/LectureList";
+import EditNotice from "./pages/professor/EditNotice";
 import ReadNotice from "./pages/professor/ReadNotice";
 import Lecture from "./pages/professor/Lecture";
 import StudentInfo from "./pages/professor/StudentInfo";
@@ -24,6 +25,7 @@ const App = () => {
           <Route path = "/professor/student_info" element={<StudentInfo />} /> 
           <Route path = "/professor/lecture" element={<Lecture />} /> 
           <Route path = "/professor/notice_list" element={<NoticeList />} />
+          <Route path = "/professor/edit_notice" element={<EditNotice />} />
           <Route path = "/professor/read_notice" element={<ReadNotice />} />
         </Routes>
       </ThemeProvider> 

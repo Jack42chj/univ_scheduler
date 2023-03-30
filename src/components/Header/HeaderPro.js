@@ -5,6 +5,8 @@ import CommonButton from '../Button/CommonButton';
 import CommonText from '../Text/CommonText';
 import IconBtn from '../Button/IconBtn';
 import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
+import MyPage from '../Modal/MyPage';
 
 const listItem = [
     { link: "/professor/lecture_list", text: "강의 관리"},
@@ -13,9 +15,12 @@ const listItem = [
 
 const Header = () => {
     const [open, setOpen] = useState(false);
+    const [myPageOpen, setMyPageOpen] = useState(false);
     const handleClick = () => {
         setOpen(!open);
     };
+    const myPageHandleOpen = () => setMyPageOpen(true);
+    const myPageHandleClose = () => setMyPageOpen(false);
 
     return( 
         <AppBar
@@ -24,7 +29,7 @@ const Header = () => {
             position="sticky"
         >
             <Toolbar sx={{ justifyContent: "space-between" }}>
-                <CommonButton sx={{ display: { xs: 'flex', md: 'flex'} }} >
+                <CommonButton sx={{ display: { xs: 'flex', md: 'flex'} }} href="/professor/lecture_list">
                     <CommonText
                         variant="h5"
                         sx={{ p: 2, letterSpacing: 1 }}
@@ -41,10 +46,16 @@ const Header = () => {
                         </Fragment>
                     ))}
                 </Box>
+                <IconBtn onClick={myPageHandleOpen} sx={{ display: { xs: 'none', md: 'flex' }, mx: 1 }}>
+                    <SettingsIcon />
+                </IconBtn>
                 <IconBtn sx={{ display: { xs: 'none', md: 'flex' } }}>
                     <LogoutIcon />
                 </IconBtn>
                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                    <IconBtn onClick={myPageHandleOpen}>
+                        <SettingsIcon />
+                    </IconBtn>
                     <IconBtn sx={{ mx: 1 }}>
                         <LogoutIcon />
                     </IconBtn>
@@ -65,6 +76,7 @@ const Header = () => {
                     ))}
                 </List>
             </Collapse>
+            <MyPage open={myPageOpen} onClose={myPageHandleClose} />
         </AppBar>
     );
 };

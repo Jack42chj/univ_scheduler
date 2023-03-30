@@ -5,6 +5,7 @@ import OuterBox from "../../components/Box/OuterBox";
 import Row from "../../components/Grid/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
 import CommonText from "../../components/Text/CommonText";
+import FilePresentIcon from '@mui/icons-material/FilePresent';
 
 const SemesterList = [
     {semester: "2022-1"}, {semester: "2022-2"},
@@ -25,20 +26,22 @@ const columns = [
 ];
 
 function createData(title, filexo, name, date, view_count) {
+    if(filexo === 1) filexo = <FilePresentIcon />;
+    else filexo = "";
     return {title, filexo, name, date, view_count};
 }
 
 const rows = [
     createData("소프트웨어공학 공지", 1, "이기훈", "2023-03-27", 1),
     createData("소프트웨어공학 공지", 1, "이기훈", "2023-03-27", 1),
+    createData("소프트웨어공학 공지", 0, "이기훈", "2023-03-27", 1),
     createData("소프트웨어공학 공지", 1, "이기훈", "2023-03-27", 1),
+    createData("소프트웨어공학 공지", 0, "이기훈", "2023-03-27", 1),
     createData("소프트웨어공학 공지", 1, "이기훈", "2023-03-27", 1),
+    createData("소프트웨어공학 공지", 0, "이기훈", "2023-03-27", 1),
     createData("소프트웨어공학 공지", 1, "이기훈", "2023-03-27", 1),
-    createData("소프트웨어공학 공지", 1, "이기훈", "2023-03-27", 1),
-    createData("소프트웨어공학 공지", 1, "이기훈", "2023-03-27", 1),
-    createData("소프트웨어공학 공지", 1, "이기훈", "2023-03-27", 1),
-    createData("소프트웨어공학 공지", 1, "이기훈", "2023-03-27", 1),
-    createData("소프트웨어공학 공지", 1, "이기훈", "2023-03-27", 1),
+    createData("소프트웨어공학 공지", 0, "이기훈", "2023-03-27", 1),
+    createData("소프트웨어공학 공지", 0, "이기훈", "2023-03-27", 1),
     createData("소프트웨어공학 공지", 1, "이기훈", "2023-03-27", 1),
 ];
 
@@ -98,9 +101,9 @@ const NoticeList = () => {
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="center">번호</TableCell>
+                                    <TableCell align="center" sx={{ fontSize: 18, color: "#7D5A50" }}>번호</TableCell>
                                     {columns.map((column) => (
-                                        <TableCell key={column.id} align="center">
+                                        <TableCell key={column.id} align="center" sx={{ fontSize: 18, color: "#7D5A50" }}>
                                             {column.label}
                                         </TableCell>
                                     ))}
