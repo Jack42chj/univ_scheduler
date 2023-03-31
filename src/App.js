@@ -2,14 +2,17 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Auth/Login";
 import SignUpPro from "./pages/Auth/SignUpPro";
 import SignUpStu from "./pages/Auth/SignUpStu";
-import WriteNotice from "./pages/professor/WriteNotice";
-import NoticeList from "./pages/professor/NoticeList";
-import LectureList from "./pages/professor/LectureList";
-import EditNotice from "./pages/professor/EditNotice";
-import ReadNotice from "./pages/professor/ReadNotice";
-import Lecture from "./pages/professor/Lecture";
-import StudentInfo from "./pages/professor/StudentInfo";
-import StudentScore from "./pages/professor/StudentScore";
+import WriteNotice from "./pages/Professor/WriteNotice";
+import NoticeList from "./pages/Professor/NoticeList";
+import LectureList from "./pages/Professor/LectureList";
+import EditNotice from "./pages/Professor/EditNotice";
+import ReadNotice from "./pages/Professor/ReadNotice";
+import Lecture from "./pages/Professor/Lecture";
+import StudentInfo from "./pages/Professor/StudentInfo";
+import StudentScore from "./pages/Professor/StudentScore";
+import EditPlan from "./pages/Professor/EditPlan";
+import WritePlan from "./pages/Professor/WritePlan";
+import ReadPlan from "./pages/Student/ReadPlan";
 import { ThemeProvider } from "@emotion/react";
 import MainTheme from "./styles/muiTheme";
 
@@ -29,6 +32,9 @@ const App = () => {
           <Route path = "/professor/edit_notice" element={<EditNotice />} />
           <Route path = "/professor/read_notice" element={<ReadNotice />} />
           <Route path = "/professor/student_score" element={<StudentScore />} />
+          <Route path = "/professor/edit_plan" element={<EditPlan />} />
+          <Route path = "/professor/write_plan" element={<WritePlan />} />
+          <Route path = "/student/read_plan" element={<ReadPlan />} />
         </Routes>
       </ThemeProvider> 
     </>
