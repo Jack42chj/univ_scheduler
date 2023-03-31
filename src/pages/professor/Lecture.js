@@ -9,6 +9,7 @@ import Row from "../../components/Grid/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
 import CommonText from "../../components/Text/CommonText";
 import AddIcon from '@mui/icons-material/Add';
+import ContentText from "../../components/Text/ContentText";
 
 const SemesterList = [
     {semester: "2022-1"}, {semester: "2022-2"},
@@ -44,7 +45,7 @@ const ReadNotice = () => {
             <BgcolorBox sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   
-                        <CommonText variant="h6">학기</CommonText>
+                        <ContentText variant="h6">학기</ContentText>
                         <Select
                             value={semester}
                             name="semester"
@@ -57,7 +58,7 @@ const ReadNotice = () => {
                                 <MenuItem key={SemesterList[year].semester} value={SemesterList[year].semester}>{SemesterList[year].semester}</MenuItem>
                             ))}
                         </Select>
-                        <CommonText variant="h6">과목명</CommonText>
+                        <ContentText variant="h6">과목명</ContentText>
                         <Select
                             value={subject}
                             name="subject"
@@ -73,91 +74,91 @@ const ReadNotice = () => {
                     </Row>
                 </OuterBox>
                 <OuterBox sx={{ py: 10, justifyContent: "center", display: { md: 'none', lg: "flex", xs: "none"} }}>
-                    <CommonText variant="h4">강의 관리</CommonText>
+                    <ContentText variant="h4">강의 관리</ContentText>
                     <Row sx={{ justifyContent: "space-evenly", mt: 5 }}>
                         <InnerBox sx={{ p: 3 }}>
                             <Row>
-                                <CommonText variant="h5">공지사항</CommonText>
-                                <IconButton sx={{ color: "#FCDEC0"}}><AddIcon fontSize="large"/></IconButton>
+                                <ContentText variant="h5">공지사항</ContentText>
+                                <IconButton sx={{ color: "#FCDEC0"}} href="/professor/notice_list"><AddIcon fontSize="large"/></IconButton>
                             </Row>
                             <Divider />
                             {Object.keys(NoticeList).map((list, index) => (
                                 <Fragment key={index}>
                                     <Row spacing={10}>
-                                        <CommonText variant="overline">{NoticeList[list].text}</CommonText>
-                                        <CommonText variant="overline">{NoticeList[list].date}</CommonText>
+                                        <ContentText variant="overline">{NoticeList[list].text}</ContentText>
+                                        <ContentText variant="overline">{NoticeList[list].date}</ContentText>
                                     </Row>
                                 </Fragment>
                             ))}
                         </InnerBox>
                         <Column>
-                            <AuthButton sx={{ mb: 2, fontSize: "18px" }}>수강 인원 조회 및 성적 입력</AuthButton>
+                            <AuthButton sx={{ mb: 2, fontSize: "18px" }} href="/professor/student_score">수강 인원 조회 및 성적 입력</AuthButton>
                             <InnerBox sx={{ p: 3 }}>
                                 <Row>
-                                    <CommonText variant="h5">강의정보</CommonText>
-                                    <IconButton sx={{ color: "#FCDEC0"}}><AddIcon fontSize="large"/></IconButton>
+                                    <ContentText variant="h5">강의정보</ContentText>
+                                    <IconButton sx={{ color: "#FCDEC0"}} href="/professor/edit_plan"><AddIcon fontSize="large"/></IconButton>
                                 </Row>
                                 <Divider />
                                 <Row spacing={10}>
-                                    <CommonText variant="overline">과목명</CommonText>
-                                    <CommonText variant="overline">{lectureData.name}</CommonText>
+                                    <ContentText variant="overline">과목명</ContentText>
+                                    <ContentText variant="overline">{lectureData.name}</ContentText>
                                 </Row>
                                 <Row>
-                                    <CommonText variant="overline">학정번호</CommonText>
-                                    <CommonText variant="overline">{lectureData.id}</CommonText>
+                                    <ContentText variant="overline">학정번호</ContentText>
+                                    <ContentText variant="overline">{lectureData.id}</ContentText>
                                 </Row>
                                 <Row>
-                                    <CommonText variant="overline">교시</CommonText>
-                                    <CommonText variant="overline">{lectureData.period}</CommonText>
+                                    <ContentText variant="overline">교시</ContentText>
+                                    <ContentText variant="overline">{lectureData.period}</ContentText>
                                 </Row>
                                 <Row>
-                                    <CommonText variant="overline">강의실</CommonText>
-                                    <CommonText variant="overline">{lectureData.class}</CommonText>
+                                    <ContentText variant="overline">강의실</ContentText>
+                                    <ContentText variant="overline">{lectureData.class}</ContentText>
                                 </Row>
                             </InnerBox>
                         </Column>
                     </Row>
                 </OuterBox>
                 <OuterBox sx={{ py: 1, display: { lg: "none", md: 'flex', xs: "flex" } }}>
-                    <CommonText variant="h4" sx={{ mt: 3 }}>강의 관리</CommonText>
+                    <ContentText variant="h4" sx={{ mt: 3 }}>강의 관리</ContentText>
                     <Column sx={{ m: 3, alignItems: "stretch"}}>
                         <Column>
                             <AuthButton sx={{ fontSize: "14px" }}>수강 인원 조회 및 성적 입력</AuthButton>
                             <InnerBox sx={{ p: 3, my: 3 }}>
                                 <Row>
-                                    <CommonText variant="h5">강의정보</CommonText>
-                                    <IconButton sx={{ color: "#FCDEC0"}}><AddIcon fontSize="large"/></IconButton>
+                                    <ContentText variant="h5">강의정보</ContentText>
+                                    <IconButton sx={{ color: "#FCDEC0"}} href="/professor/edit_notice"><AddIcon fontSize="large"/></IconButton>
                                 </Row>
                                 <Divider />
                                 <Row spacing={10}>
-                                    <CommonText variant="overline">과목명</CommonText>
-                                    <CommonText variant="overline">{lectureData.name}</CommonText>
+                                    <ContentText variant="overline">과목명</ContentText>
+                                    <ContentText variant="overline">{lectureData.name}</ContentText>
                                 </Row>
                                 <Row>
-                                    <CommonText variant="overline">학정번호</CommonText>
-                                    <CommonText variant="overline">{lectureData.id}</CommonText>
+                                    <ContentText variant="overline">학정번호</ContentText>
+                                    <ContentText variant="overline">{lectureData.id}</ContentText>
                                 </Row>
                                 <Row>
-                                    <CommonText variant="overline">교시</CommonText>
-                                    <CommonText variant="overline">{lectureData.period}</CommonText>
+                                    <ContentText variant="overline">교시</ContentText>
+                                    <ContentText variant="overline">{lectureData.period}</ContentText>
                                 </Row>
                                 <Row>
-                                    <CommonText variant="overline">강의실</CommonText>
-                                    <CommonText variant="overline">{lectureData.class}</CommonText>
+                                    <ContentText variant="overline">강의실</ContentText>
+                                    <ContentText variant="overline">{lectureData.class}</ContentText>
                                 </Row>
                             </InnerBox>
                         </Column>
                         <InnerBox sx={{ p: 3 }}>
                             <Row>
-                                <CommonText variant="h5">공지사항</CommonText>
-                                <IconButton sx={{ color: "#FCDEC0"}}><AddIcon fontSize="large"/></IconButton>
+                                <ContentText variant="h5">공지사항</ContentText>
+                                <IconButton sx={{ color: "#FCDEC0"}} href="/professor/notice_list"><AddIcon fontSize="large"/></IconButton>
                             </Row>
                             <Divider />
                             {Object.keys(NoticeList).map((list, index) => (
                                 <Fragment key={index}>
                                     <Row>
-                                        <CommonText variant="overline">{NoticeList[list].text}</CommonText>
-                                        <CommonText variant="overline">{NoticeList[list].date}</CommonText>
+                                        <ContentText variant="overline">{NoticeList[list].text}</ContentText>
+                                        <ContentText variant="overline">{NoticeList[list].date}</ContentText>
                                     </Row>
                                 </Fragment>
                             ))}

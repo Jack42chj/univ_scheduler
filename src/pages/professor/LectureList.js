@@ -4,7 +4,7 @@ import BgcolorBox from "../../components/Box/BgcolorStack";
 import OuterBox from "../../components/Box/OuterBox";
 import Row from "../../components/Grid/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
-import CommonText from "../../components/Text/CommonText";
+import ContentText from "../../components/Text/ContentText";
 
 const SemesterList = [
     {semester: "2022-1"}, {semester: "2022-2"},
@@ -47,7 +47,7 @@ const LectureList = () => {
             <BgcolorBox sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   
-                        <CommonText variant="h6">학기</CommonText>
+                        <ContentText variant="h6">학기</ContentText>
                         <Select
                             value={semester}
                             name="semester"
@@ -63,7 +63,7 @@ const LectureList = () => {
                     </Row>
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center",}}>
-                    <CommonText variant="h4">강의 관리</CommonText>
+                    <ContentText variant="h4">강의 관리</ContentText>
                     <TableContainer sx={{ width: "90%", py: 5}}>
                         <Table stickyHeader>
                             <TableHead>

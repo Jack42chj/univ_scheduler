@@ -6,7 +6,7 @@ import Row from "../../components/Grid/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
 import CommonText from "../../components/Text/CommonText";
 import CommonButton from "../../components/Button/CommonButton";
-
+import ContentText from "../../components/Text/ContentText";
 
 const scoreOptions = [
     { value: 'A+' },
@@ -59,7 +59,7 @@ const StudentScore = () => {
             <HeaderPro />
             <BgcolorBox sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center", mt: 5 }}>
-                    <CommonText variant="h4">수강 인원 조회 및 성적 입력</CommonText>
+                    <ContentText variant="h4" sx={{ my: 3 }} >수강 인원 조회 및 성적 입력</ContentText>
                     <TableContainer sx={{ width: "90%", py: 3 }}>
                         <Table stickyHeader>
                             <TableHead>

@@ -158,7 +158,7 @@ const SignUpStu = () => {
         <BgcolorStack>
             <Row>
                 <Column sx={{ display: { xs: "none", md: "flex" }, width: "35%", minHeight: "100vh", background: `url(${StudentLoginLogo})`, backgroundSize: 'cover' }}>
-                    <CommonText variant="h4" sx={{ color: "#DDDDDD", px: 2 }}>Veritas<br/><br/>Lux<br/><br/>Mea</CommonText>
+                    <CommonText variant="h4" sx={{ color: "#DDDDDD", px: 2 }}>University Scheduler로<br/><br/>즐거운 대학생활을<br/><br/>시작해보세요</CommonText>
                 </Column>
                 <AuthBody>
                     <IconButton href="/" sx={{ justifyContent: 'flex-start', width: "50px" }}><ArrowBackIcon fontSize="large" sx={{ color: "#FCDEC0" }} /></IconButton>

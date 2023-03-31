@@ -5,7 +5,7 @@ import OuterBox from "../../components/Box/OuterBox";
 import CommonButton from "../../components/Button/CommonButton";
 import Row from "../../components/Grid/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
-import CommonText from "../../components/Text/CommonText";
+import ContentText from "../../components/Text/ContentText";
 
 const SemesterList = [
     {semester: "2022-1"}, {semester: "2022-2"},
@@ -30,7 +30,7 @@ const EditPlan = () => {
             <BgcolorBox sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   
-                        <CommonText variant="h6">학기</CommonText>
+                        <ContentText variant="h6">학기</ContentText>
                         <Select
                             value={semester}
                             name="semester"
@@ -43,7 +43,7 @@ const EditPlan = () => {
                                 <MenuItem key={SemesterList[year].semester} value={SemesterList[year].semester}>{SemesterList[year].semester}</MenuItem>
                             ))}
                         </Select>
-                        <CommonText variant="h6">과목명</CommonText>
+                        <ContentText variant="h6">과목명</ContentText>
                         <Select
                             value={subject}
                             name="subject"
@@ -59,7 +59,7 @@ const EditPlan = () => {
                     </Row>
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center"}}>
-                    <CommonText variant="h4">강의 계획서</CommonText>
+                    <ContentText variant="h4">강의 계획서</ContentText>
                     <Row spacing={1} sx={{ justifyContent: "center", width: "80%", mt: 5 }}>
                         <TextField label="교과명" variant="outlined" fullWidth defaultValue="" />
                         <TextField label="학정번호" variant="outlined" fullWidth defaultValue="" />

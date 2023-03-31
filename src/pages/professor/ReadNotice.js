@@ -7,6 +7,8 @@ import Row from "../../components/Grid/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
 import CommonText from "../../components/Text/CommonText";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import DownloadIcon from '@mui/icons-material/Download';
+import ContentText from "../../components/Text/ContentText";
 
 const SemesterList = [
     {semester: "2022-1"}, {semester: "2022-2"},
@@ -38,7 +40,7 @@ const ReadNotice = () => {
             <BgcolorBox sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   
-                        <CommonText variant="h6">학기</CommonText>
+                        <ContentText variant="h6">학기</ContentText>
                         <Select
                             value={semester}
                             name="semester"
@@ -51,7 +53,7 @@ const ReadNotice = () => {
                                 <MenuItem key={SemesterList[year].semester} value={SemesterList[year].semester}>{SemesterList[year].semester}</MenuItem>
                             ))}
                         </Select>
-                        <CommonText variant="h6">과목명</CommonText>
+                        <ContentText variant="h6">과목명</ContentText>
                         <Select
                             value={subject}
                             name="subject"
@@ -67,15 +69,15 @@ const ReadNotice = () => {
                     </Row>
                 </OuterBox>
                 <OuterBox sx={{ py: 5, alignItems: "center"}}>
-                    <CommonText variant="h4">강의 공지사항</CommonText>
+                    <ContentText variant="h4">강의 공지사항</ContentText>
                     <Row sx={{ width: "100%", justifyContent: "space-evenly", mt: 3 }}>
-                        <CommonText variant="h6" sx={{ color: "#FA9A00" }}>작성자: 이기훈</CommonText>
-                        <CommonText variant="h6" sx={{ color: "#FA9A00" }}>등록일: 2023-03-17</CommonText>
-                        <CommonText variant="h6" sx={{ color: "#FA9A00" }}>조회수: 25</CommonText>
+                        <ContentText variant="h6" sx={{ color: "#FA9A00" }}>작성자: 이기훈</ContentText>
+                        <ContentText variant="h6" sx={{ color: "#FA9A00" }}>등록일: 2023-03-17</ContentText>
+                        <ContentText variant="h6" sx={{ color: "#FA9A00" }}>조회수: 25</ContentText>
                     </Row>
                     <TextField label="제목" name="title" variant="outlined" sx={{ my: 3, width: "80%" }} defaultValue="소프트웨어공학 공지" disabled/>
                     <TextField label="내용" name="content" variant="outlined" multiline rows={18} sx={{ width: "80%" }} defaultValue={content} disabled/>
-                    <CommonText sx={{ justifyContent: "flex-start", my: 3, width: "80%" }}><AttachFileIcon />파일: 소프트웨어공학.pdf</CommonText>
+                    <ContentText sx={{ justifyContent: "flex-start", my: 3, width: "80%" }}><AttachFileIcon />파일: 소프트웨어공학.pdf&nbsp;&nbsp;<DownloadIcon /></ContentText>
                     <Row spacing={3}>
                         <CommonButton onClick={handleSubmit} variant="contained">수정</CommonButton>
                         <CommonButton variant="contained">삭제</CommonButton>

@@ -5,7 +5,7 @@ import OuterBox from "../../components/Box/OuterBox";
 import CommonButton from "../../components/Button/CommonButton";
 import Row from "../../components/Grid/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
-import CommonText from "../../components/Text/CommonText";
+import ContentText from "../../components/Text/ContentText";
 
 const SemesterList = [
     {semester: "2022-1"}, {semester: "2022-2"},
@@ -35,7 +35,7 @@ const EditNotice = () => {
             <BgcolorBox sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   
-                        <CommonText variant="h6">학기</CommonText>
+                        <ContentText variant="h6">학기</ContentText>
                         <Select
                             value={semester}
                             name="semester"
@@ -48,7 +48,7 @@ const EditNotice = () => {
                                 <MenuItem key={SemesterList[year].semester} value={SemesterList[year].semester}>{SemesterList[year].semester}</MenuItem>
                             ))}
                         </Select>
-                        <CommonText variant="h6">과목명</CommonText>
+                        <ContentText variant="h6">과목명</ContentText>
                         <Select
                             value={subject}
                             name="subject"
@@ -64,7 +64,7 @@ const EditNotice = () => {
                     </Row>
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center"}}>
-                    <CommonText variant="h4">강의 공지사항</CommonText>
+                    <ContentText variant="h4">강의 공지사항</ContentText>
                     <TextField label="제목" name="title" variant="outlined" sx={{ my: 3, width: "80%" }} defaultValue="hello" />
                     <TextField label="내용" name="content" variant="outlined" multiline rows={8} sx={{ mb: 3, width: "80%" }} defaultValue="" />
                     <TextField variant="outlined" type="file" name="file" sx={{ mb: 3, width: "80%" }} defaultValue="" />

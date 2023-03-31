@@ -6,8 +6,8 @@ import OuterBox from "../../components/Box/OuterBox";
 import IconBtn from "../../components/Button/IconBtn";
 import Row from "../../components/Grid/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
-import CommonText from "../../components/Text/CommonText";
 import SearchIcon from '@mui/icons-material/Search';
+import ContentText from "../../components/Text/ContentText";
 
 const CollegeList = [
     {college: "전자정보공과대학", list: [
@@ -81,7 +81,7 @@ const StudentInfo = () => {
             <BgcolorBox sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   
-                        <CommonText variant="h6">단과대학</CommonText>
+                        <ContentText variant="h6">단과대학</ContentText>
                         <Select
                             value={college}
                             name="college"
@@ -94,7 +94,7 @@ const StudentInfo = () => {
                                 <MenuItem key={CollegeList[list].college} value={CollegeList[list].college}>{CollegeList[list].college}</MenuItem>
                             ))}
                         </Select>
-                        <CommonText variant="h6">학과</CommonText>
+                        <ContentText variant="h6">학과</ContentText>
                         <Select
                             value={major}
                             name="major"
@@ -108,22 +108,20 @@ const StudentInfo = () => {
                             ))}
                         </Select>
                     </Row>
-                    
                     <Stack direction="row" justifyContent="center" mt={2} spacing={3}>
-                        <CommonText variant="h6">이름</CommonText>
+                        <ContentText variant="h6">이름</ContentText>
                         <AuthInput 
                             required 
                             name="name"
-                            sx={{ width: "30%", bgcolor: "#FCDEC0" }}
+                            sx={{ width: "30%", bgcolor: "#FFFFFF", border: "1px solid", borderColor: "#DDDDDD" }}
                         />
-                        <IconBtn>
-                            <SearchIcon />
+                        <IconBtn sx={{ color: "#d4ac85" }}>
+                            <SearchIcon sx={{ px: 0.5 }} />
                         </IconBtn>
                     </Stack>
-                    
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center",}}>
-                    <CommonText variant="h4">학생 정보조회</CommonText>
+                    <ContentText variant="h4">학생 정보조회</ContentText>
                     <TableContainer sx={{ width: "90%", py: 5}}>
                         <Table stickyHeader>
                             <TableHead>

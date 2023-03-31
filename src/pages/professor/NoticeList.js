@@ -6,6 +6,7 @@ import Row from "../../components/Grid/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
 import CommonText from "../../components/Text/CommonText";
 import FilePresentIcon from '@mui/icons-material/FilePresent';
+import ContentText from "../../components/Text/ContentText";
 
 const SemesterList = [
     {semester: "2022-1"}, {semester: "2022-2"},
@@ -67,7 +68,7 @@ const NoticeList = () => {
             <BgcolorBox sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   
-                        <CommonText variant="h6">학기</CommonText>
+                        <ContentText variant="h6">학기</ContentText>
                         <Select
                             value={semester}
                             name="semester"
@@ -80,7 +81,7 @@ const NoticeList = () => {
                                 <MenuItem key={SemesterList[year].semester} value={SemesterList[year].semester}>{SemesterList[year].semester}</MenuItem>
                             ))}
                         </Select>
-                        <CommonText variant="h6">과목명</CommonText>
+                        <ContentText variant="h6">과목명</ContentText>
                         <Select
                             value={subject}
                             name="subject"
@@ -96,7 +97,7 @@ const NoticeList = () => {
                     </Row>
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center",}}>
-                    <CommonText variant="h4">강의 공지사항</CommonText>
+                    <ContentText variant="h4">강의 공지사항</ContentText>
                     <TableContainer sx={{ width: "90%", py: 5}}>
                         <Table stickyHeader>
                             <TableHead>

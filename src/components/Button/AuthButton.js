@@ -9,9 +9,9 @@ const CustomButton = styled(Button)(({theme}) => ({
     color: theme.palette.secondary.text,
 }));
 
-const AuthButton = ({ children, sx, type, onClick }) => {
+const AuthButton = ({ children, sx, type, onClick, href }) => {
     return(
-        <CustomButton variant="contained" sx={sx} type={type} onClick={onClick}>
+        <CustomButton variant="contained" sx={sx} type={type} onClick={onClick} href={href}>
             {children}
         </CustomButton>
     );
