@@ -5,9 +5,9 @@ const CustomStack = styled(Stack)(({theme}) => ({
     backgroundColor: theme.palette.primary.main,
 }));
 
-const BgcolorStack = ({ children, sx }) => {
+const BgcolorStack = ({ children, ...props }) => {
     return(
-        <CustomStack sx={sx}>
+        <CustomStack {...props}>
             {children}
         </CustomStack>
     );

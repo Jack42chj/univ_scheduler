@@ -1,12 +1,12 @@
 import { MenuItem, Pagination, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { useState } from "react";
-import BgcolorBox from "../../components/Box/BgcolorStack";
+import { useEffect, useState } from "react";
+import BgcolorBox from "../../components/Stack/BackgroundStack";
 import OuterBox from "../../components/Box/OuterBox";
-import Row from "../../components/Grid/Row";
+import Row from "../../components/Stack/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
-import CommonText from "../../components/Text/CommonText";
 import FilePresentIcon from '@mui/icons-material/FilePresent';
-import ContentText from "../../components/Text/ContentText";
+import ContentText from "../../components/Input/ContentText";
+import { notice_list } from "../../services/userServices";
 
 const SemesterList = [
     {semester: "2022-1"}, {semester: "2022-2"},
@@ -62,6 +62,20 @@ const NoticeList = () => {
       setIndex((newPage - 1) * rowsPerPage + 1);
     };
 
+    const [noticeList, setNoticeList] = useState([]);
+
+    useEffect(() => {
+        const getNoticeList = async (semester, subject) => {
+            try {
+                const response = await notice_list(semester, subject);
+                setNoticeList(response.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        getNoticeList();
+    }, []);
+
     return(
         <>
             <HeaderPro />
@@ -74,7 +88,7 @@ const NoticeList = () => {
                             name="semester"
                             onChange={handleChangeSemester}
                             displayEmpty
-                            sx={{ width: "30%" }}
+                            sx={{ width: "30%", height: "48px" }}
                         >
                             <MenuItem value="">학기</MenuItem>
                             {Object.keys(SemesterList).map((year) => (
@@ -87,7 +101,7 @@ const NoticeList = () => {
                             name="subject"
                             onChange={handleChangeSubject}
                             displayEmpty
-                            sx={{ width: "30%" }}
+                            sx={{ width: "30%", height: "48px" }}
                         >
                             <MenuItem value="">과목명</MenuItem>
                             {Object.keys(SubjectList).map((list) => (

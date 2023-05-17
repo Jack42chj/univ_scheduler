@@ -10,7 +10,7 @@ const StyledTypography = styled(Typography)(({theme}) => ({
     justifyContent: 'center',
 }));
 
-const CommonText = ({ children, variant, sx }) => {
+const ContentText = ({ children, variant, sx }) => {
     return(
         <StyledTypography variant={variant} sx={sx}>
             {children}
@@ -18,4 +18,4 @@ const CommonText = ({ children, variant, sx }) => {
     );
 };
 
-export default CommonText;
+export default ContentText;

@@ -3,15 +3,15 @@ import { styled } from "@mui/system";
 
 const StyledStack = styled(Stack)(({theme}) => ({
     alignItem: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
 }));
 
-const Row = ({ children, sx, spacing }) => {
+const Column = ({ children, ...props }) => {
     return (
-        <StyledStack direction="row" sx={sx} spacing={spacing}>
+        <StyledStack direction="column" {...props}>
             {children}
         </StyledStack>
     );
 };
 
-export default Row;
+export default Column;

@@ -29,14 +29,9 @@ const CustomTextField = styled(TextField)(({theme}) => ({
     },
 }));
 
-const FieldText = ({ disabled, sx, children, label, defaultValue }) => {
+const FieldText = ({ children, ...props }) => {
     return(
-        <CustomTextField 
-            label={label}
-            disabled={disabled}
-            sx={sx}
-            defaultValue={defaultValue}
-        >
+        <CustomTextField {...props}>
             {children}
         </CustomTextField>
     );

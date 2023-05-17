@@ -8,9 +8,9 @@ const StyledStack = styled(Stack)(({theme}) => ({
     justifyContent: "center",
 }));
 
-const Section = ({ children, id, sx }) => {
+const Section = ({ children, ...props }) => {
     return (
-        <StyledStack id={id} sx={sx}>
+        <StyledStack {...props}>
             {children}
         </StyledStack>
     );

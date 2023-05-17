@@ -2,8 +2,8 @@ import { AppBar, Toolbar, Box, Collapse, List, ListItem, ListItemText } from '@m
 import MenuIcon from '@mui/icons-material/Menu';
 import { Fragment, useState } from 'react';
 import CommonButton from '../Button/CommonButton';
-import CommonText from '../Text/CommonText';
-import IconBtn from '../Button/IconBtn';
+import CommonText from '../Input/CommonText';
+import IconBtn from '../Button/IconsButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MyPage from '../Modal/MyPage';
@@ -13,7 +13,7 @@ const listItem = [
     { link: "/professor/student_info", text: "학생 정보조회"},
 ];
 
-const Header = () => {
+const HeaderPro = () => {
     const [open, setOpen] = useState(false);
     const [myPageOpen, setMyPageOpen] = useState(false);
     const handleClick = () => {
@@ -81,4 +81,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default HeaderPro;

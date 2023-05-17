@@ -1,30 +1,33 @@
 import { InputAdornment, IconButton, Box } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import React, { useState } from "react";
-import AuthBody from "../../components/AuthBody";
-import Row from "../../components/Grid/Row";
-import Column from "../../components/Grid/Column";
-import CommonText from "../../components/Text/CommonText";
-import AuthFormText from "../../components/Text/AuthFormText";
+import AuthBody from "../../components/Stack/AuthStack";
+import Row from "../../components/Stack/Row";
+import Column from "../../components/Stack/Column";
+import CommonText from "../../components/Input/CommonText";
+import AuthFormText from "../../components/Input/AuthFormText";
 import AuthButton from "../../components/Button/AuthButton";
 import AuthSchoolMenu from "../../components/AuthSchoolMenu";
-import AuthInput from "../../components/AuthInput";
+import AuthInput from "../../components/Input/AuthInput";
 import ProLoginLogo from "../../assets/ProLoginLogo.jpg";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import axios from "axios";
-import BgcolorStack from "../../components/Box/BgcolorStack";
+import BgcolorStack from "../../components/Stack/BackgroundStack";
+import { useNavigate } from "react-router-dom";
+import { professor_checkid, professor_signup } from "../../services/userServices";
+import { checkTrim } from "../../utils/Trim";
+import { checkEmail, checkID, checkPassword, checkPhone } from "../../utils/Regex";
 
 const SignUpPro = () => {
     const [name, setName] = useState("");
     const [id, setId] = useState("");
-    const [checkid, setCheckId] = useState(true);
+    const [checkId, setCheckId] = useState(false);
     const [password, setPassword] = useState("");
-    const [checkpw, setCheckpw] = useState(""); 
+    const [checkPw, setCheckPw] = useState(""); 
     const [univ, setUniv] = useState("");
     const [major, setMajor] = useState("");
     const [email, setEmail] = useState("");
-    const [phnum, setPhnum] = useState("");
-    const [signup, setSignup] = useState("");
+    const [phNum, setPhNum] = useState("");
+    const [signUp, setSignUp] = useState("");
 
     const [values, setValues] = useState({
         password: "",
@@ -63,36 +66,34 @@ const SignUpPro = () => {
     };
 
     const handleCheckId = async (id) => {
-        await axios
-        .post('http://localhost:3001/checkid', { id: id, })
-        .then((response) => {
-            if(response === false){
+        try{
+            const response = await professor_checkid(id);
+            if(response.status === 200){
                 alert('사용 가능한 아이디입니다.');
-                setCheckId(response);
+                setCheckId(true);
             }
             else{
                 alert('이미 사용중인 아이디입니다.');
-                setCheckId(response);
+                setCheckId(false);
             }
-        })
-        .catch((err) => {
+        } catch (err) {
             console.log(err);
-        });
+        }
     };
 
+    const navigate = useNavigate();
     const onhandlePost = async (data) => {
-        const { name, id, password, univ, major, email, phnum } = data;
-        const postData = { name, id, password, univ, major, email, phnum };
-
-        console.log(postData);
-        await axios
-        .post('http://localhost:3001/signup/professor', postData)
-        .then((response) => {
-            console.log(response, "Success!");
-        })
-        .catch((err) => {
+        const { name, id, password, univ, major, email, phNum } = data;
+        const postData = { name, id, password, univ, major, email, phNum };
+        try{
+            const response = await professor_signup(postData);
+            if(response.status === 201){
+                console.log("Professor Sign Up Success!");
+                navigate("/");
+            }
+        } catch (err) {
             console.log(err);
-        });
+        }
     };
 
     const handleSubmit = (e) => {
@@ -103,55 +104,50 @@ const SignUpPro = () => {
             name: data.get("name"),
             id: data.get("id"),
             password: data.get("password"),
-            checkpw: data.get("checkpw"),
+            checkPw: data.get("checkPw"),
             univ: data.get("univ"),
             major: data.get("major"),
             email: data.get("email"),
-            phnum: data.get("phnum")
+            phNum: data.get("phNum")
         };
-        const { name, id, password, checkpw, univ, major, email, phnum } = joinData;
+        const { name, id, password, checkPw, univ, major, email, phNum } = joinData;
 
-        const idRegex =  /^[a-z-0-9]*$/;
-        const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
-        const phoneRegex = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
-
-        if (name === "") setName("이름을 입력해주세요.");
-        else setName("");
-        if (id === "") setId("아이디를 입력해주세요.");
+        if (checkTrim(name)) setName("");
+        else setName("이름을 입력해주세요.");
+        if (!checkTrim(id)) setId("아이디를 입력해주세요.");
         else {
-            if (!idRegex.test(id)) setId("숫자 또는 영어로 입력해주세요.");
+            if (!checkID(id)) setId("숫자 또는 영어로 입력해주세요.");
             else setId("");
         }
-        if (password === "") setPassword("비밀번호를 입력해주세요.")
+        if (!checkTrim(password)) setPassword("비밀번호를 입력해주세요.")
         else {
-            if (!passwordRegex.test(password)) setPassword("숫자, 영문, 특수문자 조합 8자리 이상 입력해주세요.");
+            if (!checkPassword(password)) setPassword("숫자, 영문, 특수문자 조합 8자리 이상 입력해주세요.");
             else setPassword("");
         }
-        if(checkpw === "") setCheckpw("비밀번호를 다시 한번 입력해주세요.")
+        if(!checkTrim(checkPw)) setCheckPw("비밀번호를 다시 한번 입력해주세요.")
         else{
-            if(checkpw === password) setCheckpw("");
-            else setCheckpw("비밀번호가 일치하지 않습니다.")
+            if(checkPw === password) setCheckPw("");
+            else setCheckPw("비밀번호가 일치하지 않습니다.")
         }
-        if(univ === "") setUniv("대학교를 선택해주세요.");
-        else setUniv("");
-        if(major === "") setMajor("학과를 입력해주세요.");
-        else setMajor("");
-        if(email === "") setEmail("이메일을 입력해주세요.");
+        if(checkTrim(univ)) setUniv("");
+        else setUniv("대학교를 선택해주세요.");
+        if(checkTrim(major)) setMajor("");
+        else setMajor("학과를 입력해주세요.");
+        if(!checkTrim(email)) setEmail("이메일을 입력해주세요.");
         else{
-            if (!emailRegex.test(email)) setEmail("이메일이 올바르지 않습니다.");
+            if (!checkEmail(email)) setEmail("이메일이 올바르지 않습니다.");
             else setEmail("");
         }
-        if(phnum === "") setPhnum("휴대폰 번호를 입력해주세요.");
+        if(!checkTrim(phNum)) setPhNum("휴대폰 번호를 입력해주세요.");
         else{
-            if (!phoneRegex.test(phnum)) setPhnum("번호가 올바르지 않습니다.");
-            else setPhnum("");
+            if (!checkPhone(phNum)) setPhNum("번호가 올바르지 않습니다.");
+            else setPhNum("");
         }
-        if(checkid === true) window.alert("아이디 중복확인을 해주세요.");
-        if (name !=="" && id !== "" && password !=="" && checkpw !== "" && univ !=="" && major !== "" && email && checkid === false) {
+        if(checkId === false) window.alert("아이디 중복확인을 해주세요.");
+        if (checkTrim(name) && checkTrim(id) && checkTrim(password) && checkTrim(univ) && checkTrim(major) && checkTrim(email) && checkTrim(phNum) && checkId === true) {
             onhandlePost(joinData);
         }
-        else setSignup("입력한 정보를 다시 확인해주세요.");
+        else setSignUp("입력한 정보를 다시 확인해주세요.");
     };
 
     return (
@@ -201,7 +197,7 @@ const SignUpPro = () => {
                         <AuthInput 
                             required 
                             placeholder="비빌번호 확인" 
-                            name="checkpw" 
+                            name="checkPw" 
                             type={checkValues.showCheckPassword ? "text" : "password"}
                             value={checkValues.password || ""}
                             onChange={checkpwhandleChange("password")}
@@ -213,7 +209,7 @@ const SignUpPro = () => {
                                 </InputAdornment>
                             }
                         />
-                        <AuthFormText>{checkpw}</AuthFormText>
+                        <AuthFormText>{checkPw}</AuthFormText>
                         <Row>
                             <AuthSchoolMenu />
                             <AuthInput 
@@ -233,13 +229,13 @@ const SignUpPro = () => {
                         <AuthInput 
                             required 
                             placeholder="휴대폰 번호"
-                            name="phnum"
+                            name="phNum"
                         />
-                        <AuthFormText>{phnum}</AuthFormText>
+                        <AuthFormText>{phNum}</AuthFormText>
                         <AuthButton type="submit" sx={{ mt: 1 }}>
                             <CommonText variant="h6">회원가입</CommonText>
                         </AuthButton>
-                        <AuthFormText>{signup}</AuthFormText>
+                        <AuthFormText>{signUp}</AuthFormText>
                     </Box>
                 </AuthBody>
             </Row>

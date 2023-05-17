@@ -1,22 +1,26 @@
 import { Box, IconButton, Modal, InputAdornment } from "@mui/material";
-import Column from "../Grid/Column";
-import CommonText from "../Text/CommonText";
-import AuthInput from "../AuthInput";
+import Column from "../Stack/Column";
+import CommonText from "../Input/CommonText";
+import AuthInput from "../Input/AuthInput";
 import AuthButton from "../Button/AuthButton";
 import CloseIcon from '@mui/icons-material/Close';
-import Row from "../Grid/Row";
+import Row from "../Stack/Row";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
-import AuthFormText from "../Text/AuthFormText";
+import AuthFormText from "../Input/AuthFormText";
+import { change_pw } from "../../services/userServices";
 
 const ChangePw = ({ open, onClose }) => {
     const [password, setPassword] = useState("");
     const [checkpw, setCheckpw] = useState("");
     const [change, setChange] = useState("");
+    const [author, setAuthor] = useState("");
+
     const [values, setValues] = useState({
         password: "",
         showPassword: false,
     });
+
     const [checkValues, setCheckValues] = useState({
         checkPassword: "",
         showCheckPassword: false,
@@ -44,6 +48,24 @@ const ChangePw = ({ open, onClose }) => {
         setCheckValues({ ...checkValues, [prop]: event.target.value });
     };
 
+    const onhandlePost = async (data) => {
+        const { password, author } = data;
+        const postData = { password, author };
+   
+        try {
+            const response = await change_pw(postData);
+            if (response.status === 200) {
+                console.log("학생 비밀번호 변경 성공!");
+            }
+            else if (response.status === 201) {
+                console.log("교수 비밀번호 변경 성공!");
+            }
+            window.alert("Success!");
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -55,18 +77,18 @@ const ChangePw = ({ open, onClose }) => {
         const { password, checkpw } = joinData;
         const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
 
-        if (password === "") setPassword("비밀번호를 입력해주세요.")
+        if (password.trim() === "") setPassword("비밀번호를 입력해주세요.")
         else {
             if (!passwordRegex.test(password)) setPassword("숫자, 영문, 특수문자 조합 8자리 이상 입력해주세요.");
             else setPassword("");
         }
-        if(checkpw === "") setCheckpw("비밀번호를 다시 한번 입력해주세요.")
+        if(checkpw.trim() === "") setCheckpw("비밀번호를 다시 한번 입력해주세요.")
         else{
             if(checkpw === password) setCheckpw("");
             else setCheckpw("비밀번호가 일치하지 않습니다.")
         }
-        if (password !== "" && checkpw !== "") {
-            //onhandlePost(joinData);
+        if (password.trim() !== "" && checkpw.trim() !== "") {
+            onhandlePost(password);
         }
         else setChange("비밀번호 재설정 실패.");
     };
@@ -74,6 +96,7 @@ const ChangePw = ({ open, onClose }) => {
     return(
         <Modal open={open}>
             <Box
+                component="form"
                 onSubmit={handleSubmit}
                 noValidate 
                 sx={{
@@ -109,7 +132,7 @@ const ChangePw = ({ open, onClose }) => {
                         </InputAdornment>
                     }
                 />
-                <AuthFormText>{password}</AuthFormText>
+                <AuthFormText sx={{ color: "#DFD3C3"}}>{password}</AuthFormText>
                 <AuthInput 
                     required 
                     placeholder="비빌번호 확인" 
@@ -125,11 +148,11 @@ const ChangePw = ({ open, onClose }) => {
                         </InputAdornment>
                     }
                 />
-                <AuthFormText>{checkpw}</AuthFormText>
+                <AuthFormText sx={{ color: "#DFD3C3"}}>{checkpw}</AuthFormText>
                 <AuthButton type="submit" sx={{ bgcolor: "#7D5A50" }}>
                     <CommonText variant="h6">비밀번호 재설정</CommonText>
                 </AuthButton>
-                <AuthFormText>{change}</AuthFormText>
+                <AuthFormText sx={{ color: "#DFD3C3"}}>{change}</AuthFormText>
             </Box>
         </Modal>
     );

@@ -7,12 +7,12 @@ const StyledIconButton = styled(IconButton)(({theme}) => ({
     borderRadius: "20%",
 }));
 
-const IconBtn = ({ children, onClick, sx }) => {
+const IconsButton = ({ children, ...props }) => {
     return(
-        <StyledIconButton onClick={onClick} sx={sx}>
+        <StyledIconButton {...props}>
             {children}
         </StyledIconButton>
     );
 };
 
-export default IconBtn;
+export default IconsButton;

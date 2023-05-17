@@ -8,12 +8,12 @@ const CustomButton = styled(Button)(({ theme }) => ({
     color: theme.palette.secondary.text,
 }));
 
-const AuthModal = ({ children, sx, href }) => {
+const ModalButton = ({ children, ...props }) => {
     return(
-        <CustomButton variant="contained" sx={sx} href={href}>
+        <CustomButton variant="contained" {...props}>
             {children}
         </CustomButton>
     );
 };
 
-export default AuthModal;
+export default ModalButton;

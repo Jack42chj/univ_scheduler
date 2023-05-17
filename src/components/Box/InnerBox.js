@@ -9,9 +9,9 @@ const StyledBox = styled(Box)(({theme}) => ({
     borderColor: theme.palette.primary.main,
 }));
 
-const InnerBox = ({ children, sx }) => {
+const InnerBox = ({ children, ...props }) => {
     return(
-        <StyledBox sx={sx}>
+        <StyledBox {...props}>
             {children}
         </StyledBox>
     );

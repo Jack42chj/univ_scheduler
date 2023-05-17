@@ -14,6 +14,6 @@ const CustomBody = styled(Stack)(({theme}) => ({
   },
 }));
 
-const AuthBody = (props) => <CustomBody>{props.children}</CustomBody>;
+const AuthStack = (props) => <CustomBody>{props.children}</CustomBody>;
 
-export default AuthBody;
+export default AuthStack;

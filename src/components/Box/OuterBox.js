@@ -12,9 +12,9 @@ const CustomStack = styled(Stack)(({theme}) => ({
     },
 }));
 
-const OuterBox = ({ children, sx }) => {
+const OuterBox = ({ children, ...props }) => {
     return(
-        <CustomStack sx={sx}>
+        <CustomStack {...props}>
             {children}
         </CustomStack>
     );

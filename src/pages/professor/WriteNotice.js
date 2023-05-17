@@ -1,11 +1,14 @@
-import { MenuItem, Select, TextField } from "@mui/material";
+import { Container, MenuItem, Select, TextField } from "@mui/material";
 import { useState } from "react";
-import BgcolorBox from "../../components/Box/BgcolorStack";
+import BgcolorBox from "../../components/Stack/BackgroundStack";
 import OuterBox from "../../components/Box/OuterBox";
 import CommonButton from "../../components/Button/CommonButton";
-import Row from "../../components/Grid/Row";
+import Row from "../../components/Stack/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
-import ContentText from "../../components/Text/ContentText";
+import ContentText from "../../components/Input/ContentText";
+import { notice_write } from "../../services/userServices";
+import AuthFormText from "../../components/Input/AuthFormText";
+import { checkTrim } from "../../utils/Trim";
 
 const SemesterList = [
     {semester: "2022-1"}, {semester: "2022-2"},
@@ -21,8 +24,55 @@ const SubjectList = [
 const WriteNotice = () => {
     const [semester, setSemester] = useState('');
     const [subject, setSubject] = useState('');
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
     const handleChangeSemester = (e) => setSemester(e.target.value);
     const handleChangeSubject = (e) => setSubject(e.target.value);
+
+    const onhandlePost = async (data) => {
+        const { title, content, file } = data;
+        const postData = { title, content, file };
+        console.log(semester, subject);
+        console.log(postData);
+        try{
+            const response = await notice_write(semester, subject, postData);
+            if(response.status === 200){
+                console.log("공지사항 생성 성공!");
+            }
+            else if(response.status === 401){
+                console.log("잘못된 access 토큰!");
+            }
+            else if(response.status === 419){
+                console.log("access 토큰 만료!");
+            }
+            else
+                alert(response.data);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const data = new FormData(e.currentTarget);
+        const joinData = {
+            title: data.get("title"),
+            content: data.get("content"),
+            file: e.target.file.files[0]
+        };
+        const { title, content } = joinData;
+
+        if (checkTrim(title)) setTitle("");
+        else setTitle("제목을 입력하세요");
+
+        if (checkTrim(content)) setContent("");
+        else setContent("내용을 입력하세요");
+
+        if (checkTrim(title) && checkTrim(content)) {
+            onhandlePost(joinData);
+        }
+    };
 
     return(
         <>
@@ -36,11 +86,11 @@ const WriteNotice = () => {
                             name="semester"
                             onChange={handleChangeSemester}
                             displayEmpty
-                            sx={{ width: "30%" }}
+                            sx={{ width: "30%", height: "48px" }}
                         >
                             <MenuItem value="">학기</MenuItem>
-                            {Object.keys(SemesterList).map((year) => (
-                                <MenuItem key={SemesterList[year].semester} value={SemesterList[year].semester}>{SemesterList[year].semester}</MenuItem>
+                            {Object.keys(SemesterList).map((year, index) => (
+                                <MenuItem key={index} value={SemesterList[year].semester}>{SemesterList[year].semester}</MenuItem>
                             ))}
                         </Select>
                         <ContentText variant="h6">과목명</ContentText>
@@ -49,24 +99,28 @@ const WriteNotice = () => {
                             name="subject"
                             onChange={handleChangeSubject}
                             displayEmpty
-                            sx={{ width: "30%" }}
+                            sx={{ width: "30%", height: "48px" }}
                         >
                             <MenuItem value="">과목명</MenuItem>
-                            {Object.keys(SubjectList).map((list) => (
-                                <MenuItem key={SubjectList[list].name} value={SubjectList[list].name}>{SubjectList[list].name}</MenuItem>
+                            {Object.keys(SubjectList).map((list, index) => (
+                                <MenuItem key={index} value={SubjectList[list].name}>{SubjectList[list].name}</MenuItem>
                             ))}
                         </Select>
                     </Row>
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center"}}>
                     <ContentText variant="h4">강의 공지사항</ContentText>
-                    <TextField label="제목" variant="outlined" sx={{ my: 3, width: "80%" }} defaultValue="" />
-                    <TextField label="내용" variant="outlined" multiline rows={18} sx={{ mb: 3, width: "80%" }} defaultValue="" />
-                    <TextField variant="outlined" type="file" sx={{ mb: 3, width: "80%" }} defaultValue="" />
-                    <Row spacing={3}>
-                        <CommonButton variant="contained">등록</CommonButton>
-                        <CommonButton href="/professor/notice_list" variant="contained">취소</CommonButton>
-                    </Row>
+                    <Container component="form" noValidate sx={{ width: "100%" }} onSubmit={handleSubmit}>
+                        <TextField label="제목" name="title" variant="outlined" sx={{ mt: 3, width: "100%" }} />
+                        <AuthFormText>{title}</AuthFormText>
+                        <TextField label="내용" variant="outlined" name="content" multiline rows={18} sx={{ mt: 3, width: "100%" }} />
+                        <AuthFormText>{content}</AuthFormText>
+                        <TextField variant="outlined" type="file" name="file" sx={{ my: 3, width: "100%" }} />
+                        <Row spacing={3}>
+                            <CommonButton variant="contained" type="submit">등록</CommonButton>
+                            <CommonButton href="/professor/notice_list/:sub_id/:sem_id" variant="contained">취소</CommonButton>
+                        </Row>
+                    </Container>
                 </OuterBox>
             </BgcolorBox>
         </>

@@ -1,19 +1,22 @@
 import { AppBar, Toolbar, Box, Collapse, List, ListItem, ListItemText } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import CommonButton from '../Button/CommonButton';
 import CommonText from '../Text/CommonText';
-import IconBtn from '../Button/IconBtn';
+import IconBtn from '../Button/IconsButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MyPage from '../Modal/MyPage';
 
 const listItem = [
-    { link: "/professor/lecture_list", text: "강의 관리"},
-    { link: "/professor/student_info", text: "학생 정보조회"},
+    { link: "/student/lecture_list", text: "강의 목록" },
+    { link: "/student/search_plan", text: "강의계획서 조회"},
+    { link: "/student/schedule", text: "수강 신청"},
+    { link: "/student/score_board", text: "수강/성적 조회"},
+    { link: "/student/ranking", text: "석차 조회"},
 ];
 
-const Header = () => {
+const HeaderStu = () => {
     const [open, setOpen] = useState(false);
     const [myPageOpen, setMyPageOpen] = useState(false);
     const handleClick = () => {
@@ -29,7 +32,7 @@ const Header = () => {
             position="sticky"
         >
             <Toolbar sx={{ justifyContent: "space-between" }}>
-                <CommonButton sx={{ display: { xs: 'flex', md: 'flex'} }} href="/professor/lecture_list">
+                <CommonButton sx={{ display: { xs: 'flex', md: 'flex'} }} href="/student/main">
                     <CommonText
                         variant="h5"
                         sx={{ p: 2, letterSpacing: 1 }}
@@ -37,22 +40,7 @@ const Header = () => {
                         University Scheduler
                     </CommonText>
                 </CommonButton>
-                <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1 }}>
-                    {Object.keys(listItem).map((item) => (
-                        <Fragment key={listItem[item].text}>
-                            <CommonButton href={listItem[item].link} sx={{ display: 'block', mx: 'auto' }}>
-                                    <CommonText variant="h6">{listItem[item].text}</CommonText>
-                            </CommonButton>
-                        </Fragment>
-                    ))}
-                </Box>
-                <IconBtn onClick={myPageHandleOpen} sx={{ display: { xs: 'none', md: 'flex' }, mx: 1 }}>
-                    <SettingsIcon />
-                </IconBtn>
-                <IconBtn sx={{ display: { xs: 'none', md: 'flex' } }}>
-                    <LogoutIcon />
-                </IconBtn>
-                <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                <Box sx={{ display: { xs: 'flex' } }}>
                     <IconBtn onClick={myPageHandleOpen}>
                         <SettingsIcon />
                     </IconBtn>
@@ -81,4 +69,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default HeaderStu;

@@ -1,32 +1,48 @@
-import { Box, IconButton, Modal } from "@mui/material";
-import Column from "../Grid/Column";
-import CommonText from "../Text/CommonText";
-import AuthInput from "../AuthInput";
-import AuthButton from "../Button/AuthButton";
 import { useState } from "react";
-import axios from "axios";
-import AuthFormText from "../Text/AuthFormText";
+import { IconButton, Modal } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import Row from "../Grid/Row";
+import ModalBox from "../Box/ModalBox";
+import Column from "../Stack/Column";
+import Row from "../Stack/Row";
+import CommonText from "../Input/CommonText";
+import AuthInput from "../Input/AuthInput";
+import AuthFormText from "../Input/AuthFormText";
+import AuthButton from "../Button/AuthButton";
+import { find_id } from "../../services/userServices";
+import { checkEmail } from "../../utils/Regex";
+import { checkTrim } from "../../utils/Trim";
 
 const FindId = ({ open, onClose }) => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [id, setId] = useState("");
+    const [showResult, setShowResult] = useState(false);
+    
+    const handleClose = () => {
+        setShowResult(false);
+    };
+
+    const handleButtonClick = () => {
+        handleClose();
+        onClose();
+        setName("");
+        setEmail("");
+    };
 
     const onhandlePost = async (data) => {
         const { name, email } = data;
         const postData = { name, email };
-
-        await axios
-        .post('http://localhost:4000/', postData)
-        .then((response) => {
-            console.log(response, "Success!");
-            setId(response.data);
-        })
-        .catch((err) => {
+        try {
+            const response = await find_id(postData);
+            if (response.status === 200) {
+                setId(response.data.id);
+                console.log("아이디 찾기 성공!");
+                console.log("Response:", response.data);
+                setShowResult(true);
+            }
+        } catch (err) {
             console.log(err);
-        });
+        }
     };
 
     const handleSubmit = (e) => {
@@ -38,46 +54,33 @@ const FindId = ({ open, onClose }) => {
             email: data.get("email"),
         };
         const { name, email } = findData;
-
-        if (name !== "") setName("");
+        if (checkTrim(name)) setName("");
         else setName("이름을 입력해주세요.");
-
-        const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        if (email === "") setEmail("이메일을 입력해주세요.");
-        else {
-            if (!emailRegex.test(email)) setEmail("이메일이 올바르지 않습니다.");
-            else setEmail("");
-        }
         
-        if (setName === ("") && setEmail === ("")) onhandlePost(findData);
+        if (!checkTrim(email)) setEmail("이메일을 입력해주세요.");
+        else {
+            if (!checkEmail(email)) setEmail("이메일이 올바르지 않습니다.");
+            else setEmail("");
+        } 
+        if (checkTrim(name) && checkTrim(email)) onhandlePost(findData);
     };
 
     return(
         <Modal open={open}>
-            <Box 
+            <ModalBox 
                 component="form" 
                 noValidate 
                 onSubmit={handleSubmit}
-                sx={{
-                position: "absolute",
-                top: '40%',
-                left: "50%",
-                width: '300px',
-                bgcolor: "#B4846C",
-                transform: 'translate(-50%, -50%)',
-                borderRadius: 4,
-                boxShadow: 5,
-                padding: 4,
-            }}>
+            >
                 <Row sx={{ justifyContent: "flex-end" }}>
-                    <IconButton onClick={onClose} sx={{ color: "#FCDEC0" }}><CloseIcon fontSize="large"/></IconButton>
+                    <IconButton onClick={handleButtonClick} sx={{ color: "#FCDEC0" }}><CloseIcon fontSize="large"/></IconButton>
                 </Row>
                 <Column sx={{ mb: 2 }}>
                     <CommonText variant="h4" sx={{ color: "#FFD56F" }}>아이디 찾기</CommonText>
                 </Column>
-                {id ? (
+                {showResult ? (
                     <>
-                        <CommonText>아이디는 {id} 입니다.</CommonText>
+                        <CommonText>회원님의 아이디는 {id} 입니다.</CommonText>
                     </>
                 ) : (
                     <>
@@ -97,7 +100,7 @@ const FindId = ({ open, onClose }) => {
                         <AuthButton sx={{ bgcolor: "#7D5A50" }} type="submit"><CommonText variant="h6">아이디 조회</CommonText></AuthButton>
                     </>
                 )}
-            </Box>
+            </ModalBox>
         </Modal>    
     );
 };

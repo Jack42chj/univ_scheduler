@@ -1,14 +1,13 @@
 import { MenuItem, Select, TextField } from "@mui/material";
 import { useState } from "react";
-import BgcolorBox from "../../components/Box/BgcolorStack";
+import BgcolorBox from "../../components/Stack/BackgroundStack";
 import OuterBox from "../../components/Box/OuterBox";
 import CommonButton from "../../components/Button/CommonButton";
-import Row from "../../components/Grid/Row";
+import Row from "../../components/Stack/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
-import CommonText from "../../components/Text/CommonText";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import DownloadIcon from '@mui/icons-material/Download';
-import ContentText from "../../components/Text/ContentText";
+import ContentText from "../../components/Input/ContentText";
 
 const SemesterList = [
     {semester: "2022-1"}, {semester: "2022-2"},
@@ -32,7 +31,7 @@ const ReadNotice = () => {
     const handleSubmit = () => {
         const title = document.getElementsByName("title")[0].value;
         console.log(title);
-    };    
+    };
 
     return(
         <>
@@ -46,7 +45,7 @@ const ReadNotice = () => {
                             name="semester"
                             onChange={handleChangeSemester}
                             displayEmpty
-                            sx={{ width: "30%" }}
+                            sx={{ width: "30%", height: "48px" }}
                         >
                             <MenuItem value="">학기</MenuItem>
                             {Object.keys(SemesterList).map((year) => (
@@ -59,7 +58,7 @@ const ReadNotice = () => {
                             name="subject"
                             onChange={handleChangeSubject}
                             displayEmpty
-                            sx={{ width: "30%" }}
+                            sx={{ width: "30%", height: "48px" }}
                         >
                             <MenuItem value="">과목명</MenuItem>
                             {Object.keys(SubjectList).map((list) => (

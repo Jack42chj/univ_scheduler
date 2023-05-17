@@ -1,10 +1,10 @@
 import { Box, Divider, IconButton, Modal } from "@mui/material";
-import Column from "../Grid/Column";
-import CommonText from "../Text/CommonText";
+import Column from "../Stack/Column";
+import CommonText from "../Input/CommonText";
 import CloseIcon from '@mui/icons-material/Close';
-import Row from "../Grid/Row";
+import Row from "../Stack/Row";
 import OuterBox from "../Box/OuterBox";
-import FieldText from "../FieldText";
+import FieldText from "../Input/FieldText";
 import CommonButton from "../Button/CommonButton";
 import AuthButton from "../Button/AuthButton";
 import { useState } from "react";
@@ -26,6 +26,8 @@ const MyPage = ({ open, onClose }) => {
                 width: "40%",
                 '@media (max-width:600px)': {
                     width: '80%',
+                    top: "50%",
+                    p: 2,
                 },
                 bgcolor: "#B4846C",
                 transform: 'translate(-50%, -50%)',
@@ -40,8 +42,8 @@ const MyPage = ({ open, onClose }) => {
                 <Column>
                     <CommonText variant="h5" sx={{ color: "#FFCA29" }}>개인 정보 수정</CommonText>
                 </Column>
-                <Column sx={{ alignItems: "center", justifyContent: "center", mt: 4 }}>
-                    <OuterBox sx={{ p: 4, backgroundColor: "#F5F5F5", borderRadius: 6 }}>
+                <Column sx={{ alignItems: "center", justifyContent: "center", mt: 4, '@media (max-width:600px)': { mt: 1 }, }}>
+                    <OuterBox sx={{ p: 4, backgroundColor: "#F5F5F5", borderRadius: 6, '@media (max-width:600px)': { py: 1 } }}>
                         <Column spacing={2}>
                             <FieldText 
                                 label="이름"
