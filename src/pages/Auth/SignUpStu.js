@@ -66,17 +66,16 @@ const SignUpStu = () => {
     };
 
     const handleCheckId = async (id) => {
+        const checkData = { id };
         try{
-            const response = await student_checkid(id);
+            const response = await student_checkid(checkData);
             if(response.status === 200){
                 alert('사용 가능한 아이디입니다.');
                 setCheckId(true);
             }
-            else{
-                alert('이미 사용중인 아이디입니다.');
-                setCheckId(false);
-            }
         } catch (err) {
+            alert('이미 사용중인 아이디입니다.');
+            setCheckId(false);
             console.log(err);
         }
     };
@@ -85,7 +84,6 @@ const SignUpStu = () => {
     const onhandlePost = async (data) => {
         const { name, id, password, univ, major, email, phNum } = data;
         const postData = { name, id, password, univ, major, email, phNum };
-
         try{
             const response = await student_signup(postData);
             if(response.status === 200){
@@ -145,7 +143,7 @@ const SignUpStu = () => {
             else setPhNum("");
         }
         if(checkId === false) window.alert("아이디 중복확인을 해주세요.");
-        if (checkTrim(name) && checkTrim(id) && checkTrim(password) && checkTrim(univ) && checkTrim(major) && checkTrim(email) && checkTrim(phNum) && checkId === true) {
+        if (checkTrim(name) && checkTrim(id) && checkTrim(password) && checkTrim(checkPw) && checkTrim(univ) && checkTrim(major) && checkTrim(email) && checkTrim(phNum) && checkId === true) {
             onhandlePost(joinData);
         }
         else setSignUp("입력한 정보를 다시 확인해주세요.");

@@ -15,9 +15,58 @@ const MyPage = ({ open, onClose }) => {
     const handleOpen = () => setChangePw(true);
     const handleClose = () => setChangePw(false);
 
+    const exData = {
+        "student": [
+            {   "name" : "이기훈",
+                "id": 2018202032,
+                "univ": "광운대학교",
+                "major": "컴퓨터정보공학부",
+                "email": "kihoon@kw.ac.kr",
+                "phnum": "01012345678",
+            },
+        ],
+    };
+
+    // const [data, setData] = useState();
+    // useEffect(() => {
+    //     try {
+    //         const response = professor_main();
+    //         setData(response.data);
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // }, []);
+
+    const name = exData.student[0].name;
+    const id = exData.student[0].id;
+    const univ = exData.student[0].univ;
+    const major = exData.student[0].major;
+    const email = exData.student[0].email;
+    const phnum = exData.student[0].phnum;
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const data = new FormData(e.currentTarget);
+        const findData = {
+            email: data.get("email"),
+            phNum: data.get("phnum"),
+        };
+        const { email, phNum } = findData;
+        
+        if (!checkTrim(email)) setEmail("이메일을 입력해주세요.");
+        else {
+            if (!checkEmail(email)) setEmail("이메일이 올바르지 않습니다.");
+            else setEmail("");
+        }
+        if (checkTrim(name) && checkTrim(email)) onhandlePost(findData);
+    };
+
     return(
         <Modal open={open}>
             <Box
+                component="form"
+                onSubmit={handleSubmit}
                 noValidate 
                 sx={{
                 position: "absolute",
@@ -47,31 +96,33 @@ const MyPage = ({ open, onClose }) => {
                         <Column spacing={2}>
                             <FieldText 
                                 label="이름"
-                                defaultValue="이기훈"
+                                defaultValue={name}
                                 disabled
                             />
                             <FieldText 
                                 label="아이디"
-                                defaultValue="2018202032"
+                                defaultValue={id}
                                 disabled
                             />
                             <FieldText 
                                 label="학교"
-                                defaultValue="광운대학교"
+                                defaultValue={univ}
                                 disabled
                             />
                             <FieldText 
                                 label="학과"
-                                defaultValue="컴퓨터정보공학부"
+                                defaultValue={major}
                                 disabled
                             />
                             <FieldText 
                                 label="이메일"
-                                defaultValue="kihoon@kw.ac.kr"
+                                defaultValue={email}
+                                name="email"
                             />
                             <FieldText 
                                 label="휴대폰"
-                                defaultValue="010-1234-1234"
+                                defaultValue={phnum}
+                                name="phnum"
                             />
                             <AuthButton variant="contained" onClick={handleOpen}>
                                 <CommonText variant="h6">비밀번호 변경</CommonText>

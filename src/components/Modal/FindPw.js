@@ -12,9 +12,11 @@ import { change_pw, find_pw } from "../../services/userServices";
 import ModalBox from "../Box/ModalBox";
 import { checkEmail, checkPassword } from "../../utils/Regex";
 import { checkTrim } from "../../utils/Trim";
+import { useNavigate } from "react-router-dom";
 
 const FindPw = ({ open, onClose }) => {
     const [id, setId] = useState("");
+    const [checkId, setCheckId] = useState("");
     const [email, setEmail] = useState("");
     const [check, setCheck] = useState("");
     const [author, setAuthor] = useState("");
@@ -56,6 +58,9 @@ const FindPw = ({ open, onClose }) => {
 
     const handleClose = () => {
         setAuthor("");
+        setCheckId("");
+        setPassword("");
+        setCheckpw("");
     };
 
     const handleButtonClick = () => {
@@ -71,6 +76,7 @@ const FindPw = ({ open, onClose }) => {
             if (response.status === 200) {
                 setAuthor(1);
                 console.log("학생 비밀번호 찾기 성공!");
+
             }
             else if (response.status === 201) {
                 setAuthor(2);
@@ -79,23 +85,29 @@ const FindPw = ({ open, onClose }) => {
             else{
                 console.log(response.data);
             }
+            setCheckId(id);
         } catch (err) {
             console.log(err);
         }
     };
 
-    const onhandleNewPost = async (data) => {
-        const { password, author } = data;
-        const postData = { password, author };
+    const navigate = useNavigate();
+    const onhandleNewPost = async (data1, data2, data3) => {
+        const postData = { 
+            "password": data1, 
+            "author": data2,
+            "id" : data3,
+        };
         try {
             const response = await change_pw(postData);
             if (response.status === 200) {
-                console.log("학생 비밀번호 변경 성공!");
+                console.log("학생 비밀번호 변경 성공!");                
             }
             else if (response.status === 201) {
                 console.log("교수 비밀번호 변경 성공!");
             }
-            window.alert("Success!");
+            window.alert("비밀번호 재설정 성공!");
+            navigate('/');
         } catch (err) {
             console.log(err);
         }
@@ -145,7 +157,7 @@ const FindPw = ({ open, onClose }) => {
             else setCheckpw("비밀번호가 일치하지 않습니다.")
         }
         if (checkTrim(password) && checkTrim(checkPw)) {
-            onhandleNewPost(password);
+            onhandleNewPost(password, author, checkId);
         }
         else setChangePw("입력한 정보를 다시 확인해주세요.");
     }

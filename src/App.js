@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import LogIn from "./pages/Auth/LogIn";
 import SignUpPro from "./pages/Auth/SignUpPro";
 import SignUpStu from "./pages/Auth/SignUpStu";
+import LectureList from "./pages/Professor/LectureList";
+import Lecture from "./pages/Professor/Lecture";
 import WriteNotice from "./pages/Professor/WriteNotice";
 import NoticeList from "./pages/Professor/NoticeList";
 import EditNotice from "./pages/Professor/EditNotice";
@@ -17,6 +19,8 @@ const App = () => {
           <Route exact path = "/" element={<LogIn />} />
           <Route path = "/signup/student" element={<SignUpStu />} />
           <Route path = "/signup/professor" element={<SignUpPro />} />
+          <Route path = "/professor/main" element={<LectureList />} />
+          <Route path = "/professor/lecture/:lecNum" element={<Lecture />} />
           <Route path = "/professor/notice_list/:sub_id/:sem_id" element={<NoticeList />} />
           <Route path = "/professor/read_notice" element={<ReadNotice />} />
           <Route path = "/professor/write_notice/:sub_id/:sem_id/create" element={<WriteNotice />} /> 

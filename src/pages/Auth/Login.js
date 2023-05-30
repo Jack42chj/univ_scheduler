@@ -49,7 +49,7 @@ const LogIn = () => {
             else if(response.status === 201){
                 localStorage.setItem('access_token', token);
                 console.log("Professor Login Success!");
-                navigate('/professor/lecture_list');
+                navigate('/professor/main');
             }
             else
                 alert(response.data);

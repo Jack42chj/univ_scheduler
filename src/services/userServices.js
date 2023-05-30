@@ -15,7 +15,7 @@ export const find_pw = (accountData) => {
 };
 
 export const change_pw = (accountData) => {
-    return axios.post(`${BASE_URL}/login/changepw`, accountData);
+    return axios.post(`${BASE_URL}/login/change_pw`, accountData);
 };
 
 export const professor_signup = (signupData) => {
@@ -45,3 +45,7 @@ export const notice_write = (sub_id, sem_id, noticeData) => {
 export const notice_update = (sub_id, sem_id, noti_id, noticeData) => {
     return axios.put(`${BASE_URL}/notice/${sub_id}/${sem_id}/${noti_id}/update`, sub_id, sem_id, noti_id, noticeData);
 };
+
+export const professor_main = () => {
+    return axios.get(`${BASE_URL}/main`);
+}
