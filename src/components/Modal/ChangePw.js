@@ -8,13 +8,12 @@ import Row from "../Stack/Row";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import AuthFormText from "../Input/AuthFormText";
-import { change_pw } from "../../services/userServices";
+import { info_change_pw } from "../../services/userServices";
 
 const ChangePw = ({ open, onClose }) => {
     const [password, setPassword] = useState("");
     const [checkpw, setCheckpw] = useState("");
     const [change, setChange] = useState("");
-    const [author, setAuthor] = useState("");
 
     const [values, setValues] = useState({
         password: "",
@@ -49,21 +48,24 @@ const ChangePw = ({ open, onClose }) => {
     };
 
     const onhandlePost = async (data) => {
-        const { password, author } = data;
-        const postData = { password, author };
+        const postData = { "password" : data };
+        console.log(postData);
    
         try {
-            const response = await change_pw(postData);
-            if (response.status === 200) {
-                console.log("학생 비밀번호 변경 성공!");
+            const response = await info_change_pw(postData);
+            if (response.status === 200 || response.status === 201) {
+                alert("비밀번호 변경 성공!");
+                handleClear();
             }
-            else if (response.status === 201) {
-                console.log("교수 비밀번호 변경 성공!");
-            }
-            window.alert("Success!");
         } catch (err) {
             console.log(err);
         }
+    };
+
+    const handleClear = () => {
+        onClose();
+        setPassword("");
+        setCheckpw("");
     };
 
     const handleSubmit = (e) => {

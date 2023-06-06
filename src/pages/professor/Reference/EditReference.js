@@ -1,42 +1,34 @@
 import { Container, MenuItem, Select, TextField } from "@mui/material";
 import { useState } from "react";
-import BgcolorBox from "../../components/Stack/BackgroundStack";
-import OuterBox from "../../components/Box/OuterBox";
-import CommonButton from "../../components/Button/CommonButton";
-import Row from "../../components/Stack/Row";
-import HeaderPro from "../../components/Header/HeaderPro";
-import ContentText from "../../components/Input/ContentText";
-import AuthFormText from "../../components/Input/AuthFormText";
-import { notice_update } from "../../services/userServices";
+import BgcolorBox from "../../../components/Stack/BackgroundStack";
+import OuterBox from "../../../components/Box/OuterBox";
+import CommonButton from "../../../components/Button/CommonButton";
+import Row from "../../../components/Stack/Row";
+import HeaderPro from "../../../components/Header/HeaderPro";
+import ContentText from "../../../components/Input/ContentText";
+import AuthFormText from "../../../components/Input/AuthFormText";
+import { notice_update } from "../../../services/userServices";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const SemesterList = [
-    {semester: "2022-1"}, {semester: "2022-2"},
-    {semester: "2023-1"}, {semester: "2023-2"},
-    {semester: "2024-1"},
-];
+const EditReference = () => {
+    const navigate = useNavigate();
+    const recvData = useLocation().state;
+    const currSemester = recvData.currSemester;
+    const currSubject = recvData.currSubject;
+    const currSubjectID = recvData.currSubjectID;
+    const refID = recvData.refID;
+    const refData = recvData.refData;
 
-const SubjectList = [
-    {name: "소프트웨어공학"}, {name: "소프트웨어공학"}, {name: "소프트웨어공학"}, 
-    {name: "소프트웨어공학"}, {name: "소프트웨어공학"}, 
-];
-
-const EditNotice = () => {
-    const [semester, setSemester] = useState('');
-    const [subject, setSubject] = useState('');
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const handleChangeSemester = (e) => setSemester(e.target.value);
-    const handleChangeSubject = (e) => setSubject(e.target.value);
 
     const onhandlePost = async (data) => {
         const { title, content, file } = data;
         const postData = { title, content, file };
-        console.log(semester, subject);
-        console.log(postData);
         try{
-            const response = await notice_update(semester, subject, postData);
+            const response = await notice_update(currSemester, currSubjectID, refID, postData);
             if(response.status === 200){
-                console.log("공지사항 생성 성공!");
+                console.log("공지사항 수정 성공!");
             }
             else if(response.status === 401){
                 console.log("잘못된 access 토큰!");
@@ -58,7 +50,7 @@ const EditNotice = () => {
         const joinData = {
             title: data.get("title"),
             content: data.get("content"),
-            file: e.target.file.files[0]
+            file: e.target.file.files[0],
         };
         const { title, content } = joinData;
 
@@ -81,43 +73,35 @@ const EditNotice = () => {
                     <Row sx={{ justifyContent: "space-around"}}>   
                         <ContentText variant="h6">학기</ContentText>
                         <Select
-                            value={semester}
-                            name="semester"
-                            onChange={handleChangeSemester}
+                            value={currSemester}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
+                            disabled
                         >
-                            <MenuItem value="">학기</MenuItem>
-                            {Object.keys(SemesterList).map((year, index) => (
-                                <MenuItem key={index} value={SemesterList[year].semester}>{SemesterList[year].semester}</MenuItem>
-                            ))}
+                        <MenuItem value={currSemester}>{currSemester}</MenuItem>
                         </Select>
                         <ContentText variant="h6">과목명</ContentText>
                         <Select
-                            value={subject}
-                            name="subject"
-                            onChange={handleChangeSubject}
+                            value={currSubject}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
+                            disabled
                         >
-                            <MenuItem value="">과목명</MenuItem>
-                            {Object.keys(SubjectList).map((list, index) => (
-                                <MenuItem key={index} value={SubjectList[list].name}>{SubjectList[list].name}</MenuItem>
-                            ))}
+                        <MenuItem value={currSubject}>{currSubject}</MenuItem>
                         </Select>
                     </Row>
                 </OuterBox>
-                <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center"}}>
-                    <ContentText variant="h4">강의 공지사항</ContentText>
+                <OuterBox sx={{ py: 5, alignItems: "center"}}>
+                    <ContentText variant="h4">강의자료실</ContentText>
                     <Container component="form" noValidate sx={{ width: "100%" }} onSubmit={handleSubmit}>
                         <TextField label="제목" name="title" variant="outlined" sx={{ mt: 3, width: "100%" }} defaultValue="" />
                         <AuthFormText>{title}</AuthFormText>
                         <TextField label="내용" variant="outlined" name="content" multiline rows={18} sx={{ mt: 3, width: "100%" }} defaultValue="" />
                         <AuthFormText>{content}</AuthFormText>
                         <TextField variant="outlined" type="file" name="file" sx={{ my: 3, width: "100%" }} defaultValue="" />
-                        <Row spacing={3}>
+                        <Row spacing={3} sx={{ justifyContent: "center" }}>
                             <CommonButton variant="contained" type="submit">확인</CommonButton>
-                            <CommonButton href="/professor/notice_list" variant="contained">취소</CommonButton>
+                            <CommonButton onClick={() => navigate(-1)} variant="contained">취소</CommonButton>
                         </Row>
                     </Container>
                 </OuterBox>
@@ -126,4 +110,4 @@ const EditNotice = () => {
     );
 };
 
-export default EditNotice;
+export default EditReference;

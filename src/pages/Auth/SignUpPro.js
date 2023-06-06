@@ -69,7 +69,7 @@ const SignUpPro = () => {
         const checkData = { id };
         try{
             const response = await professor_checkid(checkData);
-            if(response.status === 200){
+            if(response.status === 201){
                 alert('사용 가능한 아이디입니다.');
                 setCheckId(true);
             }

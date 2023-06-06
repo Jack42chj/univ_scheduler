@@ -9,7 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import MyPage from '../Modal/MyPage';
 
 const listItem = [
-    { link: "/professor/lecture_list", text: "강의 관리"},
+    { link: "/professor/main", text: "강의 관리"},
     { link: "/professor/student_info", text: "학생 정보조회"},
 ];
 
@@ -29,7 +29,7 @@ const HeaderPro = () => {
             position="sticky"
         >
             <Toolbar sx={{ justifyContent: "space-between" }}>
-                <CommonButton sx={{ display: { xs: 'flex', md: 'flex'} }} href="/professor/lecture_list">
+                <CommonButton sx={{ display: { xs: 'flex', md: 'flex'} }} href="/professor/main">
                     <CommonText
                         variant="h5"
                         sx={{ p: 2, letterSpacing: 1 }}

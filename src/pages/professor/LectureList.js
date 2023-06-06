@@ -5,7 +5,7 @@ import HeaderPro from "../../components/Header/HeaderPro";
 import Row from "../../components/Stack/Row";
 import BgcolorStack from "../../components/Stack/BackgroundStack";
 import ContentText from "../../components/Input/ContentText";
-import { professor_main } from "../../services/userServices";
+import { professor_change_main, professor_main } from "../../services/userServices";
 import { useNavigate } from "react-router-dom";
 
 const columns = [
@@ -21,12 +21,6 @@ function createData(num, name, period, room) {
 
 const LectureList = () => {
     const data = {
-        "studet": [
-            {
-                "name": "이동익",
-                "id": 2018202004
-            }
-        ],
         "all_semester": [
             {
                 "semester": "2023-1"
@@ -39,21 +33,21 @@ const LectureList = () => {
         "schedule": [
             {
                 "sub_code": "1111-1-11-1111",
-                "sub_name": "데이터구조설계",
+                "name": "데이터구조설계",
                 "time": "월3수4",
                 "class": "새빛302호",
                 "professor_name": "test"
             },
             {
                 "sub_code": "1111-1-11-1112",
-                "sub_name": "KW_VIP",
+                "name": "KW_VIP",
                 "time": "월3수4",
                 "class": "새빛302호",
                 "professor_name": "test"
             },
             {
                 "sub_code": "1111-1-11-1113",
-                "sub_name": "소프트웨어공학",
+                "name": "소프트웨어공학",
                 "time": "월3수4",
                 "class": "새빛302호",
                 "professor_name": "test"
@@ -61,36 +55,45 @@ const LectureList = () => {
         ],
         "subject_notice": []
     };
-    // const [data, setData] = useState();
-    // useEffect(() => {
-    //     try {
-    //         const response = professor_main();
-    //         setData(response.data);
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }, []);
-    const semesterList = data.all_semester;
-    const currSemester = data.semester;
-    const [semester, setSemester] = useState(currSemester);
-    const handleChangeSemester = (e) => setSemester(e.target.value);
-    const scheduleList = data.schedule;
-    const subjectList = [];
+    const navigate = useNavigate();
+    //const [data, setData] = useState();
     const rows = [];
-    for(let i = 0; i < scheduleList.length; i++){
-        rows.push(createData(scheduleList[i].sub_code, scheduleList[i].sub_name, scheduleList[i].time, scheduleList[i].class));
-        subjectList.push({"name": scheduleList[i].sub_name});
-    };
-
+    const subjectList = [];
     const [page, setPage] = useState(0);
     const rowsPerPage = 5;
+
+    // const getData = async () => {
+    //     const response = await professor_main();
+    //     setData(response.data);
+    // }
+    // useEffect(() => {
+    //     getData();
+    // }, []);
+
+    const semesterList = data ? data.all_semester : [];
+    const currSemester = data ? data.semester : [];
+    const scheduleList = data ? data.schedule : [];
+    // const handleChangeSemester = async (e) => {
+    //     const sendData = { "semester": e.target.value }
+    //     try{
+    //         const resp = await professor_change_main(sendData);
+    //         if(resp.status === 201){
+    //             setData(resp.data);
+    //         }
+    //     }
+    //     catch(err){console.log(err)}
+    // };
+    for(let i = 0; i < scheduleList.length; i++){
+        rows.push(createData(scheduleList[i].sub_code, scheduleList[i].name, scheduleList[i].time, scheduleList[i].class));
+        let listData = {"name": scheduleList[i].name, "sub_ID": scheduleList[i].sub_code};
+        subjectList.push(listData);
+    };
     const handleChangePage = (event, newPage) => {
-      setPage(newPage - 1);
+        setPage(newPage - 1);
     };
 
-    const navigate = useNavigate();
     const handleClickRow = (data) => {
-        const url = `/professor/lecture/${data.num}`;
+        const url = `/professor/lecture/${currSemester}/${data.num}`;
         const sendData = {
             "currSemester": currSemester,
             "semesterList": semesterList,
@@ -101,19 +104,18 @@ const LectureList = () => {
     };
 
     return(
-        <>
+        <div>
             <HeaderPro />
             <BgcolorStack sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   
                         <ContentText variant="h6">학기</ContentText>
                         <Select
-                            value={semester}
+                            value={currSemester}
                             name="semester"
-                            onChange={handleChangeSemester}
+                            //onChange={handleChangeSemester}
                             displayEmpty
                             sx={{ width: "50%", height: "48px" }}
-                            defaultValue={currSemester}
                         >
                             {semesterList.map((year) => (
                                 <MenuItem key={year.semester} value={year.semester}>{year.semester}</MenuItem>
@@ -128,7 +130,7 @@ const LectureList = () => {
                             <TableHead>
                                 <TableRow>
                                     {columns.map((column) => (
-                                        <TableCell key={column.id} align="center" sx={{ fontSize: 18, color: "#7D5A50" }}>
+                                        <TableCell key={column.label} align="center" sx={{ fontSize: 18, color: "#7D5A50" }}>
                                             {column.label}
                                         </TableCell>
                                     ))}
@@ -136,15 +138,14 @@ const LectureList = () => {
                             </TableHead>
                             <TableBody>
                                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                                    <TableRow key={row.name} onClick={()=> handleClickRow(row)}>
+                                    <TableRow key={row.num} onClick={()=> handleClickRow(row)}>
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
-                                                <TableCell key={column.id} align="center">
+                                                <TableCell key={value} align="center">
                                                     {value}
                                                 </TableCell>
-                                            );})}
-                                        
+                                        );})}
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -157,7 +158,7 @@ const LectureList = () => {
                     />
                 </OuterBox>
             </BgcolorStack>
-        </>
+        </div>
     );
 };
 

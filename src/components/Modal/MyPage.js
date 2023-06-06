@@ -7,59 +7,72 @@ import OuterBox from "../Box/OuterBox";
 import FieldText from "../Input/FieldText";
 import CommonButton from "../Button/CommonButton";
 import AuthButton from "../Button/AuthButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ChangePw from "./ChangePw";
+import { checkTrim } from "../../utils/Trim";
+import { checkEmail, checkPhone } from "../../utils/Regex";
+import AuthFormText from "../Input/AuthFormText";
+import { change_info, information_check } from "../../services/userServices";
 
 const MyPage = ({ open, onClose }) => {
     const [changepw, setChangePw] = useState(false);
     const handleOpen = () => setChangePw(true);
     const handleClose = () => setChangePw(false);
+    const [data, setData] = useState();
 
-    const exData = {
-        "student": [
-            {   "name" : "이기훈",
-                "id": 2018202032,
-                "univ": "광운대학교",
-                "major": "컴퓨터정보공학부",
-                "email": "kihoon@kw.ac.kr",
-                "phnum": "01012345678",
-            },
-        ],
-    };
+    const getData = async () => {
+        const response = await information_check();
+        setData(response.data);
+    }
+    useEffect(() => {
+        if(open === true)
+            getData();
+    }, [open, data]);
 
-    // const [data, setData] = useState();
-    // useEffect(() => {
-    //     try {
-    //         const response = professor_main();
-    //         setData(response.data);
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }, []);
+    console.log(open);
+    const name = data ? data.name : null;
+    const id = data? data.id : null;
+    const univ = data ? data.school : null;
+    const major = data ? data.major : null;
+    const email = data ? data.email: null;
+    const phnum = data ? data.phone_number: null;
 
-    const name = exData.student[0].name;
-    const id = exData.student[0].id;
-    const univ = exData.student[0].univ;
-    const major = exData.student[0].major;
-    const email = exData.student[0].email;
-    const phnum = exData.student[0].phnum;
+    const [newEmail, setNewEmail] = useState('');
+    const [newPhNum, setNewPhNum] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const data = new FormData(e.currentTarget);
-        const findData = {
-            email: data.get("email"),
-            phNum: data.get("phnum"),
+        const changeData = {
+            email: data.get("newEmail"),
+            phone_number: data.get("newPhNum"),
         };
-        const { email, phNum } = findData;
+        const { email, phone_number } = changeData;
         
-        if (!checkTrim(email)) setEmail("이메일을 입력해주세요.");
+        if (!checkTrim(email)) setNewEmail("이메일을 입력해주세요.");
         else {
-            if (!checkEmail(email)) setEmail("이메일이 올바르지 않습니다.");
-            else setEmail("");
+            if (!checkEmail(email)) setNewEmail("이메일이 올바르지 않습니다.");
+            else setNewEmail("");
         }
-        if (checkTrim(name) && checkTrim(email)) onhandlePost(findData);
+        if(!checkTrim(phone_number)) setNewPhNum("휴대폰 번호를 입력해주세요.");
+        else{
+            if (!checkPhone(phone_number)) setNewPhNum("번호가 올바르지 않습니다.");
+            else setNewPhNum("");
+        }
+        if (checkTrim(email) && checkTrim(phone_number)) onhandlePost(changeData);
+    };
+
+    const onhandlePost = async (data) => {
+        try {
+            const res = await change_info(data);
+            if(res.status === 200 || res.status === 201){
+                window.alert("개인정보 수정 성공!");
+                onClose();
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return(
@@ -117,19 +130,21 @@ const MyPage = ({ open, onClose }) => {
                             <FieldText 
                                 label="이메일"
                                 defaultValue={email}
-                                name="email"
+                                name="newEmail"
                             />
+                            <AuthFormText>{newEmail}</AuthFormText>
                             <FieldText 
                                 label="휴대폰"
                                 defaultValue={phnum}
-                                name="phnum"
+                                name="newPhNum"
                             />
+                            <AuthFormText>{newPhNum}</AuthFormText>
                             <AuthButton variant="contained" onClick={handleOpen}>
                                 <CommonText variant="h6">비밀번호 변경</CommonText>
                             </AuthButton>
                             <Divider />
                             <Row sx={{ justifyContent: "flex-end" }} spacing={1}>
-                                <CommonButton variant="contained">수정</CommonButton>
+                                <CommonButton variant="contained" type="submit">수정</CommonButton>
                                 <CommonButton variant="contained" sx={{ bgcolor: "#3D3D3D", color: "#FFFFFF" }} onClick={onClose}>취소</CommonButton>
                             </Row>
                         </Column>

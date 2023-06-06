@@ -37,17 +37,16 @@ const LogIn = () => {
     const onhandlePost = async (data) => {
         const { id, password } = data;
         const postData = { id, password };
-        console.log(postData);
         try{
             const response = await signin(postData);
-            const token = response.headers['set-cookie'];
+            const token = response.data.token;
             if(response.status === 200){
-                localStorage.setItem('access_token', token);
+                localStorage.setItem('assesstoken', token);
                 console.log("Student Login Success!");
                 navigate('/student/main');
             }
             else if(response.status === 201){
-                localStorage.setItem('access_token', token);
+                localStorage.setItem('assesstoken', token);
                 console.log("Professor Login Success!");
                 navigate('/professor/main');
             }

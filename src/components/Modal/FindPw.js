@@ -197,7 +197,7 @@ const FindPw = ({ open, onClose }) => {
                             <AuthInput 
                                 required 
                                 placeholder="비빌번호 확인" 
-                                name="checkpw" 
+                                name="checkPw" 
                                 type={checkValues.showCheckPassword ? "text" : "password"}
                                 value={checkValues.password || ""}
                                 onChange={checkpwhandleChange("password")}
