@@ -7,7 +7,7 @@ import Row from "../../../components/Stack/Row";
 import HeaderPro from "../../../components/Header/HeaderPro";
 import ContentText from "../../../components/Input/ContentText";
 import AuthFormText from "../../../components/Input/AuthFormText";
-import { notice_update } from "../../../services/userServices";
+import { reference_update } from "../../../services/userServices";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const EditReference = () => {
@@ -26,7 +26,7 @@ const EditReference = () => {
         const { title, content, file } = data;
         const postData = { title, content, file };
         try{
-            const response = await notice_update(currSemester, currSubjectID, refID, postData);
+            const response = await reference_update(currSemester, currSubjectID, refID, postData);
             if(response.status === 200){
                 console.log("공지사항 수정 성공!");
             }

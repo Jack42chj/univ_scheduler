@@ -72,16 +72,14 @@ const Lecture = () => {
     //     navigate(url, { state: sendData });
     // };
 
-    // const handleClickGrade = (data) => {
-    //     const url = `/professor/notice_list/${lectureData.id}/${currSemester}`;
-    //     const sendData = {
-    //         "currSemester": currSemester,
-    //         "semesterList": semesterList,
-    //         "subjectList": subjectList,
-    //         data
-    //     };
-    //     navigate(url, { state: sendData });
-    // };
+    const handleClickGrade = () => {
+        const url = `/professor/grade/${currSemester}/${currSubjectID}`;
+        const sendGradeData = {
+            "currSemester": currSemester,
+            "currSubjectID" : currSubjectID,
+        };
+        navigate(url, { state: sendGradeData });
+    };
     
     return(
         <>
@@ -153,7 +151,7 @@ const Lecture = () => {
                             </InnerBox>
                         </Column>
                         <Column>
-                            <AuthButton sx={{ mb: 2, fontSize: "18px" }} href="/professor/student_score">수강 인원 조회 및 성적 입력</AuthButton>
+                            <AuthButton sx={{ mb: 2, fontSize: "18px" }} onClick={handleClickGrade}>수강 인원 조회 및 성적 입력</AuthButton>
                             <InnerBox sx={{ p: 2, mb: 3 }}>
                                 <Row>
                                     <ContentText variant="h5">강의정보</ContentText>
@@ -199,7 +197,7 @@ const Lecture = () => {
                     <ContentText variant="h4" sx={{ mt: 3 }}>강의 관리</ContentText>
                     <Column sx={{ m: 3, alignItems: "stretch"}}>
                         <Column>
-                            <AuthButton sx={{ fontSize: "14px" }} href="/professor/student_score">수강 인원 조회 및 성적 입력</AuthButton>
+                            <AuthButton sx={{ fontSize: "14px" }} onClick={handleClickGrade}>수강 인원 조회 및 성적 입력</AuthButton>
                             <InnerBox sx={{ p: 3, my: 3 }}>
                                 <Row>
                                     <ContentText variant="h5">강의정보</ContentText>

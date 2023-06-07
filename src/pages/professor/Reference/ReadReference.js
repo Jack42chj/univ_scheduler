@@ -1,5 +1,5 @@
-import { MenuItem, Select, TextField } from "@mui/material";
-import { useState } from "react";
+import { MenuItem, Select } from "@mui/material";
+import { useEffect, useState } from "react";
 import BgcolorBox from "../../../components/Stack/BackgroundStack";
 import OuterBox from "../../../components/Box/OuterBox";
 import CommonButton from "../../../components/Button/CommonButton";
@@ -9,7 +9,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import DownloadIcon from '@mui/icons-material/Download';
 import ContentText from "../../../components/Input/ContentText";
 import { useLocation, useNavigate } from "react-router-dom";
-import { notice_delete, notice_read } from "../../../services/userServices";
+import { reference_delete, reference_read } from "../../../services/userServices";
 import FieldText from "../../../components/Input/FieldText";
 
 const title = "소프트웨어공학 강의자료";
@@ -26,7 +26,7 @@ const ReadReference = () => {
     const [refData, setRefData] = useState();
 
     // const getRefData = async () => {
-    //     const response = await notice_read(currSubjectID, currSemester);
+    //     const response = await reference_read(currSubjectID, currSemester);
     //     setRefData(response.data);
     // };
     // useEffect(() => {
@@ -35,7 +35,7 @@ const ReadReference = () => {
 
     const onhandleDelete = async () => {
         try{
-            const response = await notice_delete(currSubjectID, currSemester, refID);
+            const response = await reference_delete(currSubjectID, currSemester, refID);
             if(response.status === 200){
                 console.log("공지사항 삭제 성공!");
                 navigate(`/professor/ref_list/${currSemester}/${currSubjectID}`);

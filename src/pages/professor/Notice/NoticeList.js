@@ -83,13 +83,13 @@ const NoticeList = () => {
     //     row.push(createData(scheduleList[i].sub_code, scheduleList[i].name, scheduleList[i].time, scheduleList[i].class));
     // };
 
-    const handleClickRow = (notice_num) => {
-        const url = `/professor/read_notice/${currSemester}/${currSubjectID}/${notice_num}`;
+    const handleClickRow = (noticeID) => {
+        const url = `/professor/read_notice/${currSemester}/${currSubjectID}/${noticeID}`;
         const sendData = {
             "currSemester": currSemester,
             "currSubject": currSubject,
             "currSubjectID": currSubjectID,
-            "noticeID" : notice_num,
+            "noticeID" : noticeID,
         };
         navigate(url, { state: sendData });
     };
@@ -150,7 +150,7 @@ const NoticeList = () => {
                                     ))}
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
+                            <TableBody sx={{ cursor: "pointer" }}>
                                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => (
                                     <TableRow key={i} onClick={() => handleClickRow(i)}>
                                         <TableCell align="center">{index + i}</TableCell>

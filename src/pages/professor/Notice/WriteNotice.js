@@ -15,9 +15,7 @@ const WriteNotice = () => {
     const navigate = useNavigate();
     const recvData = useLocation().state;
     const currSemester = recvData.currSemester;
-    const semesterList = recvData.semesterList;
     const currSubject = recvData.currSubject;
-    const subjectList = recvData.subjectList;
     const currSubjectID = recvData.currSubjectID;
 
     const [title, setTitle] = useState("");

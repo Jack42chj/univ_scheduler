@@ -5,6 +5,7 @@ import SignUpStu from "./pages/Auth/SignUpStu";
 import LectureList from "./pages/Professor/LectureList";
 import Lecture from "./pages/Professor/Lecture";
 import StudentInfo from "./pages/Professor/StudentInfo";
+import Grade from "./pages/Professor/Grade";
 import WriteNotice from "./pages/Professor/Notice/WriteNotice";
 import NoticeList from "./pages/Professor/Notice/NoticeList";
 import EditNotice from "./pages/Professor/Notice/EditNotice";
@@ -27,6 +28,7 @@ const App = () => {
           <Route path = "/professor/main" element={<LectureList />} />
           <Route path = "/professor/lecture/:sem/:sub_id" element={<Lecture />} />
           <Route path = "/professor/student_info" element={<StudentInfo />} />
+          <Route path = "/professor/grade/:sem/:sub_id" element={<Grade />} />
           <Route path = "/professor/notice_list/:sem/:sub_id" element={<NoticeList />} />
           <Route path = "/professor/read_notice/:sem/:sub_id/:noti_id" element={<ReadNotice />} />
           <Route path = "/professor/write_notice/:sem/:sub_id" element={<WriteNotice />} /> 
@@ -34,7 +36,7 @@ const App = () => {
           <Route path = "/professor/ref_list/:sem/:sub_id" element={<ReferenceList />} />
           <Route path = "/professor/read_ref/:sem/:sub_id/:noti_id" element={<ReadReference />} />
           <Route path = "/professor/edit_ref/:sem/:sub_id/:noti_id" element={<EditReference />} />
-          <Route path = "/professor/write_ref/:sem/:sub_id" element={<WriteReference />} /> 
+          <Route path = "/professor/write_ref/:sem/:sub_id" element={<WriteReference />} />
         </Routes>
       </ThemeProvider> 
     </>

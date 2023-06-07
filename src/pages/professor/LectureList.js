@@ -136,7 +136,7 @@ const LectureList = () => {
                                     ))}
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
+                            <TableBody sx={{ cursor: "pointer" }}>
                                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
                                     <TableRow key={row.num} onClick={()=> handleClickRow(row)}>
                                         {columns.map((column) => {

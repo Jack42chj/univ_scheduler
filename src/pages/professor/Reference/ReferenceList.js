@@ -2,7 +2,7 @@ import { MenuItem, Pagination, Select, Table, TableBody, TableCell, TableContain
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { notice_list } from "../../../services/userServices";
+import { reference_list } from "../../../services/userServices";
 import HeaderPro from "../../../components/Header/HeaderPro";
 import BgcolorStack from "../../../components/Stack/BackgroundStack";
 import OuterBox from "../../../components/Box/OuterBox";
@@ -65,7 +65,7 @@ const ReferenceList = () => {
     const [referenceList, setReferenceList] = useState();
 
     // const getRefList = async () => {
-    //     const response = await notice_list(currSubjectID, currSemester);
+    //     const response = await reference_list(currSubjectID, currSemester);
     //     setReferenceList(response.data);
     // };
     // useEffect(() => {
@@ -150,7 +150,7 @@ const ReferenceList = () => {
                                     ))}
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
+                            <TableBody sx={{ cursor: "pointer" }}>
                                 {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => (
                                     <TableRow key={i} onClick={() => handleClickRow(i)}>
                                         <TableCell align="center">{index + i}</TableCell>
