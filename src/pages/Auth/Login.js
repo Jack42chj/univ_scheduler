@@ -39,14 +39,11 @@ const LogIn = () => {
         const postData = { id, password };
         try{
             const response = await signin(postData);
-            const token = response.data.token;
             if(response.status === 200){
-                localStorage.setItem('assesstoken', token);
                 console.log("Student Login Success!");
                 navigate('/student/main');
             }
             else if(response.status === 201){
-                localStorage.setItem('assesstoken', token);
                 console.log("Professor Login Success!");
                 navigate('/professor/main');
             }

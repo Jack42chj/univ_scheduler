@@ -9,6 +9,7 @@ import ContentText from "../../../components/Input/ContentText";
 import AuthFormText from "../../../components/Input/AuthFormText";
 import { reference_update } from "../../../services/userServices";
 import { useLocation, useNavigate } from "react-router-dom";
+import { checkTrim } from "../../../utils/Trim";
 
 const EditReference = () => {
     const navigate = useNavigate();
@@ -16,25 +17,37 @@ const EditReference = () => {
     const currSemester = recvData.currSemester;
     const currSubject = recvData.currSubject;
     const currSubjectID = recvData.currSubjectID;
+    const semesterList = recvData.semesterList;
+    const subjectList = recvData.subjectList;
     const refID = recvData.refID;
-    const refData = recvData.refData;
+    const title = recvData.title;
+    const content = recvData.content;
 
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
+    const [newTitle, setTitle] = useState("");
+    const [newContent, setContent] = useState("");
+    const [fileList, setFileList] = useState([]);
 
     const onhandlePost = async (data) => {
-        const { title, content, file } = data;
-        const postData = { title, content, file };
         try{
-            const response = await reference_update(currSemester, currSubjectID, refID, postData);
-            if(response.status === 200){
-                console.log("공지사항 수정 성공!");
-            }
+            const response = await reference_update(currSemester, currSubjectID, refID, data);
+            if(response.status === 201){
+                navigate(`/professor/ref_list/${currSemester}/${currSubjectID}`, {
+                    state: {
+                        "currSemester": currSemester,
+                        "currSubject" : currSubject,
+                        "semesterList" : semesterList,
+                        "subjectList" : subjectList,
+                        "currSubjectID": currSubjectID,
+                    }
+                }
+            );}
             else if(response.status === 401){
                 console.log("잘못된 access 토큰!");
+                navigate("/");
             }
             else if(response.status === 419){
                 console.log("access 토큰 만료!");
+                navigate("/");
             }
             else
                 alert(response.data);
@@ -43,25 +56,33 @@ const EditReference = () => {
         }
     };
 
+    const onChangeFile = (e) => {
+        setFileList([...fileList, ...e.target.files]);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const data = new FormData(e.currentTarget);
+        const formData = new FormData(e.currentTarget);
         const joinData = {
-            title: data.get("title"),
-            content: data.get("content"),
-            file: e.target.file.files[0],
+            title: formData.get("title"),
+            content: formData.get("content"),
         };
         const { title, content } = joinData;
 
-        if (title.trim() !== "") setTitle("");
+        fileList.forEach(file => {
+            formData.append('files', file);
+        });
+
+        if (checkTrim(title)) setTitle("");
         else setTitle("제목을 입력하세요");
 
-        if (content.trim() !== "") setContent("");
+        if (checkTrim(content)) setContent("");
         else setContent("내용을 입력하세요");
 
-        if (title.trim() !=="" && content.trim() !== "") {
-            onhandlePost(joinData);
+        if (checkTrim(title) && checkTrim(content)) {
+            formData.append("data", JSON.stringify(joinData));
+            onhandlePost(formData);
         }
     };
 
@@ -91,14 +112,14 @@ const EditReference = () => {
                         </Select>
                     </Row>
                 </OuterBox>
-                <OuterBox sx={{ py: 5, alignItems: "center"}}>
+                <OuterBox sx={{ py: 5, mb: 1, alignItems: "center"}}>
                     <ContentText variant="h4">강의자료실</ContentText>
                     <Container component="form" noValidate sx={{ width: "100%" }} onSubmit={handleSubmit}>
-                        <TextField label="제목" name="title" variant="outlined" sx={{ mt: 3, width: "100%" }} defaultValue="" />
-                        <AuthFormText>{title}</AuthFormText>
-                        <TextField label="내용" variant="outlined" name="content" multiline rows={18} sx={{ mt: 3, width: "100%" }} defaultValue="" />
-                        <AuthFormText>{content}</AuthFormText>
-                        <TextField variant="outlined" type="file" name="file" sx={{ my: 3, width: "100%" }} defaultValue="" />
+                        <TextField label="제목" name="title" variant="outlined" sx={{ mt: 3, width: "100%" }} defaultValue={title} />
+                        <AuthFormText>{newTitle}</AuthFormText>
+                        <TextField label="내용" variant="outlined" name="content" multiline rows={18} sx={{ mt: 3, width: "100%" }} defaultValue={content} />
+                        <AuthFormText>{newContent}</AuthFormText>
+                        <TextField variant="outlined" type="file" name="files" onChange={onChangeFile} sx={{ my: 3, width: "100%" }} defaultValue="" />
                         <Row spacing={3} sx={{ justifyContent: "center" }}>
                             <CommonButton variant="contained" type="submit">확인</CommonButton>
                             <CommonButton onClick={() => navigate(-1)} variant="contained">취소</CommonButton>

@@ -7,7 +7,7 @@ import HeaderPro from "../../components/Header/HeaderPro";
 import CommonButton from "../../components/Button/CommonButton";
 import ContentText from "../../components/Input/ContentText";
 import { grade_enter, grade_list } from "../../services/userServices";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const scoreOptions = [
     { value: 'A+' },
@@ -24,7 +24,7 @@ const scoreOptions = [
 const columns = [
     { id: "major", label: "학과" },
     { id: "name", label: "이름" },
-    { id: "id", label: "아이디" },
+    { id: "id", label: "학번" },
     { id: "score", label: "성적" },
 ];
 
@@ -33,6 +33,7 @@ function createData(major, name, id, score) {
 }
 
 const Grade = () => {
+    const navigate = useNavigate();
     const recvData = useLocation().state;
     const currSemester = recvData.currSemester;
     const currSubjectID = recvData.currSubjectID;
@@ -43,7 +44,7 @@ const Grade = () => {
       setPage(newPage - 1);
     };
 
-    const [gradeData, setGradeData] = useState();
+    //const [gradeData, setGradeData] = useState([]);
 
     // const getGradeData = async () => {
     //     const response = await grade_list(currSubjectID, currSemester);
@@ -53,40 +54,84 @@ const Grade = () => {
     //     getGradeData();
     // }, []);
 
+    const [gradeData] = useState({
+        "board": [
+            {
+                "student_id": "2020202020",
+                "grade": "A+",
+                "student_name": "관우",
+                "major": "컴퓨터정보공학부",
+            },
+            {
+                "student_id": "2020202020",
+                "grade": "B+",
+                "student_name": "장비",
+                "major": "컴퓨터정보공학부",
+            },
+            {
+                "student_id": "2020202020",
+                "grade": "C+",
+                "student_name": "유비",
+                "major": "컴퓨터정보공학부",
+            },
+            {
+                "student_id": "2020202020",
+                "grade": "",
+                "student_name": "황충",
+                "major": "컴퓨터정보공학부",
+            },
+            {
+                "student_id": "2020202020",
+                "grade": "",
+                "student_name": "마초",
+                "major": "컴퓨터정보공학부",
+            },
+            {
+                "student_id": "2020202020",
+                "grade": "D0",
+                "student_name": "조운",
+                "major": "컴퓨터정보공학부",
+            },
+            {
+                "student_id": "2020202020",
+                "grade": "",
+                "student_name": "방통",
+                "major": "컴퓨터정보공학부",
+            },
+        ],
+    });
+    
     const handleGrade = async (postGrade) => {
         console.log(postGrade);
-        // try{
-        //     const response = await grade_enter(currSubjectID, currSemester, postGrade);
-        //     if(response.status === 200){
-        //         console.log("공지사항 생성 성공!");
-        //     }
-        // } catch (err) {
-        //     console.log(err);
-        // }
+        try{
+            const response = await grade_enter(currSubjectID, currSemester, postGrade);
+            if(response.status === 201){
+                console.log("성적 저장 완료!");
+            }
+            else if(response.status === 401){
+                console.log("잘못된 access 토큰!");
+                navigate("/");
+            }
+            else if(response.status === 419){
+                console.log("access 토큰 만료!");
+                navigate("/");
+            }
+            else
+                alert(response.data);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
-    const [rows, setRows] = useState([
-        createData("컴퓨터정보공학부", "최호진", "2018202020", "A+"),
-        createData("컴퓨터정보공학부", "김우곤", "2018202020", ""),
-        createData("컴퓨터정보공학부", "이동익", "2018202020", ""),
-        createData("컴퓨터정보공학부", "홍길동", "2018202020", ""),
-        createData("컴퓨터정보공학부", "이기훈", "2018202020", ""),
-        createData("컴퓨터정보공학부", "사마의", "2018202020", ""),
-        createData("컴퓨터정보공학부", "장보고", "2018202020", ""),
-        createData("컴퓨터정보공학부", "대조영", "2018202020", ""),
-        createData("컴퓨터정보공학부", "이순신", "2018202020", ""),
-        createData("컴퓨터정보공학부", "이방원", "2018202020", ""),
-        createData("컴퓨터정보공학부", "이성계", "2018202020", ""),
-        createData("컴퓨터정보공학부", "하후돈", "2018202020", ""),
-        createData("컴퓨터정보공학부", "제갈량", "2018202020", ""),
-        createData("컴퓨터정보공학부", "하후연", "2018202020", ""),
-    ]);
+    const [rows, setRows] = useState(
+        gradeData.board.map((row) => createData(row.major, row.student_name, row.student_id, row.grade))
+    );
 
     return(
         <>
             <HeaderPro />
             <BgcolorStack sx={{ minHeight: "100vh", alignItems: "center" }}>
-                <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center", mt: 5 }}>
+                <OuterBox sx={{ py: 5, mb: 1, justifyContent: "center", alignItems: "center", mt: 5 }}>
                     <ContentText variant="h4" sx={{ my: 3 }} >수강 인원 조회 및 성적 입력</ContentText>
                     <TableContainer sx={{ width: "90%", py: 3 }}>
                         <Table stickyHeader>
@@ -144,8 +189,9 @@ const Grade = () => {
                         page={page + 1}
                         onChange={handleChangePage}
                     />
-                    <Row sx={{ justifyContent: "flex-end", width: "80%", mt: 2 }}>
+                    <Row spacing={2} sx={{ justifyContent: "flex-end", width: "80%", mt: 2 }}>
                         <CommonButton variant="contained" onClick={() => handleGrade(rows)}>저장</CommonButton>
+                        <CommonButton variant="contained" onClick={() => navigate(-1)}>이전</CommonButton>
                     </Row>
                 </OuterBox>
             </BgcolorStack>

@@ -6,14 +6,11 @@ import CommonButton from "../../../components/Button/CommonButton";
 import Row from "../../../components/Stack/Row";
 import HeaderPro from "../../../components/Header/HeaderPro";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import DownloadIcon from '@mui/icons-material/Download';
 import ContentText from "../../../components/Input/ContentText";
 import { useLocation, useNavigate } from "react-router-dom";
 import { reference_delete, reference_read } from "../../../services/userServices";
 import FieldText from "../../../components/Input/FieldText";
-
-const title = "소프트웨어공학 강의자료";
-const content = "hello\n\nworld\n\nhi\n\nmy name\n\nis\n\nchoi\n\nhojin";
+import Column from "../../../components/Stack/Column";
 
 const ReadReference = () => {
     const navigate = useNavigate();
@@ -21,9 +18,28 @@ const ReadReference = () => {
     const currSemester = recvData.currSemester;
     const currSubject = recvData.currSubject;
     const currSubjectID = recvData.currSubjectID;
+    const semesterList = recvData.semesterList;
+    const subjectList = recvData.subjectList;
     const refID = recvData.refID;
+    const title = recvData.title;
+    const writer = recvData.writer;
+    const date = recvData.date;
+    const view = recvData.view;
 
-    const [refData, setRefData] = useState();
+    const refData = {
+        "lecture_material": {
+            "title": "test",
+            "content": "test content",
+        },
+        "file": {
+            "file_name": [
+                "butterfly-ge8aa2bc33_640.jpg",
+                "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg",
+            ],
+        },
+    };
+
+    //const [refData, setRefData] = useState();
 
     // const getRefData = async () => {
     //     const response = await reference_read(currSubjectID, currSemester);
@@ -33,34 +49,55 @@ const ReadReference = () => {
     //     getRefData();
     // }, []);
 
+    const content = refData ? refData.lecture_material.content : null;
+    const fileList = refData ? refData.file.file_name : [];
+
     const onhandleDelete = async () => {
         try{
             const response = await reference_delete(currSubjectID, currSemester, refID);
-            if(response.status === 200){
-                console.log("공지사항 삭제 성공!");
-                navigate(`/professor/ref_list/${currSemester}/${currSubjectID}`);
-            }
+            if(response.status === 201){
+                console.log("강의자료 삭제 성공!");
+                navigate(`/professor/ref_list/${currSemester}/${currSubjectID}`, {
+                    state: {
+                        "currSemester": currSemester,
+                        "currSubject" : currSubject,
+                        "semesterList" : semesterList,
+                        "subjectList" : subjectList,
+                        "currSubjectID": currSubjectID,
+                    }
+                }
+            );}
             else if(response.status === 401){
                 console.log("잘못된 access 토큰!");
+                navigate("/");
             }
             else if(response.status === 419){
                 console.log("access 토큰 만료!");
+                navigate("/");
             }
         } catch (err) {
             console.log(err);
         }
     };
 
-    const handleEdit = (refData) => {
+    const handleEdit = () => {
         const url = `/professor/edit_ref/${currSemester}/${currSubjectID}/${refID}`;
         const sendData = {
             "currSemester": currSemester,
             "currSubject": currSubject,
             "currSubjectID": currSubjectID,
+            "subjectList" : subjectList,
+            "semesterList" : semesterList,
             "refID" : refID,
-            refData,
-        };
+            "title" : title,
+            "view" : view,
+            "content" : content,
+        }
         navigate(url, { state: sendData });
+    };
+
+    const handleClickFile = (file) => {
+        console.log(file);
     };
 
     return(
@@ -89,20 +126,28 @@ const ReadReference = () => {
                         </Select>
                     </Row>
                 </OuterBox>
-                <OuterBox sx={{ py: 5, alignItems: "center"}}>
+                <OuterBox sx={{ py: 5, mb: 1, alignItems: "center"}}>
                     <ContentText variant="h4">강의자료실</ContentText>
                     <Row sx={{ width: "100%", justifyContent: "space-evenly", mt: 3 }}>
-                        <ContentText variant="h6" sx={{ color: "#FA9A00" }}>작성자: 이기훈</ContentText>
-                        <ContentText variant="h6" sx={{ color: "#FA9A00" }}>등록일: 2023-03-17</ContentText>
-                        <ContentText variant="h6" sx={{ color: "#FA9A00" }}>조회수: 25</ContentText>
+                        <ContentText variant="h6" sx={{ color: "#FA9A00" }}>작성자: {writer}</ContentText>
+                        <ContentText variant="h6" sx={{ color: "#FA9A00" }}>등록일: {date}</ContentText>
+                        <ContentText variant="h6" sx={{ color: "#FA9A00" }}>조회수: {view}</ContentText>
                     </Row>
                     <FieldText label="제목" name="title" variant="outlined" sx={{ my: 3, width: "80%" }} defaultValue={title} disabled/>
                     <FieldText label="내용" name="content" variant="outlined" multiline rows={18} sx={{ width: "80%" }} defaultValue={content} disabled/>
-                    <ContentText sx={{ justifyContent: "flex-start", my: 3, width: "80%" }}><AttachFileIcon />파일: 소프트웨어공학.pdf&nbsp;&nbsp;<DownloadIcon /></ContentText>
-                    <Row spacing={3}>
-                        <CommonButton onClick={() => handleEdit(refData)} variant="contained">수정</CommonButton>
+                    <Column sx={{ justifyContent: "flex-start" }}>
+                        {fileList.map((file, idx) => (
+                            <div key={idx} onClick={() => handleClickFile(file)}>
+                                <ContentText sx={{ justifyContent: "flex-start", mt: 1, width: "80%", cursor: "pointer" }}>
+                                    <AttachFileIcon />{file}
+                                </ContentText>
+                            </div>
+                        ))}
+                    </Column>
+                    <Row spacing={3} mt={2}>
+                        <CommonButton onClick={handleEdit} variant="contained">수정</CommonButton>
                         <CommonButton variant="contained" onClick={onhandleDelete}>삭제</CommonButton>
-                        <CommonButton onClick={()=> navigate(-1)} variant="contained">취소</CommonButton>
+                        <CommonButton onClick={()=> navigate(-1)} variant="contained">목록</CommonButton>
                     </Row>
                 </OuterBox>
             </BgcolorBox>

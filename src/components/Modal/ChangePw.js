@@ -49,8 +49,6 @@ const ChangePw = ({ open, onClose }) => {
 
     const onhandlePost = async (data) => {
         const postData = { "password" : data };
-        console.log(postData);
-   
         try {
             const response = await info_change_pw(postData);
             if (response.status === 200 || response.status === 201) {

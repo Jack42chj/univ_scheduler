@@ -19,7 +19,30 @@ function createData(num, name, period, room) {
     return { num, name, period, room };
 };
 
+//const [data, setData] = useState();
+export const handleChangeSemester = async (e) => {
+    const sendData = { "semester": e.target.value }
+    console.log(sendData);
+    try{
+        const resp = await professor_change_main(sendData);
+        if(resp.status === 201){
+            //setData(resp.data);
+        }
+        else if(resp.status === 401){
+            console.log("잘못된 access 토큰!");
+        }
+        else if(resp.status === 419){
+            console.log("access 토큰 만료!");
+        }
+        else
+            alert(resp.data);
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 const LectureList = () => {
+    const navigate = useNavigate();
     const data = {
         "all_semester": [
             {
@@ -55,8 +78,7 @@ const LectureList = () => {
         ],
         "subject_notice": []
     };
-    const navigate = useNavigate();
-    //const [data, setData] = useState();
+    
     const rows = [];
     const subjectList = [];
     const [page, setPage] = useState(0);
@@ -73,16 +95,7 @@ const LectureList = () => {
     const semesterList = data ? data.all_semester : [];
     const currSemester = data ? data.semester : [];
     const scheduleList = data ? data.schedule : [];
-    // const handleChangeSemester = async (e) => {
-    //     const sendData = { "semester": e.target.value }
-    //     try{
-    //         const resp = await professor_change_main(sendData);
-    //         if(resp.status === 201){
-    //             setData(resp.data);
-    //         }
-    //     }
-    //     catch(err){console.log(err)}
-    // };
+    
     for(let i = 0; i < scheduleList.length; i++){
         rows.push(createData(scheduleList[i].sub_code, scheduleList[i].name, scheduleList[i].time, scheduleList[i].class));
         let listData = {"name": scheduleList[i].name, "sub_ID": scheduleList[i].sub_code};
@@ -113,7 +126,7 @@ const LectureList = () => {
                         <Select
                             value={currSemester}
                             name="semester"
-                            //onChange={handleChangeSemester}
+                            onChange={handleChangeSemester}
                             displayEmpty
                             sx={{ width: "50%", height: "48px" }}
                         >

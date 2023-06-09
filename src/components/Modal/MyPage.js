@@ -25,11 +25,9 @@ const MyPage = ({ open, onClose }) => {
         setData(response.data);
     }
     useEffect(() => {
-        if(open === true)
-            getData();
-    }, [open, data]);
+        getData();
+    }, []);
 
-    console.log(open);
     const name = data ? data.name : null;
     const id = data? data.id : null;
     const univ = data ? data.school : null;

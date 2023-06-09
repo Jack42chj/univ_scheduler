@@ -26,7 +26,7 @@ function createData(num, title, filexo, writer, date, view_count) {
     return {num ,title, filexo, writer, date, view_count};
 };
 
-const NoticeList = () => {
+const AssignmentList = () => {
     const navigate = useNavigate();
     const recvData = useLocation().state;
     const currSemester = recvData.currSemester;
@@ -221,4 +221,4 @@ const NoticeList = () => {
     );
 };
 
-export default NoticeList;
+export default AssignmentList;

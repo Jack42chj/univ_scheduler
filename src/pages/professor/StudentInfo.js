@@ -8,6 +8,10 @@ import HeaderPro from "../../components/Header/HeaderPro";
 import SearchIcon from '@mui/icons-material/Search';
 import ContentText from "../../components/Input/ContentText";
 import BgcolorStack from "../../components/Stack/BackgroundStack";
+import { checkTrim } from "../../utils/Trim";
+import AuthFormText from "../../components/Input/AuthFormText";
+import { student_info } from "../../services/userServices";
+import { useNavigate } from "react-router-dom";
 
 const CollegeList = [
     {college: "전자정보공과대학", list: [
@@ -45,15 +49,6 @@ function createData(major, name, email, ph_num) {
     return { major, name, email, ph_num };
 }
 
-const rows = [
-    createData("컴퓨터정보공학부", "최호진", "hojinch99@naver.com", "010-5064-8771"),
-    createData("컴퓨터정보공학부", "김우곤", "asd123@naver.com", "010-5555-8771"),
-    createData("컴퓨터정보공학부", "이동익", "123asd@naver.com", "010-7777-8771"),
-    createData("컴퓨터정보공학부", "홍길동", "hjk123@naver.com", "010-1111-8771"),
-    createData("컴퓨터정보공학부", "이기훈", "khj142@naver.com", "010-2222-8771"),
-    createData("컴퓨터정보공학부", "사마의", "qpw525@naver.com", "010-3333-8771"),
-];
-
 const collegeMajorMap = CollegeList.reduce((acc, curr) => {
     const { college, list } = curr;
     acc[college] = list.map((major) => major.major);
@@ -61,8 +56,10 @@ const collegeMajorMap = CollegeList.reduce((acc, curr) => {
 }, {});
 
 const StudentInfo = () => {
+    const navigate = useNavigate();
     const [college, setCollege] = useState("");
     const [major, setMajor] = useState("");
+    const [check, setCheck] = useState("");
     const handleChangeCollege = (e) => {
         setCollege(e.target.value);
         setMajor("");
@@ -75,16 +72,64 @@ const StudentInfo = () => {
       setPage(newPage - 1);
     };
 
+    const recvData = {
+        "studentInfo": [
+            {
+                "name": "이동익",
+                "major": "컴퓨터정보공학부",
+                "email": "dlehddlr319@naver.com",
+                "phone_number": "01097330678"
+            },
+            {
+                "name": "asd",
+                "major": "컴퓨터정보공학부",
+                "email": "dlehddlr319@naver.com",
+                "phone_number": "01097330678"
+            },
+            {
+                "name": "123",
+                "major": "컴퓨터정보공학부",
+                "email": "dlehddlr319@naver.com",
+                "phone_number": "01097330678"
+            },
+            {
+                "name": "2626",
+                "major": "컴퓨터정보공학부",
+                "email": "dlehddlr319@naver.com",
+                "phone_number": "01097330678"
+            },
+            {
+                "name": "asasha",
+                "major": "컴퓨터정보공학부",
+                "email": "dlehddlr319@naver.com",
+                "phone_number": "01097330678"
+            },
+        ],
+    };
+
+    const [rows, setRow] = useState([]);
+    
+
     const onhandlePost = async (data) => {
         console.log(data);
-        // try{
-        //     const response = await ();
-        //     if(response.status === 200){
-        //         console.log("공지사항 생성 성공!");
-        //     }
-        // } catch (err) {
-        //     console.log(err);
-        // }
+        try{
+            const response = await student_info(data);
+            if(response.status === 201){
+                setRow((response.data.studentInfo.map((row) => createData(row.major, row.name, row.email, row.phone_number))));
+            }
+            else if(response.status === 401){
+                console.log("잘못된 access 토큰!");
+                navigate("/");
+            }
+            else if(response.status === 419){
+                console.log("access 토큰 만료!");
+                navigate("/");
+            }
+            else
+                alert(response.data);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     const handleSubmit = (e) => {
@@ -92,11 +137,17 @@ const StudentInfo = () => {
 
         const data = new FormData(e.currentTarget);
         const joinData = {
-            college: data.get("college"),
             major: data.get("major"),
             name: data.get("name"),
         };
-        onhandlePost(joinData);
+        const { name, major } = joinData;
+        if(checkTrim(name) || checkTrim(major)){
+            setCheck("");
+            onhandlePost(joinData);
+        }
+        else{
+            setCheck("학과를 선택하거나 이름을 입력하세요");
+        }
     };
 
     return(
@@ -132,7 +183,7 @@ const StudentInfo = () => {
                             ))}
                         </Select>
                     </Row>
-                    <Stack direction="row" justifyContent="center" mt={2} spacing={3}>
+                    <Stack direction="row" justifyContent="center" my={2} spacing={3}>
                         <ContentText variant="h6">이름</ContentText>
                         <AuthInput 
                             required 
@@ -143,6 +194,10 @@ const StudentInfo = () => {
                             <SearchIcon sx={{ px: 0.5 }} />
                         </IconsButton>
                     </Stack>
+                    <Row sx={{ justifyContent: "center" }}>
+                        <AuthFormText>{check}</AuthFormText>
+                    </Row>
+                    <ContentText>학과 또는 이름을 입력해 원하는 학생을 찾으세요.</ContentText>
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center",}}>
                     <ContentText variant="h4">학생 정보조회</ContentText>

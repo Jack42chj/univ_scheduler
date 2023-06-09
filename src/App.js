@@ -14,6 +14,9 @@ import ReferenceList from "./pages/Professor/Reference/ReferenceList";
 import ReadReference from "./pages/Professor/Reference/ReadReference";
 import EditReference from "./pages/Professor/Reference/EditReference";
 import WriteReference from "./pages/Professor/Reference/WriteReference";
+import SyllabusList from "./pages/Professor/Syllabus/SyllabusList";
+import WriteSyllabus from "./pages/Professor/Syllabus/WriteSyllabus";
+import EditSyllabus from "./pages/Professor/Syllabus/EditSyllabus";
 import { ThemeProvider } from "@emotion/react";
 import MuiTheme from "./styles/MuiTheme";
 
@@ -33,6 +36,9 @@ const App = () => {
           <Route path = "/professor/read_notice/:sem/:sub_id/:noti_id" element={<ReadNotice />} />
           <Route path = "/professor/write_notice/:sem/:sub_id" element={<WriteNotice />} /> 
           <Route path = "/professor/edit_notice/:sem/:sub_id/:noti_id" element={<EditNotice />} />
+          <Route path = "/professor/syl_list/:sem/:sub_id" element={<SyllabusList />} />
+          <Route path = "/professor/write_syl/:sem/:sub_id" element={<WriteSyllabus />} /> 
+          <Route path = "/professor/edit_syl/:sem/:sub_id" element={<EditSyllabus />} />
           <Route path = "/professor/ref_list/:sem/:sub_id" element={<ReferenceList />} />
           <Route path = "/professor/read_ref/:sem/:sub_id/:noti_id" element={<ReadReference />} />
           <Route path = "/professor/edit_ref/:sem/:sub_id/:noti_id" element={<EditReference />} />

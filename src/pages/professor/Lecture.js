@@ -10,9 +10,9 @@ import Row from "../../components/Stack/Row";
 import ContentText from "../../components/Input/ContentText";
 import Column from "../../components/Stack/Column";
 import { useLocation, useNavigate } from "react-router-dom";
+import { handleChangeSemester } from "./LectureList";
 
 const NoticeList = [
-    {text: "소프트웨어공학 공지", date: "2023-03-17"}, {text: "소프트웨어공학 공지", date: "2023-03-17"},
     {text: "소프트웨어공학 공지", date: "2023-03-17"}, {text: "소프트웨어공학 공지", date: "2023-03-17"},
     {text: "소프트웨어공학 공지", date: "2023-03-17"},
 ];
@@ -25,11 +25,12 @@ const Lecture = () => {
     const currSubject = recvData.data.name;
     const currSubjectID = recvData.data.num;
     const subjectList = recvData.subjectList;
-
-    const [semester, setSemester] = useState(currSemester);
-    const [subject, setSubject] = useState(currSubject);
-    const handleChangeSemester = (e) => setSemester(e.target.value);
-    const handleChangeSubject = (e) => setSubject(e.target.value);
+    
+    const changeSemester = (e) => {
+        handleChangeSemester(e);
+        navigate("/professor/main");
+    }
+    //const handleChangeSubject = (e) => setSubject(e.target.value);
     const [lectureData] = useState({
         name: recvData.data.name,
         id: recvData.data.num,
@@ -72,6 +73,19 @@ const Lecture = () => {
     //     navigate(url, { state: sendData });
     // };
 
+    const handleClickSyl = () => {
+        const url = `/professor/syl_list/${currSemester}/${currSubjectID}`;
+        const sendRefData = {
+            "currSemester": currSemester,
+            "semesterList": semesterList,
+            "subjectList": subjectList,
+            "currSubject": currSubject,
+            "currSubjectID" : currSubjectID,
+            "lectureData" : lectureData,
+        };
+        navigate(url, { state: sendRefData });
+    };
+
     const handleClickGrade = () => {
         const url = `/professor/grade/${currSemester}/${currSubjectID}`;
         const sendGradeData = {
@@ -89,12 +103,11 @@ const Lecture = () => {
                     <Row sx={{ justifyContent: "space-around"}}>   
                         <ContentText variant="h6">학기</ContentText>
                         <Select
-                            value={semester}
+                            value={currSemester}
                             name="semester"
-                            onChange={handleChangeSemester}
+                            onChange={changeSemester}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
-                            defaultValue={currSemester}
                         >
                             {semesterList.map((year) => (
                                 <MenuItem key={year.semester} value={year.semester}>{year.semester}</MenuItem>
@@ -102,12 +115,11 @@ const Lecture = () => {
                         </Select>
                         <ContentText variant="h6">과목명</ContentText>
                         <Select
-                            value={subject}
+                            value={currSubject}
                             name="subject"
-                            onChange={handleChangeSubject}
+                            //onChange={handleChangeSubject}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
-                            defaultValue={currSubject}
                         >
                             {subjectList.map((list) => (
                                 <MenuItem key={list.name} value={list.name}>{list.name + '('+ list.sub_ID + ')'}</MenuItem>
@@ -155,7 +167,7 @@ const Lecture = () => {
                             <InnerBox sx={{ p: 2, mb: 3 }}>
                                 <Row>
                                     <ContentText variant="h5">강의정보</ContentText>
-                                    <IconButton sx={{ color: "#FCDEC0"}} href="/professor/edit_plan"><AddIcon fontSize="large"/></IconButton>
+                                    <IconButton sx={{ color: "#FCDEC0"}} onClick={handleClickSyl}><AddIcon fontSize="large"/></IconButton>
                                 </Row>
                                 <Divider />
                                 <Row spacing={10}>
@@ -201,7 +213,7 @@ const Lecture = () => {
                             <InnerBox sx={{ p: 3, my: 3 }}>
                                 <Row>
                                     <ContentText variant="h5">강의정보</ContentText>
-                                    <IconButton sx={{ color: "#FCDEC0"}} href="/professor/edit_plan"><AddIcon fontSize="large"/></IconButton>
+                                    <IconButton sx={{ color: "#FCDEC0"}} onClick={handleClickSyl}><AddIcon fontSize="large"/></IconButton>
                                 </Row>
                                 <Divider />
                                 <Row spacing={10}>

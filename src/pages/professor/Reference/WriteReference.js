@@ -17,24 +17,35 @@ const WriteReference = () => {
     const currSemester = recvData.currSemester;
     const currSubject = recvData.currSubject;
     const currSubjectID = recvData.currSubjectID;
+    const semesterList = recvData.semesterList;
+    const subjectList = recvData.subjectList;
+
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
+    const [fileList, setFileList] = useState([]);
 
     const onhandlePost = async (data) => {
-        const { title, content, file } = data;
-        const postData = { title, content, file };
-        console.log(postData);
         try{
-            const response = await reference_write(currSubjectID, currSemester, postData);
-            if(response.status === 200){
-                console.log("공지사항 생성 성공!");
-                navigate(`/professor/ref_list/${currSemester}/${currSubjectID}`);
-            }
+            const response = await reference_write(currSubjectID, currSemester, data);
+            if(response.status === 201){
+                console.log("강의자료 생성 성공!");
+                navigate(`/professor/ref_list/${currSemester}/${currSubjectID}`, {
+                    state: {
+                        "currSemester": currSemester,
+                        "currSubject" : currSubject,
+                        "semesterList" : semesterList,
+                        "subjectList" : subjectList,
+                        "currSubjectID": currSubjectID,
+                    }
+                }
+            );}
             else if(response.status === 401){
                 console.log("잘못된 access 토큰!");
+                navigate("/");
             }
             else if(response.status === 419){
                 console.log("access 토큰 만료!");
+                navigate("/");
             }
             else
                 alert(response.data);
@@ -43,16 +54,23 @@ const WriteReference = () => {
         }
     };
 
+    const onChangeFile = (e) => {
+        setFileList([...fileList, ...e.target.files]);
+    };
+    
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const data = new FormData(e.currentTarget);
+        const formData = new FormData(e.currentTarget);
         const joinData = {
-            title: data.get("title"),
-            content: data.get("content"),
-            file: e.target.file.files[0],
+            title: formData.get("title"),
+            content: formData.get("content"),
         };
         const { title, content } = joinData;
+
+        fileList.forEach(file => {
+            formData.append('files', file);
+        });
 
         if (checkTrim(title)) setTitle("");
         else setTitle("제목을 입력하세요");
@@ -61,7 +79,7 @@ const WriteReference = () => {
         else setContent("내용을 입력하세요");
 
         if (checkTrim(title) && checkTrim(content)) {
-            onhandlePost(joinData);
+            onhandlePost(formData);
         }
     };
 
@@ -93,14 +111,14 @@ const WriteReference = () => {
                         </Select>
                     </Row>
                 </OuterBox>
-                <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center"}}>
+                <OuterBox sx={{ py: 5, mb: 1, justifyContent: "center", alignItems: "center"}}>
                     <ContentText variant="h4">강의자료실</ContentText>
                     <Container component="form" noValidate sx={{ width: "100%" }} onSubmit={handleSubmit}>
                         <TextField label="제목" name="title" variant="outlined" sx={{ mt: 3, width: "100%" }} />
                         <AuthFormText>{title}</AuthFormText>
                         <TextField label="내용" variant="outlined" name="content" multiline rows={18} sx={{ mt: 3, width: "100%" }} />
                         <AuthFormText>{content}</AuthFormText>
-                        <TextField variant="outlined" type="file" name="file" sx={{ my: 3, width: "100%" }} />
+                        <TextField variant="outlined" type="file" name="files" onChange={onChangeFile} sx={{ my: 3, width: "100%" }} />
                         <Row spacing={3} sx={{ justifyContent: "center" }}>
                             <CommonButton variant="contained" type="submit">등록</CommonButton>
                             <CommonButton onClick={() => {navigate(-1) }} variant="contained">취소</CommonButton>
