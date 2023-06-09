@@ -1,5 +1,5 @@
 import { Pagination, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, MenuItem } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BgcolorStack from "../../components/Stack/BackgroundStack";
 import OuterBox from "../../components/Box/OuterBox";
 import Row from "../../components/Stack/Row";
@@ -7,7 +7,7 @@ import HeaderPro from "../../components/Header/HeaderPro";
 import CommonButton from "../../components/Button/CommonButton";
 import ContentText from "../../components/Input/ContentText";
 import { grade_enter, grade_list } from "../../services/userServices";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const scoreOptions = [
     { value: 'A+' },
@@ -44,62 +44,62 @@ const Grade = () => {
       setPage(newPage - 1);
     };
 
-    //const [gradeData, setGradeData] = useState([]);
+    const [gradeData, setGradeData] = useState([]);
 
-    // const getGradeData = async () => {
-    //     const response = await grade_list(currSubjectID, currSemester);
-    //     setGradeData(response.data);
-    // }
-    // useEffect(() => {
-    //     getGradeData();
-    // }, []);
+    const getGradeData = async () => {
+        const response = await grade_list(currSubjectID, currSemester);
+        setGradeData(response.data);
+    }
+    useEffect(() => {
+        getGradeData();
+    }, []);
 
-    const [gradeData] = useState({
-        "board": [
-            {
-                "student_id": "2020202020",
-                "grade": "A+",
-                "student_name": "관우",
-                "major": "컴퓨터정보공학부",
-            },
-            {
-                "student_id": "2020202020",
-                "grade": "B+",
-                "student_name": "장비",
-                "major": "컴퓨터정보공학부",
-            },
-            {
-                "student_id": "2020202020",
-                "grade": "C+",
-                "student_name": "유비",
-                "major": "컴퓨터정보공학부",
-            },
-            {
-                "student_id": "2020202020",
-                "grade": "",
-                "student_name": "황충",
-                "major": "컴퓨터정보공학부",
-            },
-            {
-                "student_id": "2020202020",
-                "grade": "",
-                "student_name": "마초",
-                "major": "컴퓨터정보공학부",
-            },
-            {
-                "student_id": "2020202020",
-                "grade": "D0",
-                "student_name": "조운",
-                "major": "컴퓨터정보공학부",
-            },
-            {
-                "student_id": "2020202020",
-                "grade": "",
-                "student_name": "방통",
-                "major": "컴퓨터정보공학부",
-            },
-        ],
-    });
+    // const [gradeData] = useState({
+    //     "board": [
+    //         {
+    //             "student_id": "2020202020",
+    //             "grade": "A+",
+    //             "student_name": "관우",
+    //             "major": "컴퓨터정보공학부",
+    //         },
+    //         {
+    //             "student_id": "2020202020",
+    //             "grade": "B+",
+    //             "student_name": "장비",
+    //             "major": "컴퓨터정보공학부",
+    //         },
+    //         {
+    //             "student_id": "2020202020",
+    //             "grade": "C+",
+    //             "student_name": "유비",
+    //             "major": "컴퓨터정보공학부",
+    //         },
+    //         {
+    //             "student_id": "2020202020",
+    //             "grade": "",
+    //             "student_name": "황충",
+    //             "major": "컴퓨터정보공학부",
+    //         },
+    //         {
+    //             "student_id": "2020202020",
+    //             "grade": "",
+    //             "student_name": "마초",
+    //             "major": "컴퓨터정보공학부",
+    //         },
+    //         {
+    //             "student_id": "2020202020",
+    //             "grade": "D0",
+    //             "student_name": "조운",
+    //             "major": "컴퓨터정보공학부",
+    //         },
+    //         {
+    //             "student_id": "2020202020",
+    //             "grade": "",
+    //             "student_name": "방통",
+    //             "major": "컴퓨터정보공학부",
+    //         },
+    //     ],
+    // });
     
     const handleGrade = async (postGrade) => {
         console.log(postGrade);

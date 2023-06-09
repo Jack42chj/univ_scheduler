@@ -10,7 +10,6 @@ import Row from "../../components/Stack/Row";
 import ContentText from "../../components/Input/ContentText";
 import Column from "../../components/Stack/Column";
 import { useLocation, useNavigate } from "react-router-dom";
-import { handleChangeSemester } from "./LectureList";
 
 const NoticeList = [
     {text: "소프트웨어공학 공지", date: "2023-03-17"}, {text: "소프트웨어공학 공지", date: "2023-03-17"},
@@ -26,10 +25,6 @@ const Lecture = () => {
     const currSubjectID = recvData.data.num;
     const subjectList = recvData.subjectList;
     
-    const changeSemester = (e) => {
-        handleChangeSemester(e);
-        navigate("/professor/main");
-    }
     //const handleChangeSubject = (e) => setSubject(e.target.value);
     const [lectureData] = useState({
         name: recvData.data.name,
@@ -105,7 +100,7 @@ const Lecture = () => {
                         <Select
                             value={currSemester}
                             name="semester"
-                            onChange={changeSemester}
+                            //onChange={changeSemester}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
                         >

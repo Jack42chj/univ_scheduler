@@ -8,7 +8,6 @@ import OuterBox from "../../../components/Box/OuterBox";
 import Row from "../../../components/Stack/Row";
 import ContentText from "../../../components/Input/ContentText";
 import CommonButton from "../../../components/Button/CommonButton";
-import { handleChangeSemester } from "../LectureList";
 
 const columns = [
     { id: "sub_code", label: "학정번호"},
@@ -31,10 +30,6 @@ const SyllabusList = () => {
     const currSubjectID = recvData.currSubjectID;
     const lectureData = recvData.lectureData;
     
-    const changeSemester = (e) => {
-        handleChangeSemester(e);
-        navigate("/professor/main");
-    };
     // const handleChangeSubject = async (e) => {
     //     const sendData = { "subject": e.target.value }
     //     try{
@@ -46,7 +41,7 @@ const SyllabusList = () => {
     //     catch(err){console.log(err)}
     // };
 
-    // const [syllabusList, setSyllabusList] = useState();
+    const [syllabusList, setSyllabusList] = useState();
 
     // const getSyllabusList = async () => {
     //     const response = await (currSubjectID, currSemester);
@@ -55,7 +50,8 @@ const SyllabusList = () => {
     // useEffect(() => {
     //     getSyllabusList();
     // }, []);
-    const syllabusList = {};
+
+    //const syllabusList = {};
     // const syllabusList = {
     //     "syllabus": {
     //         "sub_code": "H020-1-0019-02",
@@ -106,7 +102,7 @@ const SyllabusList = () => {
                         <Select
                             value={currSemester}
                             name="semester"
-                            onChange={changeSemester}
+                            //onChange={changeSemester}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
                         >

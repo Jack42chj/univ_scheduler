@@ -72,43 +72,42 @@ const StudentInfo = () => {
       setPage(newPage - 1);
     };
 
-    const recvData = {
-        "studentInfo": [
-            {
-                "name": "이동익",
-                "major": "컴퓨터정보공학부",
-                "email": "dlehddlr319@naver.com",
-                "phone_number": "01097330678"
-            },
-            {
-                "name": "asd",
-                "major": "컴퓨터정보공학부",
-                "email": "dlehddlr319@naver.com",
-                "phone_number": "01097330678"
-            },
-            {
-                "name": "123",
-                "major": "컴퓨터정보공학부",
-                "email": "dlehddlr319@naver.com",
-                "phone_number": "01097330678"
-            },
-            {
-                "name": "2626",
-                "major": "컴퓨터정보공학부",
-                "email": "dlehddlr319@naver.com",
-                "phone_number": "01097330678"
-            },
-            {
-                "name": "asasha",
-                "major": "컴퓨터정보공학부",
-                "email": "dlehddlr319@naver.com",
-                "phone_number": "01097330678"
-            },
-        ],
-    };
+    // const recvData = {
+    //     "studentInfo": [
+    //         {
+    //             "name": "이동익",
+    //             "major": "컴퓨터정보공학부",
+    //             "email": "dlehddlr319@naver.com",
+    //             "phone_number": "01097330678"
+    //         },
+    //         {
+    //             "name": "asd",
+    //             "major": "컴퓨터정보공학부",
+    //             "email": "dlehddlr319@naver.com",
+    //             "phone_number": "01097330678"
+    //         },
+    //         {
+    //             "name": "123",
+    //             "major": "컴퓨터정보공학부",
+    //             "email": "dlehddlr319@naver.com",
+    //             "phone_number": "01097330678"
+    //         },
+    //         {
+    //             "name": "2626",
+    //             "major": "컴퓨터정보공학부",
+    //             "email": "dlehddlr319@naver.com",
+    //             "phone_number": "01097330678"
+    //         },
+    //         {
+    //             "name": "asasha",
+    //             "major": "컴퓨터정보공학부",
+    //             "email": "dlehddlr319@naver.com",
+    //             "phone_number": "01097330678"
+    //         },
+    //     ],
+    // };
 
     const [rows, setRow] = useState([]);
-    
 
     const onhandlePost = async (data) => {
         console.log(data);

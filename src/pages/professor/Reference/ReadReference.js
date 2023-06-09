@@ -26,28 +26,28 @@ const ReadReference = () => {
     const date = recvData.date;
     const view = recvData.view;
 
-    const refData = {
-        "lecture_material": {
-            "title": "test",
-            "content": "test content",
-        },
-        "file": {
-            "file_name": [
-                "butterfly-ge8aa2bc33_640.jpg",
-                "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg",
-            ],
-        },
-    };
-
-    //const [refData, setRefData] = useState();
-
-    // const getRefData = async () => {
-    //     const response = await reference_read(currSubjectID, currSemester);
-    //     setRefData(response.data);
+    // const refData = {
+    //     "lecture_material": {
+    //         "title": "test",
+    //         "content": "test content",
+    //     },
+    //     "file": {
+    //         "file_name": [
+    //             "butterfly-ge8aa2bc33_640.jpg",
+    //             "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg",
+    //         ],
+    //     },
     // };
-    // useEffect(() => {
-    //     getRefData();
-    // }, []);
+
+    const [refData, setRefData] = useState();
+
+    const getRefData = async () => {
+        const response = await reference_read(currSubjectID, currSemester);
+        setRefData(response.data);
+    };
+    useEffect(() => {
+        getRefData();
+    }, []);
 
     const content = refData ? refData.lecture_material.content : null;
     const fileList = refData ? refData.file.file_name : [];

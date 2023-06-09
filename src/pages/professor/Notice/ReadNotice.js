@@ -26,28 +26,28 @@ const ReadNotice = () => {
     const date = recvData.date;
     const view = recvData.view;
 
-    const readData = {
-        "notice": {
-            "title": "test",
-            "content": "test content",
-        },
-        "file": {
-            "file_name": [
-                "butterfly-ge8aa2bc33_640.jpg",
-                "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg",
-            ],
-        },
-    };
-
-    // const [readData, setReadData] = useState();
-
-    // const getNoticeData = async () => {
-    //     const response = await notice_read(currSubjectID, currSemester, noticeID);
-    //     setReadData(response.data);
+    // const readData = {
+    //     "notice": {
+    //         "title": "test",
+    //         "content": "test content",
+    //     },
+    //     "file": {
+    //         "file_name": [
+    //             "butterfly-ge8aa2bc33_640.jpg",
+    //             "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg",
+    //         ],
+    //     },
     // };
-    // useEffect(() => {
-    //     getNoticeData();
-    // }, []);
+
+    const [readData, setReadData] = useState();
+
+    const getNoticeData = async () => {
+        const response = await notice_read(currSubjectID, currSemester, noticeID);
+        setReadData(response.data);
+    };
+    useEffect(() => {
+        getNoticeData();
+    }, []);
 
     const content = readData ? readData.notice.content : null;
     const fileList = readData ? readData.file.file_name : [];
