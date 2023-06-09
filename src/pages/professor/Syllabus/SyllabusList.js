@@ -41,7 +41,7 @@ const SyllabusList = () => {
     //     catch(err){console.log(err)}
     // };
 
-    const [syllabusList, setSyllabusList] = useState();
+    //const [syllabusList, setSyllabusList] = useState();
 
     // const getSyllabusList = async () => {
     //     const response = await (currSubjectID, currSemester);
@@ -52,17 +52,17 @@ const SyllabusList = () => {
     // }, []);
 
     //const syllabusList = {};
-    // const syllabusList = {
-    //     "syllabus": {
-    //         "sub_code": "H020-1-0019-02",
-    //         "subject_name": "데이터구조설계",
-    //         "time": "월3수4",
-    //         "class": "새빛302호",
-    //     },
-    // };
+    const syllabusList = {
+        "syllabus": {
+            "sub_code": "H020-1-0019-02",
+            "subject_name": "데이터구조설계",
+            "time": "월3수4",
+            "class": "새빛302호",
+        },
+    };
 
     const rows = [];
-    if(Object.keys(syllabusList).length !== 0){
+    if(syllabusList && syllabusList.syllabus){
         rows.push(createData(syllabusList.syllabus.sub_code, syllabusList.syllabus.subject_name, syllabusList.syllabus.time, syllabusList.syllabus.class));
     };
 

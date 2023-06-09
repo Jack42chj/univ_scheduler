@@ -8,7 +8,7 @@ import HeaderPro from "../../../components/Header/HeaderPro";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ContentText from "../../../components/Input/ContentText";
 import { useLocation, useNavigate } from "react-router-dom";
-import { notice_delete, notice_read } from "../../../services/userServices";
+import { notice_delete, notice_download, notice_read } from "../../../services/userServices";
 import FieldText from "../../../components/Input/FieldText";
 import Column from "../../../components/Stack/Column";
 
@@ -26,28 +26,28 @@ const ReadNotice = () => {
     const date = recvData.date;
     const view = recvData.view;
 
-    // const readData = {
-    //     "notice": {
-    //         "title": "test",
-    //         "content": "test content",
-    //     },
-    //     "file": {
-    //         "file_name": [
-    //             "butterfly-ge8aa2bc33_640.jpg",
-    //             "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg",
-    //         ],
-    //     },
-    // };
-
-    const [readData, setReadData] = useState();
-
-    const getNoticeData = async () => {
-        const response = await notice_read(currSubjectID, currSemester, noticeID);
-        setReadData(response.data);
+    const readData = {
+        "notice": {
+            "title": "test",
+            "content": "test content",
+        },
+        "file": {
+            "file_name": [
+                "butterfly-ge8aa2bc33_640.jpg",
+                "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg",
+            ],
+        },
     };
-    useEffect(() => {
-        getNoticeData();
-    }, []);
+
+    // const [readData, setReadData] = useState();
+
+    // const getNoticeData = async () => {
+    //     const response = await notice_read(currSubjectID, currSemester, noticeID);
+    //     setReadData(response.data);
+    // };
+    // useEffect(() => {
+    //     getNoticeData();
+    // }, []);
 
     const content = readData ? readData.notice.content : null;
     const fileList = readData ? readData.file.file_name : [];
@@ -95,8 +95,18 @@ const ReadNotice = () => {
         navigate(url, { state: sendData });
     };
 
-    const handleClickFile = (file) => {
-        console.log(file);
+    const handleDownload = async (file) => {
+        const resp = await notice_download(currSubjectID, currSemester, noticeID, file);
+        if(resp.status === 200){
+            const downloadUrl = window.URL.createObjectURL(new Blob([resp.data]));
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.setAttribute('download', file);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            console.log("다운로드 성공!");
+        }
     };
 
     return(
@@ -135,8 +145,8 @@ const ReadNotice = () => {
                     <FieldText label="제목" name="title" variant="outlined" sx={{ my: 3, width: "80%" }} defaultValue={title} disabled/>
                     <FieldText label="내용" name="content" variant="outlined" multiline rows={18} sx={{ width: "80%" }} InputLabelProps={{ shrink: true }} defaultValue={content} disabled/>
                     <Column sx={{ justifyContent: "flex-start" }}>
-                        {fileList.map((file, idx) => (
-                            <div key={idx} onClick={() => handleClickFile(file)}>
+                        {fileList && fileList.map((file, idx) => (
+                            <div key={idx} onClick={() => handleDownload(file)}>
                                 <ContentText sx={{ justifyContent: "flex-start", mt: 1, width: "80%", cursor: "pointer" }}>
                                     <AttachFileIcon />{file}
                                 </ContentText>

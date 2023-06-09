@@ -58,10 +58,13 @@ const EditNotice = () => {
     };
 
     const onChangeFile = (e) => {
-        setFileList([...fileList, ...e.target.files]);
+        if (e.target.files) {
+            const newFile = e.target.files;
+            setFileList([newFile]);
+        }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         
         const formData = new FormData(e.currentTarget);
@@ -82,7 +85,6 @@ const EditNotice = () => {
         else setContent("내용을 입력하세요");
 
         if (checkTrim(title) && checkTrim(content)) {
-            formData.append("data", JSON.stringify(joinData));
             onhandlePost(formData);
         }
     };
@@ -120,7 +122,7 @@ const EditNotice = () => {
                         <AuthFormText>{newTitle}</AuthFormText>
                         <TextField label="내용" variant="outlined" name="content" multiline rows={18} sx={{ mt: 3, width: "100%" }} defaultValue={content} />
                         <AuthFormText>{newContent}</AuthFormText>
-                        <TextField variant="outlined" type="file" name="files" onChange={onChangeFile} sx={{ my: 3, width: "100%" }} defaultValue="" />
+                        <TextField variant="outlined" type="file" name="files" inputProps={{ multiple: true }} onChange={onChangeFile} sx={{ my: 3, width: "100%" }} />
                         <Row spacing={3} sx={{ justifyContent: "center" }}>
                             <CommonButton variant="contained" type="submit">확인</CommonButton>
                             <CommonButton onClick={() => navigate(-1)} variant="contained">취소</CommonButton>

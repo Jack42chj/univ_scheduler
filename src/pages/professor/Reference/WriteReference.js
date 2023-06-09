@@ -55,7 +55,10 @@ const WriteReference = () => {
     };
 
     const onChangeFile = (e) => {
-        setFileList([...fileList, ...e.target.files]);
+        if (e.target.files) {
+            const newFile = e.target.files;
+            setFileList([newFile]);
+        }
     };
     
     const handleSubmit = (e) => {
@@ -118,7 +121,7 @@ const WriteReference = () => {
                         <AuthFormText>{title}</AuthFormText>
                         <TextField label="내용" variant="outlined" name="content" multiline rows={18} sx={{ mt: 3, width: "100%" }} />
                         <AuthFormText>{content}</AuthFormText>
-                        <TextField variant="outlined" type="file" name="files" onChange={onChangeFile} sx={{ my: 3, width: "100%" }} />
+                        <TextField variant="outlined" type="file" name="files" inputProps={{ multiple: true }} onChange={onChangeFile} sx={{ my: 3, width: "100%" }} />
                         <Row spacing={3} sx={{ justifyContent: "center" }}>
                             <CommonButton variant="contained" type="submit">등록</CommonButton>
                             <CommonButton onClick={() => {navigate(-1) }} variant="contained">취소</CommonButton>

@@ -8,7 +8,7 @@ import HeaderPro from "../../../components/Header/HeaderPro";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ContentText from "../../../components/Input/ContentText";
 import { useLocation, useNavigate } from "react-router-dom";
-import { reference_delete, reference_read } from "../../../services/userServices";
+import { reference_download, reference_delete, reference_read } from "../../../services/userServices";
 import FieldText from "../../../components/Input/FieldText";
 import Column from "../../../components/Stack/Column";
 
@@ -96,8 +96,18 @@ const ReadReference = () => {
         navigate(url, { state: sendData });
     };
 
-    const handleClickFile = (file) => {
-        console.log(file);
+    const handleDownload = async (file) => {
+        const resp = await reference_download(currSubjectID, currSemester, refID, file);
+        if(resp.status === 200){
+            const downloadUrl = window.URL.createObjectURL(new Blob([resp.data]));
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.setAttribute('download', file);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            console.log("다운로드 성공!");
+        }
     };
 
     return(
@@ -136,8 +146,8 @@ const ReadReference = () => {
                     <FieldText label="제목" name="title" variant="outlined" sx={{ my: 3, width: "80%" }} defaultValue={title} disabled/>
                     <FieldText label="내용" name="content" variant="outlined" multiline rows={18} sx={{ width: "80%" }} defaultValue={content} disabled/>
                     <Column sx={{ justifyContent: "flex-start" }}>
-                        {fileList.map((file, idx) => (
-                            <div key={idx} onClick={() => handleClickFile(file)}>
+                        {fileList && fileList.map((file, idx) => (
+                            <div key={idx} onClick={() => handleDownload(file)}>
                                 <ContentText sx={{ justifyContent: "flex-start", mt: 1, width: "80%", cursor: "pointer" }}>
                                     <AttachFileIcon />{file}
                                 </ContentText>

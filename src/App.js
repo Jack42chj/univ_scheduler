@@ -17,8 +17,8 @@ import WriteReference from "./pages/Professor/Reference/WriteReference";
 import SyllabusList from "./pages/Professor/Syllabus/SyllabusList";
 import WriteSyllabus from "./pages/Professor/Syllabus/WriteSyllabus";
 import EditSyllabus from "./pages/Professor/Syllabus/EditSyllabus";
+import MuiTheme from "./styles/muiTheme";
 import { ThemeProvider } from "@emotion/react";
-import MuiTheme from "./styles/MuiTheme";
 
 const App = () => {
   return (

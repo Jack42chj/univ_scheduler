@@ -74,7 +74,12 @@ export const notice_update = (sub_id, sem_id, noti_id, noticeData) => {
 
 //공지사항 삭제
 export const notice_delete = (sub_id, sem_id, noti_id) => {
-    return axios.get(`${BASE_URL}/notice/${sub_id}/${sem_id}/${noti_id}/delete`, {withCredentials:true});
+    return axios.delete(`${BASE_URL}/notice/${sub_id}/${sem_id}/${noti_id}/delete`, {withCredentials:true});
+};
+
+//공지사항 파일 다운로드
+export const notice_download = (sub_id, sem_id, noti_id, file_id) => {
+    return axios.get(`${BASE_URL}/notice/${sub_id}/${sem_id}/${noti_id}/${file_id}/download`, { responseType: 'blob', withCredentials:true });
 };
 
 //강의자료실 목록
@@ -109,7 +114,12 @@ export const reference_update = (sub_id, sem_id, ref_id, refData) => {
 
 //강의자료실 삭제
 export const reference_delete = (sub_id, sem_id, ref_id) => {
-    return axios.get(`${BASE_URL}/lecture_material/${sub_id}/${sem_id}/${ref_id}/delete`, {withCredentials:true});
+    return axios.delete(`${BASE_URL}/lecture_material/${sub_id}/${sem_id}/${ref_id}/delete`, {withCredentials:true});
+};
+
+//공지사항 파일 다운로드
+export const reference_download = (sub_id, sem_id, ref_id, file_id) => {
+    return axios.get(`${BASE_URL}/lecture_material/${sub_id}/${sem_id}/${ref_id}/${file_id}/download`, { responseType: 'blob', withCredentials:true });
 };
 
 //교수 메인화면

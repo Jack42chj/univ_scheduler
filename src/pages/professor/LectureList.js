@@ -21,14 +21,14 @@ function createData(num, name, period, room) {
 
 const LectureList = () => {
     const navigate = useNavigate();
-    const [data, setData] = useState();
+    //const [data, setData] = useState();
     const handleChangeSemester = async (e) => {
         const sendData = { "semester": e.target.value }
         console.log(sendData);
         try{
             const resp = await professor_change_main(sendData);
             if(resp.status === 201){
-                setData(resp.data);
+                //setData(resp.data);
             }
             else if(resp.status === 401){
                 console.log("잘못된 access 토큰!");
@@ -42,54 +42,54 @@ const LectureList = () => {
             console.log(err);
         }
     };
-    // const data = {
-    //     "all_semester": [
-    //         {
-    //             "semester": "2023-1"
-    //         },
-    //         {
-    //             "semester": "2022-2"
-    //         }
-    //     ],
-    //     "semester": "2023-1",
-    //     "schedule": [
-    //         {
-    //             "sub_code": "1111-1-11-1111",
-    //             "name": "데이터구조설계",
-    //             "time": "월3수4",
-    //             "class": "새빛302호",
-    //             "professor_name": "test"
-    //         },
-    //         {
-    //             "sub_code": "1111-1-11-1112",
-    //             "name": "KW_VIP",
-    //             "time": "월3수4",
-    //             "class": "새빛302호",
-    //             "professor_name": "test"
-    //         },
-    //         {
-    //             "sub_code": "1111-1-11-1113",
-    //             "name": "소프트웨어공학",
-    //             "time": "월3수4",
-    //             "class": "새빛302호",
-    //             "professor_name": "test"
-    //         }
-    //     ],
-    //     "subject_notice": []
-    // };
+    const data = {
+        "all_semester": [
+            {
+                "semester": "2023-1"
+            },
+            {
+                "semester": "2022-2"
+            }
+        ],
+        "semester": "2023-1",
+        "schedule": [
+            {
+                "sub_code": "1111-1-11-1111",
+                "name": "데이터구조설계",
+                "time": "월3수4",
+                "class": "새빛302호",
+                "professor_name": "test"
+            },
+            {
+                "sub_code": "1111-1-11-1112",
+                "name": "KW_VIP",
+                "time": "월3수4",
+                "class": "새빛302호",
+                "professor_name": "test"
+            },
+            {
+                "sub_code": "1111-1-11-1113",
+                "name": "소프트웨어공학",
+                "time": "월3수4",
+                "class": "새빛302호",
+                "professor_name": "test"
+            }
+        ],
+        "subject_notice": []
+    };
     
     const rows = [];
     const subjectList = [];
     const [page, setPage] = useState(0);
     const rowsPerPage = 5;
 
-    const getData = async () => {
-        const response = await professor_main();
-        setData(response.data);
-    }
-    useEffect(() => {
-        getData();
-    }, []);
+    // const getData = async () => {
+    //     const response = await professor_main();
+    //     setData(response.data);
+    // }
+    // useEffect(() => {
+    //     getData();
+    // }, []);
 
     const semesterList = data ? data.all_semester : [];
     const currSemester = data ? data.semester : [];

@@ -52,50 +52,50 @@ const ReferenceList = () => {
         setPage(newPage - 1);
     };
 
-    const [referenceList, setReferenceList] = useState();
+    //const [referenceList, setReferenceList] = useState();
 
-    const getRefList = async () => {
-        const response = await reference_list(currSubjectID, currSemester);
-        setReferenceList(response.data);
-    };
-    useEffect(() => {
-        getRefList();
-    }, []);
-
-    // const referenceList = {
-    //     "ref": [
-    //         {
-    //             "id": 112,
-    //             "sub_code": "H020-1-0019-02",
-    //             "professor_name": "이우신",
-    //             "title": "test",
-    //             "writer": "이우신",
-    //             "created_time": "2023-06-05",
-    //             "view": 1,
-    //             "semester": "2023-1",
-    //             "file_names": [
-    //                 "butterfly-ge8aa2bc33_640.jpg"
-    //             ]
-    //         },
-    //         {
-    //             "id": 113,
-    //             "sub_code": "H020-1-0019-02",
-    //             "professor_name": "이우신",
-    //             "title": "test",
-    //             "writer": "이우신",
-    //             "created_time": "2023-06-05",
-    //             "view": 1,
-    //             "semester": "2023-1",
-    //             "file_names": [
-    //                 "butterfly-ge8aa2bc33_640.jpg",
-    //                 "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg"
-    //             ]
-    //         }
-    //     ]
+    // const getRefList = async () => {
+    //     const response = await reference_list(currSubjectID, currSemester);
+    //     setReferenceList(response.data);
     // };
+    // useEffect(() => {
+    //     getRefList();
+    // }, []);
+
+    const referenceList = {
+        "ref": [
+            {
+                "id": 112,
+                "sub_code": "H020-1-0019-02",
+                "professor_name": "이우신",
+                "title": "test",
+                "writer": "이우신",
+                "created_time": "2023-06-05",
+                "view": 1,
+                "semester": "2023-1",
+                "file_names": [
+                    "butterfly-ge8aa2bc33_640.jpg"
+                ]
+            },
+            {
+                "id": 113,
+                "sub_code": "H020-1-0019-02",
+                "professor_name": "이우신",
+                "title": "test",
+                "writer": "이우신",
+                "created_time": "2023-06-05",
+                "view": 1,
+                "semester": "2023-1",
+                "file_names": [
+                    "butterfly-ge8aa2bc33_640.jpg",
+                    "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg"
+                ]
+            }
+        ]
+    };
 
     const rows = [];
-    if(Object.keys(referenceList).length !== 0){
+    if(referenceList && referenceList.ref){
         for(let i = 0; i < referenceList.ref.length; i++){
             let file_exist = 0;
             if(referenceList.ref[i].file_names) file_exist = 1;
