@@ -34,17 +34,6 @@ const ReferenceList = () => {
     const subjectList = recvData.subjectList;
     const currSubjectID = recvData.currSubjectID;
 
-    // const handleChangeSubject = async (e) => {
-    //     const sendData = { "subject": e.target.value }
-    //     try{
-    //         const resp = await professor_change_main(sendData);
-    //         if(resp.status === 201){
-    //             setData(resp.data);
-    //         }
-    //     }
-    //     catch(err){console.log(err)}
-    // };
-
     const [page, setPage] = useState(0);
     const rowsPerPage = 5;
 
@@ -52,48 +41,16 @@ const ReferenceList = () => {
         setPage(newPage - 1);
     };
 
-    //const [referenceList, setReferenceList] = useState();
+    const [referenceList, setReferenceList] = useState();
 
-    // const getRefList = async () => {
-    //     const response = await reference_list(currSubjectID, currSemester);
-    //     setReferenceList(response.data);
-    // };
-    // useEffect(() => {
-    //     getRefList();
-    // }, []);
-
-    const referenceList = {
-        "ref": [
-            {
-                "id": 112,
-                "sub_code": "H020-1-0019-02",
-                "professor_name": "이우신",
-                "title": "test",
-                "writer": "이우신",
-                "created_time": "2023-06-05",
-                "view": 1,
-                "semester": "2023-1",
-                "file_names": [
-                    "butterfly-ge8aa2bc33_640.jpg"
-                ]
-            },
-            {
-                "id": 113,
-                "sub_code": "H020-1-0019-02",
-                "professor_name": "이우신",
-                "title": "test",
-                "writer": "이우신",
-                "created_time": "2023-06-05",
-                "view": 1,
-                "semester": "2023-1",
-                "file_names": [
-                    "butterfly-ge8aa2bc33_640.jpg",
-                    "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg"
-                ]
-            }
-        ]
+    const getRefList = async () => {
+        const response = await reference_list(currSubjectID, currSemester);
+        setReferenceList(response.data);
     };
-
+    useEffect(() => {
+        getRefList();
+    }, []);
+    
     const rows = [];
     if(referenceList && referenceList.ref){
         for(let i = 0; i < referenceList.ref.length; i++){
@@ -147,7 +104,6 @@ const ReferenceList = () => {
                         <Select
                             value={currSemester}
                             name="semester"
-                            //onChange={changeSemester}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
                         >
@@ -159,7 +115,6 @@ const ReferenceList = () => {
                         <Select
                             value={currSubject}
                             name="subject"
-                            //onChange={handleChangeSubject}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
                         >

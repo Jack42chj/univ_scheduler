@@ -24,8 +24,6 @@ const Lecture = () => {
     const currSubject = recvData.data.name;
     const currSubjectID = recvData.data.num;
     const subjectList = recvData.subjectList;
-    
-    //const handleChangeSubject = (e) => setSubject(e.target.value);
     const [lectureData] = useState({
         name: recvData.data.name,
         id: recvData.data.num,
@@ -101,7 +99,6 @@ const Lecture = () => {
                         <Select
                             value={currSemester}
                             name="semester"
-                            //onChange={changeSemester}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
                         >
@@ -113,7 +110,6 @@ const Lecture = () => {
                         <Select
                             value={currSubject}
                             name="subject"
-                            //onChange={handleChangeSubject}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
                         >

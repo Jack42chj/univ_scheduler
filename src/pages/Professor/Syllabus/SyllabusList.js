@@ -29,17 +29,6 @@ const SyllabusList = () => {
     const subjectList = recvData.subjectList;
     const currSubjectID = recvData.currSubjectID;
     const lectureData = recvData.lectureData;
-    
-    // const handleChangeSubject = async (e) => {
-    //     const sendData = { "subject": e.target.value }
-    //     try{
-    //         const resp = await professor_change_main(sendData);
-    //         if(resp.status === 201){
-    //             setData(resp.data);
-    //         }
-    //     }
-    //     catch(err){console.log(err)}
-    // };
 
     const [syllabusList, setSyllabusList] = useState();
 
@@ -50,16 +39,6 @@ const SyllabusList = () => {
     useEffect(() => {
         getSyllabusList();
     }, []);
-
-    //const syllabusList = {};
-    // const syllabusList = {
-    //     "syllabus": {
-    //         "sub_code": "H020-1-0019-02",
-    //         "subject_name": "데이터구조설계",
-    //         "time": "월3수4",
-    //         "class": "새빛302호",
-    //     },
-    // };
 
     const rows = [];
     if(syllabusList && syllabusList.syllabus){
@@ -102,7 +81,6 @@ const SyllabusList = () => {
                         <Select
                             value={currSemester}
                             name="semester"
-                            //onChange={changeSemester}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
                         >
@@ -114,7 +92,6 @@ const SyllabusList = () => {
                         <Select
                             value={currSubject}
                             name="subject"
-                            //onChange={handleChangeSubject}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
                         >

@@ -27,19 +27,6 @@ const ReadReference = () => {
     const date = recvData.date;
     const view = recvData.view;
 
-    // const refData = {
-    //     "lecture_material": {
-    //         "title": "test",
-    //         "content": "test content",
-    //     },
-    //     "file": {
-    //         "file_name": [
-    //             "butterfly-ge8aa2bc33_640.jpg",
-    //             "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg",
-    //         ],
-    //     },
-    // };
-
     const [refData, setRefData] = useState();
 
     const getRefData = async () => {

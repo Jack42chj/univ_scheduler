@@ -23,32 +23,15 @@ const EditSyllabus = () => {
     const lectureData = recvData.lectureData;
     const [complete, setComplete] = useState("");
 
-    // const [sylData, setSylData] = useState();
+    const [sylData, setSylData] = useState();
 
-    // const getSylData = async () => {
-    //     const response = await syllabus_read(currSubjectID, currSemester);
-    //     getSylData(response.data);
-    // };
-    // useEffect(() => {
-    //     getSylData();
-    // }, []);
-
-    const sylData = {
-        "syllabus": {
-            "assistant_name": "김동주",
-            "course_summary": "곰 세마리의 역할을 배워보자",
-            "course_performance": "곰 세마리를 이해하고 최종 곰 네마리까지",
-            "operation_type": "대면 100%",
-            "evaluation_method_ratio": "과제 30 출석 10 중간 30 기말 30",
-            "credit": "3학점",
-            "phone_number": "010-2020-2020",
-            "email": "asd@asd.com",
-            "professor_name": "이우신",
-            "textbook": "곰 세마리가 한집에 있다",
-            "lec_schedule": "1주차 수업 \n 2주차 수업",
-            "classification": "교양 필수",
-        },
+    const getSylData = async () => {
+        const response = await syllabus_read(currSubjectID, currSemester);
+        getSylData(response.data);
     };
+    useEffect(() => {
+        getSylData();
+    }, []);
 
     const ess = sylData ? sylData.syllabus.classification : null;
     const grade = sylData ? sylData.syllabus.credit : null;
