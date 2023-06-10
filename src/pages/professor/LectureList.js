@@ -5,7 +5,7 @@ import HeaderPro from "../../components/Header/HeaderPro";
 import Row from "../../components/Stack/Row";
 import BgcolorStack from "../../components/Stack/BackgroundStack";
 import ContentText from "../../components/Input/ContentText";
-import { professor_change_main, professor_main } from "../../services/userServices";
+import { professor_change_main, professor_main } from "../../services/proServices";
 import { useNavigate } from "react-router-dom";
 
 const columns = [

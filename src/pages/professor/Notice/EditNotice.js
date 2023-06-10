@@ -7,7 +7,7 @@ import Row from "../../../components/Stack/Row";
 import HeaderPro from "../../../components/Header/HeaderPro";
 import ContentText from "../../../components/Input/ContentText";
 import AuthFormText from "../../../components/Input/AuthFormText";
-import { notice_update } from "../../../services/userServices";
+import { notice_update } from "../../../services/proServices";
 import { useLocation, useNavigate } from "react-router-dom";
 import { checkTrim } from "../../../utils/Trim";
 

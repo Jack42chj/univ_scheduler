@@ -17,7 +17,8 @@ import WriteReference from "./pages/Professor/Reference/WriteReference";
 import SyllabusList from "./pages/Professor/Syllabus/SyllabusList";
 import WriteSyllabus from "./pages/Professor/Syllabus/WriteSyllabus";
 import EditSyllabus from "./pages/Professor/Syllabus/EditSyllabus";
-import MuiTheme from "./styles/muiTheme";
+import AssignmentList from "./pages/Professor/Assignment/AssignmentList";
+import MuiTheme from "./styles/MuiTheme";
 import { ThemeProvider } from "@emotion/react";
 
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
           <Route path = "/professor/read_ref/:sem/:sub_id/:noti_id" element={<ReadReference />} />
           <Route path = "/professor/edit_ref/:sem/:sub_id/:noti_id" element={<EditReference />} />
           <Route path = "/professor/write_ref/:sem/:sub_id" element={<WriteReference />} />
+          <Route path = "/professor/assign_list/:sem/:sub_id" element={<AssignmentList />} />
         </Routes>
       </ThemeProvider> 
     </>

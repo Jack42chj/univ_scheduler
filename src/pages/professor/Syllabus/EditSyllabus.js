@@ -1,5 +1,5 @@
 import { MenuItem, Select } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BackgroundStack from "../../../components/Stack/BackgroundStack";
 import OuterBox from "../../../components/Box/OuterBox";
 import CommonButton from "../../../components/Button/CommonButton";
@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { checkTrim } from "../../../utils/Trim";
 import FieldText from "../../../components/Input/FieldText";
 import AuthFormText from "../../../components/Input/AuthFormText";
+import { syllabus_update } from "../../../services/proServices";
 
 const EditSyllabus = () => {
     const navigate = useNavigate();
@@ -22,51 +23,75 @@ const EditSyllabus = () => {
     const lectureData = recvData.lectureData;
     const [complete, setComplete] = useState("");
 
-    const editData = {
+    // const [sylData, setSylData] = useState();
+
+    // const getSylData = async () => {
+    //     const response = await syllabus_read(currSubjectID, currSemester);
+    //     getSylData(response.data);
+    // };
+    // useEffect(() => {
+    //     getSylData();
+    // }, []);
+
+    const sylData = {
         "syllabus": {
-            "ess": "전필",
+            "assistant_name": "김동주",
+            "course_summary": "곰 세마리의 역할을 배워보자",
+            "course_performance": "곰 세마리를 이해하고 최종 곰 네마리까지",
+            "operation_type": "대면 100%",
+            "evaluation_method_ratio": "과제 30 출석 10 중간 30 기말 30",
             "credit": "3학점",
-            "phone_number": "010-1234-1234",
-            "email": "asd@naver.com",
+            "phone_number": "010-2020-2020",
+            "email": "asd@asd.com",
             "professor_name": "이우신",
-            "assistant_name": "홍길동",
-            "course_summary": "소개",
-            "course_performance": "성과",
-            "operation_type": "깐깐",
-            "book": "곰 세마리가 한집에 있어",
-            "evaluation_method_ratio": "시험 100%",
-            "schedule": "대면수업",
+            "textbook": "곰 세마리가 한집에 있다",
+            "lec_schedule": "1주차 수업 \n 2주차 수업",
+            "classification": "교양 필수",
         },
     };
 
-    //const [editData, setEditData] = useState();
-
-    // const getEditData = async () => {
-    //     const response = await notice_read(currSubjectID, currSemester, noticeID);
-    //     setEditData(response.data);
-    // };
-    // useEffect(() => {
-    //     getEditData();
-    // }, []);
-
-    const ess = editData ? editData.syllabus.ess : null;
-    const grade = editData ? editData.syllabus.credit : null;
-    const ph_num = editData ? editData.syllabus.phone_number : null;
-    const email = editData ? editData.syllabus.email : null;
-    const pro_name = editData ? editData.syllabus.professor_name : null;
-    const ta_name = editData ? editData.syllabus.assistant_name : null;
-    const intro = editData ? editData.syllabus.course_summary : null;
-    const achiev = editData ? editData.syllabus.course_performance : null;
-    const rule = editData ? editData.syllabus.operation_type : null;
-    const book = editData ? editData.syllabus.book : null;
-    const ratio = editData ? editData.syllabus.evaluation_method_ratio : null;
-    const schedule = editData ? editData.syllabus.schedule : null;
+    const ess = sylData ? sylData.syllabus.classification : null;
+    const grade = sylData ? sylData.syllabus.credit : null;
+    const ph_num = sylData ? sylData.syllabus.phone_number : null;
+    const email = sylData ? sylData.syllabus.email : null;
+    const pro_name = sylData ? sylData.syllabus.professor_name : null;
+    const ta_name = sylData ? sylData.syllabus.assistant_name : null;
+    const intro = sylData ? sylData.syllabus.course_summary : null;
+    const achiev = sylData ? sylData.syllabus.course_performance : null;
+    const rule = sylData ? sylData.syllabus.operation_type : null;
+    const book = sylData ? sylData.syllabus.textbook : null;
+    const ratio = sylData ? sylData.syllabus.evaluation_method_ratio : null;
+    const schedule = sylData ? sylData.syllabus.lec_schedule : null;
 
     const onhandlePost = async(data) => {
+        console.log(data);
         try{
-            console.log(data);
-        } catch (error) {
-            console.error(error);
+            const response = await syllabus_update(currSubjectID, currSemester, data);
+            if(response.status === 201){
+                console.log("강의계획서 수정 성공!");
+                navigate(`/professor/syllabus_list/${currSemester}/${currSubjectID}`, {
+                    state: {
+                        "currSemester": currSemester,
+                        "currSubject" : currSubject,
+                        "semesterList" : semesterList,
+                        "subjectList" : subjectList,
+                        "currSubjectID": currSubjectID,
+                        "lectureData": lectureData
+                    }
+                }
+            );}
+            else if(response.status === 401){
+                console.log("잘못된 access 토큰!");
+                navigate("/");
+            }
+            else if(response.status === 419){
+                console.log("access 토큰 만료!");
+                navigate("/");
+            }
+            else
+                alert(response.data);
+        } catch (err) {
+            console.log(err);
         }
     };
 

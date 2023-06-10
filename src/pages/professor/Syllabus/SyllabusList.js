@@ -1,13 +1,13 @@
 import { MenuItem, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { notice_list } from "../../../services/userServices";
 import HeaderPro from "../../../components/Header/HeaderPro";
 import BgcolorStack from "../../../components/Stack/BackgroundStack";
 import OuterBox from "../../../components/Box/OuterBox";
 import Row from "../../../components/Stack/Row";
 import ContentText from "../../../components/Input/ContentText";
 import CommonButton from "../../../components/Button/CommonButton";
+import { syllabus_list } from "../../../services/proServices";
 
 const columns = [
     { id: "sub_code", label: "학정번호"},
@@ -41,10 +41,10 @@ const SyllabusList = () => {
     //     catch(err){console.log(err)}
     // };
 
-    //const [syllabusList, setSyllabusList] = useState();
+    // const [syllabusList, setSyllabusList] = useState();
 
     // const getSyllabusList = async () => {
-    //     const response = await (currSubjectID, currSemester);
+    //     const response = await syllabus_list(currSubjectID, currSemester);
     //     setSyllabusList(response.data);
     // };
     // useEffect(() => {

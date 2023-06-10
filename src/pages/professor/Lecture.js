@@ -57,16 +57,17 @@ const Lecture = () => {
         navigate(url, { state: sendRefData });
     };
 
-    // const handleClickAssign = (data) => {
-    //     const url = `/professor/notice_list/${lectureData.id}/${currSemester}`;
-    //     const sendData = {
-    //         "currSemester": currSemester,
-    //         "semesterList": semesterList,
-    //         "subjectList": subjectList,
-    //         data
-    //     };
-    //     navigate(url, { state: sendData });
-    // };
+    const handleClickAssign = (data) => {
+        const url = `/professor/assign_list/${currSemester}/${currSubjectID}`;
+        const sendData = {
+            "currSemester": currSemester,
+            "semesterList": semesterList,
+            "subjectList": subjectList,
+            "currSubject": currSubject,
+            "currSubjectID" : currSubjectID,
+        };
+        navigate(url, { state: sendData });
+    };
 
     const handleClickSyl = () => {
         const url = `/professor/syl_list/${currSemester}/${currSubjectID}`;
@@ -185,7 +186,7 @@ const Lecture = () => {
                             <InnerBox sx={{ p: 2 }}>
                                 <Row>
                                     <ContentText variant="h5">과제</ContentText>
-                                    <IconButton sx={{ color: "#FCDEC0"}} href="/professor/notice_list"><AddIcon fontSize="large"/></IconButton>
+                                    <IconButton sx={{ color: "#FCDEC0"}} onClick={handleClickAssign}><AddIcon fontSize="large"/></IconButton>
                                 </Row>
                                 <Divider />
                                 {Object.keys(NoticeList).map((list, index) => (
@@ -262,7 +263,7 @@ const Lecture = () => {
                         <InnerBox sx={{ p: 3 }}>
                             <Row>
                                 <ContentText variant="h5">과제</ContentText>
-                                <IconButton sx={{ color: "#FCDEC0"}} href="/professor/notice_list"><AddIcon fontSize="large"/></IconButton>
+                                <IconButton sx={{ color: "#FCDEC0"}} onClick={handleClickAssign}><AddIcon fontSize="large"/></IconButton>
                             </Row>
                             <Divider />
                             {Object.keys(NoticeList).map((list, index) => (

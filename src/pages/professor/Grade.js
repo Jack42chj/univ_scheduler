@@ -6,7 +6,7 @@ import Row from "../../components/Stack/Row";
 import HeaderPro from "../../components/Header/HeaderPro";
 import CommonButton from "../../components/Button/CommonButton";
 import ContentText from "../../components/Input/ContentText";
-import { grade_enter, grade_list } from "../../services/userServices";
+import { grade_enter, grade_list } from "../../services/proServices";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const scoreOptions = [

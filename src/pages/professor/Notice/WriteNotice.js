@@ -6,7 +6,7 @@ import CommonButton from "../../../components/Button/CommonButton";
 import Row from "../../../components/Stack/Row";
 import HeaderPro from "../../../components/Header/HeaderPro";
 import ContentText from "../../../components/Input/ContentText";
-import { notice_write } from "../../../services/userServices";
+import { notice_write } from "../../../services/proServices";
 import AuthFormText from "../../../components/Input/AuthFormText";
 import { checkTrim } from "../../../utils/Trim";
 import { useLocation, useNavigate } from "react-router-dom";

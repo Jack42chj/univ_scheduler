@@ -35,10 +35,6 @@ const AssignmentList = () => {
     const subjectList = recvData.subjectList;
     const currSubjectID = recvData.currSubjectID;
 
-    const changeSemester = (e) => {
-        handleChangeSemester(e);
-        navigate("/professor/main");
-    };
     //     const handleChangeSubject = async (e) => {
     //     const sendData = { "subject": e.target.value }
     //     try{
@@ -155,7 +151,7 @@ const AssignmentList = () => {
                         <Select
                             value={currSemester}
                             name="semester"
-                            onChange={changeSemester}
+                            //onChange={changeSemester}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
                         >

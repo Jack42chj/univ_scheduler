@@ -13,7 +13,7 @@ import ProLoginLogo from "../../assets/ProLoginLogo.jpg";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BgcolorStack from "../../components/Stack/BackgroundStack";
 import { useNavigate } from "react-router-dom";
-import { professor_checkid, professor_signup } from "../../services/userServices";
+import { professor_checkid, professor_signup } from "../../services/proServices";
 import { checkTrim } from "../../utils/Trim";
 import { checkEmail, checkID, checkPassword, checkPhone } from "../../utils/Regex";
 

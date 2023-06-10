@@ -10,7 +10,7 @@ import ContentText from "../../components/Input/ContentText";
 import BgcolorStack from "../../components/Stack/BackgroundStack";
 import { checkTrim } from "../../utils/Trim";
 import AuthFormText from "../../components/Input/AuthFormText";
-import { student_info } from "../../services/userServices";
+import { student_info } from "../../services/proServices";
 import { useNavigate } from "react-router-dom";
 
 const CollegeList = [

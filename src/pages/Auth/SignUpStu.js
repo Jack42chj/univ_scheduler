@@ -13,7 +13,7 @@ import StudentLoginLogo from "../../assets/StudentLoginLogo.jpg";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BgcolorStack from "../../components/Stack/BackgroundStack";
 import { useNavigate } from "react-router-dom";
-import { student_checkid, student_signup } from "../../services/userServices";
+import { student_checkid, student_signup } from "../../services/sdtServices";
 import { checkTrim } from "../../utils/Trim";
 import { checkEmail, checkID, checkPassword, checkPhone } from "../../utils/Regex";
 

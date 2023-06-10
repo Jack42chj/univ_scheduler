@@ -8,9 +8,10 @@ import HeaderPro from "../../../components/Header/HeaderPro";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ContentText from "../../../components/Input/ContentText";
 import { useLocation, useNavigate } from "react-router-dom";
-import { notice_delete, notice_download, notice_read } from "../../../services/userServices";
+import { notice_download, notice_read } from "../../../services/userServices";
 import FieldText from "../../../components/Input/FieldText";
 import Column from "../../../components/Stack/Column";
+import { notice_delete } from "../../../services/proServices";
 
 const ReadNotice = () => {
     const navigate = useNavigate();

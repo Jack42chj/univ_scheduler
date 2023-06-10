@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { checkTrim } from "../../../utils/Trim";
 import FieldText from "../../../components/Input/FieldText";
 import AuthFormText from "../../../components/Input/AuthFormText";
+import { syllabus_write } from "../../../services/proServices";
 
 const WriteSyllabus = () => {
     const navigate = useNavigate();
@@ -23,10 +24,34 @@ const WriteSyllabus = () => {
     const [complete, setComplete] = useState("");
 
     const onhandlePost = async(data) => {
+        console.log(data);
         try{
-            console.log(data);
-        } catch (error) {
-            console.error(error);
+            const response = await syllabus_write(currSubjectID, currSemester, data);
+            if(response.status === 201){
+                console.log("강의계획서 생성 성공!");
+                navigate(`/professor/syllabus_list/${currSemester}/${currSubjectID}`, {
+                    state: {
+                        "currSemester": currSemester,
+                        "currSubject" : currSubject,
+                        "semesterList" : semesterList,
+                        "subjectList" : subjectList,
+                        "currSubjectID": currSubjectID,
+                        "lectureData": lectureData
+                    }
+                }
+            );}
+            else if(response.status === 401){
+                console.log("잘못된 access 토큰!");
+                navigate("/");
+            }
+            else if(response.status === 419){
+                console.log("access 토큰 만료!");
+                navigate("/");
+            }
+            else
+                alert(response.data);
+        } catch (err) {
+            console.log(err);
         }
     };
 
