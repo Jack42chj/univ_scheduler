@@ -41,25 +41,25 @@ const SyllabusList = () => {
     //     catch(err){console.log(err)}
     // };
 
-    // const [syllabusList, setSyllabusList] = useState();
+    const [syllabusList, setSyllabusList] = useState();
 
-    // const getSyllabusList = async () => {
-    //     const response = await syllabus_list(currSubjectID, currSemester);
-    //     setSyllabusList(response.data);
-    // };
-    // useEffect(() => {
-    //     getSyllabusList();
-    // }, []);
+    const getSyllabusList = async () => {
+        const response = await syllabus_list(currSubjectID, currSemester);
+        setSyllabusList(response.data);
+    };
+    useEffect(() => {
+        getSyllabusList();
+    }, []);
 
     //const syllabusList = {};
-    const syllabusList = {
-        "syllabus": {
-            "sub_code": "H020-1-0019-02",
-            "subject_name": "데이터구조설계",
-            "time": "월3수4",
-            "class": "새빛302호",
-        },
-    };
+    // const syllabusList = {
+    //     "syllabus": {
+    //         "sub_code": "H020-1-0019-02",
+    //         "subject_name": "데이터구조설계",
+    //         "time": "월3수4",
+    //         "class": "새빛302호",
+    //     },
+    // };
 
     const rows = [];
     if(syllabusList && syllabusList.syllabus){
@@ -126,7 +126,7 @@ const SyllabusList = () => {
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center",}}>
                     <ContentText variant="h4">강의계획서</ContentText>
-                    { Object.keys(syllabusList).length !== 0 ? (
+                    { syllabusList ? (
                         <>
                             <TableContainer sx={{ width: "90%", py: 5}}>
                                 <Table stickyHeader>
