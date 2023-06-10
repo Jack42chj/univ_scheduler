@@ -10,7 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { checkTrim } from "../../../utils/Trim";
 import FieldText from "../../../components/Input/FieldText";
 import AuthFormText from "../../../components/Input/AuthFormText";
-import { syllabus_update } from "../../../services/proServices";
+import { syllabus_read, syllabus_update } from "../../../services/proServices";
 
 const EditSyllabus = () => {
     const navigate = useNavigate();
@@ -27,7 +27,7 @@ const EditSyllabus = () => {
 
     const getSylData = async () => {
         const response = await syllabus_read(currSubjectID, currSemester);
-        getSylData(response.data);
+        setSylData(response.data);
     };
     useEffect(() => {
         getSylData();

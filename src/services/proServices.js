@@ -92,6 +92,11 @@ export const syllabus_list = (sub_id, sem_id) => {
     return axios.get(`${BASE_URL}/syllabus/${sub_id}/${sem_id}/list`, {withCredentials:true});
 };
 
+//교수 강의계획서 목록 조회
+export const syllabus_read = (sub_id, sem_id) => {
+    return axios.get(`${BASE_URL}/syllabus/${sub_id}/${sem_id}`, {withCredentials:true});
+};
+
 //교수 강의계획서 작성
 export const syllabus_write = (sub_id, sem_id, sylData) => {
     return axios.post(`${BASE_URL}/syllabus/${sub_id}/${sem_id}/create`, sylData, {withCredentials:true});
