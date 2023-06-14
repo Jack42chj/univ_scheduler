@@ -28,7 +28,7 @@ const WriteReference = () => {
         try{
             const response = await reference_write(currSubjectID, currSemester, data);
             if(response.status === 201){
-                console.log("강의자료 생성 성공!");
+                alert("강의자료 생성 성공!");
                 navigate(`/professor/ref_list/${currSemester}/${currSubjectID}`, {
                     state: {
                         "currSemester": currSemester,

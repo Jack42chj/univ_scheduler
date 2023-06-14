@@ -7,6 +7,8 @@ import IconBtn from '../Button/IconsButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MyPage from '../Modal/MyPage';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../services/userServices';
 
 const listItem = [
     { link: "/professor/main", text: "강의 관리"},
@@ -14,6 +16,7 @@ const listItem = [
 ];
 
 const HeaderPro = () => {
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [myPageOpen, setMyPageOpen] = useState(false);
     const handleClick = () => {
@@ -21,6 +24,13 @@ const HeaderPro = () => {
     };
     const myPageHandleOpen = () => setMyPageOpen(true);
     const myPageHandleClose = () => setMyPageOpen(false);
+    const handleLogout = async() => {
+        const response = await logout();
+        if(response.status === 200){
+            alert("로그아웃!");
+            navigate("/");
+        }
+    };
 
     return( 
         <AppBar
@@ -56,7 +66,7 @@ const HeaderPro = () => {
                     <IconBtn onClick={myPageHandleOpen}>
                         <SettingsIcon />
                     </IconBtn>
-                    <IconBtn sx={{ mx: 1 }}>
+                    <IconBtn sx={{ mx: 1 }} onClick={handleLogout}>
                         <LogoutIcon />
                     </IconBtn>
                     <IconBtn onClick={handleClick}>

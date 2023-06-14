@@ -7,7 +7,7 @@ import Row from "../../../components/Stack/Row";
 import HeaderPro from "../../../components/Header/HeaderPro";
 import ContentText from "../../../components/Input/ContentText";
 import AuthFormText from "../../../components/Input/AuthFormText";
-import { notice_update } from "../../../services/proServices";
+import { assignment_update } from "../../../services/proServices";
 import { useLocation, useNavigate } from "react-router-dom";
 import { checkTrim } from "../../../utils/Trim";
 import { checkTime } from "../../../utils/Regex";
@@ -23,7 +23,7 @@ const EditAssignment = () => {
     const assignID = recvData.assignID;
     const title = recvData.title;
     const content = recvData.content;
-    const time = recvData.time;
+    const due_date = recvData.time;
 
     const [newTitle, setTitle] = useState("");
     const [newContent, setContent] = useState("");
@@ -32,7 +32,7 @@ const EditAssignment = () => {
 
     const onhandlePost = async (data) => {
         try{
-            const response = await notice_update(currSubjectID, currSemester, assignID, data);
+            const response = await assignment_update(currSubjectID, currSemester, assignID, data);
             if(response.status === 201){
                 alert("과제 수정 성공!");
                 navigate(`/professor/assign_list/${currSemester}/${currSubjectID}`, {
@@ -69,9 +69,9 @@ const EditAssignment = () => {
         const joinData = {
             title: formData.get("title"),
             content: formData.get("content"),
-            time: formData.get("time")
+            due_date: formData.get("due_date")
         };
-        const { time, title, content } = joinData;
+        const { due_date, title, content } = joinData;
 
         fileList.forEach(file => {
             formData.append('files', file);
@@ -83,10 +83,10 @@ const EditAssignment = () => {
         if (checkTrim(content)) setContent("");
         else setContent("내용을 입력하세요");
 
-        if (checkTime(time)) setTime("");
+        if (checkTime(due_date)) setTime("");
         else setTime("시간을 올바르게 입력하세요");
 
-        if (checkTrim(title) && checkTrim(content) && checkTime(time)) {
+        if (checkTrim(title) && checkTrim(content) && checkTime(due_date)) {
             onhandlePost(formData);
         }
     };
@@ -124,7 +124,7 @@ const EditAssignment = () => {
                         <AuthFormText>{newTitle}</AuthFormText>
                         <TextField label="내용" variant="outlined" name="content" multiline rows={18} sx={{ mt: 3, width: "100%" }} defaultValue={content} />
                         <AuthFormText>{newContent}</AuthFormText>
-                        <TextField label="제출기한 ex) 2023-12-31 15:00:00" variant="outlined" name="time" placeholder="" sx={{ mt: 3, width: "100%" }} />
+                        <TextField label="제출기한 ex) 2023-12-31 15:00:00" variant="outlined" name="time" sx={{ mt: 3, width: "100%" }} defaultValue={due_date}/>
                         <AuthFormText>{newTime}</AuthFormText>
                         <TextField variant="outlined" type="file" name="files" inputProps={{ multiple: true }} onChange={onChangeFile} sx={{ my: 3, width: "100%" }} />
                         <Row spacing={3} sx={{ justifyContent: "center" }}>

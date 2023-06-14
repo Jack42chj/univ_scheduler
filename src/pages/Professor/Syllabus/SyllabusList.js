@@ -33,8 +33,19 @@ const SyllabusList = () => {
     const [syllabusList, setSyllabusList] = useState("");
 
     const getSyllabusList = async () => {
-        const response = await syllabus_list(currSubjectID, currSemester);
-        setSyllabusList(response.data);
+        try{
+            const response = await syllabus_list(currSubjectID, currSemester);
+            if(response.status === 201){
+                setSyllabusList(response.data);
+            }
+        } catch (err) {
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
+        }
     };
     useEffect(() => {
         getSyllabusList();

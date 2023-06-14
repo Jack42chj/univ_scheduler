@@ -44,19 +44,31 @@ const ReferenceList = () => {
     const [referenceList, setReferenceList] = useState();
 
     const getRefList = async () => {
-        const response = await reference_list(currSubjectID, currSemester);
-        setReferenceList(response.data);
+        try{
+            const response = await reference_list(currSubjectID, currSemester);
+            if(response.status === 201){
+                setReferenceList(response.data);
+            }
+        } catch (err) {
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
+        }
     };
     useEffect(() => {
         getRefList();
     }, []);
     
     const rows = [];
-    if(referenceList && referenceList.ref){
-        for(let i = 0; i < referenceList.ref.length; i++){
+    if(referenceList && referenceList.lecture_material){
+        const list = referenceList.lecture_material;
+        for(let i = 0; i < list.length; i++){
             let file_exist = 0;
-            if(referenceList.ref[i].file_names) file_exist = 1;
-            rows.push(createData(referenceList.ref[i].id, referenceList.ref[i].title, file_exist , referenceList.ref[i].writer, referenceList.ref[i].created_time, referenceList.ref[i].view));
+            if(list[i].file_names[0] !== null) file_exist = 1;
+            rows.push(createData(list[i].id, list[i].title, file_exist , list[i].writer, list[i].created_time, list[i].view));
         };
     };
 

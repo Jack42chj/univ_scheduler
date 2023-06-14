@@ -44,8 +44,19 @@ const NoticeList = () => {
     const [noticeList, setNoticeList] = useState();
 
     const getNoticeList = async () => {
-        const response = await notice_list(currSubjectID, currSemester);
-        setNoticeList(response.data);
+        try{
+            const response = await notice_list(currSubjectID, currSemester);
+            if(response.status === 201){
+                setNoticeList(response.data);
+            }
+        } catch (err) {
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
+        }
     };
     useEffect(() => {
         getNoticeList();
@@ -55,7 +66,7 @@ const NoticeList = () => {
     if(noticeList && noticeList.notice){
         for(let i = 0; i < noticeList.notice.length; i++){
             let file_exist = 0;
-            if(noticeList.notice[i].file_names) file_exist = 1;
+            if(noticeList.notice[i].file_names[0] !== null) file_exist = 1;
             rows.push(createData(noticeList.notice[i].id, noticeList.notice[i].title, file_exist , noticeList.notice[i].writer, noticeList.notice[i].created_time, noticeList.notice[i].view));
         };
     };

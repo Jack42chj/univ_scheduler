@@ -30,8 +30,19 @@ const ReadNotice = () => {
     const [readData, setReadData] = useState();
 
     const getNoticeData = async () => {
-        const response = await notice_read(currSubjectID, currSemester, noticeID);
-        setReadData(response.data);
+        try{
+            const response = await notice_read(currSubjectID, currSemester, noticeID);
+            if(response.status === 201){
+                setReadData(response.data);
+            }
+        } catch (err) {
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
+        }
     };
     useEffect(() => {
         getNoticeData();

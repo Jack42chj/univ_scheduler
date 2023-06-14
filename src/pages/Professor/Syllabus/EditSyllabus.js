@@ -25,8 +25,19 @@ const EditSyllabus = () => {
     const [sylData, setSylData] = useState();
 
     const getSylData = async () => {
-        const response = await syllabus_read(currSubjectID, currSemester);
-        setSylData(response.data);
+        try{
+            const response = await syllabus_read(currSubjectID, currSemester);
+            if(response.status === 201){
+                setSylData(response.data);
+            }
+        } catch (err) {
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
+        }
     };
     useEffect(() => {
         getSylData();
@@ -46,7 +57,6 @@ const EditSyllabus = () => {
     const schedule = sylData ? sylData.lec_schedule : null;
 
     const onhandlePost = async(data) => {
-        console.log(data);
         try{
             const response = await syllabus_update(currSubjectID, currSemester, data);
             if(response.status === 201){

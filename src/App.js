@@ -47,7 +47,7 @@ const App = () => {
           <Route path = "/professor/read_ref/:sem/:sub_id/:ref_id" element={<ReadReference />} />
           <Route path = "/professor/edit_ref/:sem/:sub_id/:ref_id" element={<EditReference />} />
           <Route path = "/professor/write_ref/:sem/:sub_id" element={<WriteReference />} />
-          <Route path = "/professor/assign_list" element={<AssignmentList />} />
+          <Route path = "/professor/assign_list/:sem/:sub_id" element={<AssignmentList />} />
           <Route path = "/professor/write_assign/:sem/:sub_id" element={<WriteAssignment />} />
           <Route path = "/professor/read_assign/:sem/:sub_id/:assign_id" element={<ReadAssignment />} />
           <Route path = "/professor/edit_assign/:sem/:sub_id/:assign_id" element={<EditAssignment />} />

@@ -44,70 +44,45 @@ const Grade = () => {
       setPage(newPage - 1);
     };
 
+    const [rows, setRows] = useState([]);
     const [gradeData, setGradeData] = useState([]);
 
     const getGradeData = async () => {
-        const response = await grade_list(currSubjectID, currSemester);
-        setGradeData(response.data);
+        try{
+            const response = await grade_list(currSubjectID, currSemester);
+            if(response.status === 201){
+                setGradeData(response.data);
+                setRows(
+                    response.data.board.map((row) =>
+                        createData(row.major, row.student_name, row.student_id, row.grade)
+                    )
+                );
+            }
+        } catch (err) {
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }       
+        }
     }
     useEffect(() => {
         getGradeData();
     }, []);
-
-    // const [gradeData] = useState({
-    //     "board": [
-    //         {
-    //             "student_id": "2020202020",
-    //             "grade": "A+",
-    //             "student_name": "관우",
-    //             "major": "컴퓨터정보공학부",
-    //         },
-    //         {
-    //             "student_id": "2020202020",
-    //             "grade": "B+",
-    //             "student_name": "장비",
-    //             "major": "컴퓨터정보공학부",
-    //         },
-    //         {
-    //             "student_id": "2020202020",
-    //             "grade": "C+",
-    //             "student_name": "유비",
-    //             "major": "컴퓨터정보공학부",
-    //         },
-    //         {
-    //             "student_id": "2020202020",
-    //             "grade": "",
-    //             "student_name": "황충",
-    //             "major": "컴퓨터정보공학부",
-    //         },
-    //         {
-    //             "student_id": "2020202020",
-    //             "grade": "",
-    //             "student_name": "마초",
-    //             "major": "컴퓨터정보공학부",
-    //         },
-    //         {
-    //             "student_id": "2020202020",
-    //             "grade": "D0",
-    //             "student_name": "조운",
-    //             "major": "컴퓨터정보공학부",
-    //         },
-    //         {
-    //             "student_id": "2020202020",
-    //             "grade": "",
-    //             "student_name": "방통",
-    //             "major": "컴퓨터정보공학부",
-    //         },
-    //     ],
-    // });
     
     const handleGrade = async (postGrade) => {
-        console.log(postGrade);
+        const transformData = {
+            student_id: postGrade.map((item) => item.id),
+            grade: postGrade.map((item) => item.score),
+        };
         try{
-            const response = await grade_enter(currSubjectID, currSemester, postGrade);
+            const response = await grade_enter(currSubjectID, currSemester, transformData);
             if(response.status === 201){
                 alert("성적 저장 완료!");
             }
+            else
+                alert(response.data);
         } catch (err) {
             if (err.response && err.response.status.toString().startswith('4')) {
                 alert('로그인 시간 만료.');
@@ -117,10 +92,6 @@ const Grade = () => {
             }
         }
     };
-
-    const [rows, setRows] = useState(
-        gradeData.board.map((row) => createData(row.major, row.student_name, row.student_id, row.grade))
-    );
 
     return(
         <>
@@ -139,46 +110,49 @@ const Grade = () => {
                                     ))}
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
-                                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, idx) => {
-                                    const rowIndex = page * rowsPerPage + idx;
-                                    return(
-                                        <TableRow key={rowIndex}>
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                return (    
-                                                    <TableCell key={column.id} align="center">
-                                                        {column.id === "score" ? (
-                                                            <Select
-                                                                value={value}
-                                                                name="score"
-                                                                onChange={(e) => {
-                                                                    const updatedScore = e.target.value;
-                                                                    const updatedRows = [...rows];
-                                                                    updatedRows[rowIndex][column.id] = updatedScore;
-                                                                    setRows(updatedRows);
-                                                                }}
-                                                                sx={{ height: "48px", width: { md: "55%", xs: "70%" }, mx: { xs: 2 }}}
-                                                            >
-                                                                <MenuItem value="">학점</MenuItem>
-                                                                {scoreOptions.map((score) => (
-                                                                    <MenuItem key={score.value} value={score.value}>
-                                                                        {score.value}
-                                                                    </MenuItem>
-                                                                ))}
-                                                            </Select>
-                                                        ) : (
-                                                            value
-                                                        )}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    );
-                                })}
-                            </TableBody>
+                            
                         </Table>
                     </TableContainer>
+                    { gradeData && gradeData.board && (
+                        <TableBody>
+                            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, idx) => {
+                            const rowIndex = page * rowsPerPage + idx;
+                                return(
+                                    <TableRow key={rowIndex}>
+                                        {columns.map((column) => {
+                                            const value = row[column.id];
+                                            return (    
+                                                <TableCell key={column.id} align="center">
+                                                    {column.id === "score" ? (
+                                                        <Select
+                                                            value={value}
+                                                            name="score"
+                                                            onChange={(e) => {
+                                                                const updatedScore = e.target.value;
+                                                                const updatedRows = [...rows];
+                                                                updatedRows[rowIndex][column.id] = updatedScore;
+                                                                setRows(updatedRows);
+                                                            }}
+                                                            sx={{ height: "48px", width: { md: "55%", xs: "70%" }, mx: { xs: 2 }}}
+                                                        >
+                                                            <MenuItem value="">학점</MenuItem>
+                                                            {scoreOptions.map((score) => (
+                                                                <MenuItem key={score.value} value={score.value}>
+                                                                    {score.value}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select>
+                                                    ) : (
+                                                        value
+                                                    )}
+                                                </TableCell>
+                                            );
+                                        })}
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    )}
                     <Pagination
                         count={Math.ceil(rows.length / rowsPerPage)}
                         page={page + 1}

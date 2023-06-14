@@ -66,9 +66,9 @@ const WriteAssignment = () => {
         const joinData = {
             title: formData.get("title"),
             content: formData.get("content"),
-            time: formData.get("time")
+            due_date: formData.get("due_date")
         };
-        const { title, content, time } = joinData;
+        const { title, content, due_date } = joinData;
 
         fileList.forEach(file => {
             formData.append('files', file);
@@ -80,10 +80,10 @@ const WriteAssignment = () => {
         if (checkTrim(content)) setContent("");
         else setContent("내용을 입력하세요");
 
-        if (checkTime(time)) setTime("");
+        if (checkTime(due_date)) setTime("");
         else setTime("시간을 올바르게 입력하세요");
 
-        if (checkTrim(title) && checkTrim(content) && checkTime(time)) {
+        if (checkTrim(title) && checkTrim(content) && checkTime(due_date)) {
             onhandlePost(formData);
         }
     };
@@ -121,7 +121,7 @@ const WriteAssignment = () => {
                         <AuthFormText>{title}</AuthFormText>
                         <TextField label="내용" variant="outlined" name="content" multiline rows={18} sx={{ mt: 3, width: "100%" }} />
                         <AuthFormText>{content}</AuthFormText>
-                        <TextField label="제출기한 ex) 2023-12-31 15:00:00" variant="outlined" name="due_date" placeholder="" sx={{ mt: 3, width: "100%" }} />
+                        <TextField label="제출기한 ex) 2023-12-31 15:00:00" variant="outlined" name="due_date" sx={{ mt: 3, width: "100%" }} />
                         <AuthFormText>{due_date}</AuthFormText>
                         <TextField variant="outlined" type="file" name="files" inputProps={{ multiple: true }} onChange={onChangeFile} sx={{ my: 3, width: "100%" }} />
                         <Row spacing={3} sx={{ justifyContent: "center" }}>

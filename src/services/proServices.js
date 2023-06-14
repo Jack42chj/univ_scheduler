@@ -79,12 +79,12 @@ export const student_info = (infoData) => {
 
 //교수 성적 입력 불러오기
 export const grade_list = (sub_id, sem_id) => {
-    return axios.get(`${BASE_URL}/${sub_id}/${sem_id}`, {withCredentials:true});
+    return axios.get(`${BASE_URL}/grade_entry/${sub_id}/${sem_id}`, {withCredentials:true});
 };
 
 //교수 성적 입력
 export const grade_enter = (sub_id, sem_id, gradeData) => {
-    return axios.post(`${BASE_URL}/${sub_id}/${sem_id}`, gradeData, {withCredentials:true});
+    return axios.post(`${BASE_URL}/grade_entry/${sub_id}/${sem_id}`, gradeData, {withCredentials:true});
 };
 
 //교수 강의계획서 목록 조회

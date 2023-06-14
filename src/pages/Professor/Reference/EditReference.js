@@ -29,9 +29,9 @@ const EditReference = () => {
 
     const onhandlePost = async (data) => {
         try{
-            const response = await reference_update(currSemester, currSubjectID, refID, data);
+            const response = await reference_update(currSubjectID, currSemester, refID, data);
             if(response.status === 201){
-                console.log("강의자료 수정 성공!");
+                alert("강의자료 수정 성공!");
                 navigate(`/professor/ref_list/${currSemester}/${currSubjectID}`, {
                     state: {
                         "currSemester": currSemester,

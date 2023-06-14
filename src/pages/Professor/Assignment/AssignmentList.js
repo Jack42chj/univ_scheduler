@@ -23,16 +23,11 @@ function createData(num ,title, creat_time, due_time) {
 const AssignmentList = () => {
     const navigate = useNavigate();
     const recvData = useLocation().state;
-    // const currSemester = recvData.currSemester;
-    // const semesterList = recvData.semesterList;
-    // const currSubject = recvData.currSubject;
-    // const subjectList = recvData.subjectList;
-    // const currSubjectID = recvData.currSubjectID;
-    const currSemester = '2022-3';
-    const semesterList = ['2023-1'];
-    const currSubject = 'asd';
-    const subjectList = ['asd'];
-    const currSubjectID = ['123123-123123'];
+    const currSemester = recvData.currSemester;
+    const semesterList = recvData.semesterList;
+    const currSubject = recvData.currSubject;
+    const subjectList = recvData.subjectList;
+    const currSubjectID = recvData.currSubjectID;
 
     const [page, setPage] = useState(0);
     const rowsPerPage = 5;
@@ -40,32 +35,26 @@ const AssignmentList = () => {
       setPage(newPage - 1);
     };
 
-    // const [assignList, setAssignList] = useState();
+    const [assignList, setAssignList] = useState();
 
-    // const getAssignList = async () => {
-    //     const response = await assignment_list(currSubjectID, currSemester);
-    //     setAssignList(response.data);
-    // };
-    // useEffect(() => {
-    //     getAssignList();
-    // }, []);
-
-    const assignList = {
-        "assignment": [
-            {
-                "id": 113,
-                "title": "test",
-                "start_date": "2023-06-05 12:00:00",
-                "due_date" : "2023-12-24 12:00:00",
-            },
-            {
-                "id": 123,
-                "title": "test",
-                "start_date": "2023-06-05 12:00:00",
-                "due_date" : "2023-12-24 12:00:00",
-            },
-        ]
+    const getAssignList = async () => {
+        try{
+            const response = await assignment_list(currSubjectID, currSemester);
+            if(response.status === 201){
+                setAssignList(response.data);
+            }
+        } catch (err) {
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
+        }
     };
+    useEffect(() => {
+        getAssignList();
+    }, []);
 
     const rows = [];
     if(assignList && assignList.assignment){

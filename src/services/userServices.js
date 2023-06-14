@@ -7,6 +7,11 @@ export const signin = (loginData) => {
     return axios.post(`${BASE_URL}/login`, loginData, {withCredentials:true});
 };
 
+//로그아웃
+export const logout = () => {
+    return axios.get(`${BASE_URL}/logout`, {withCredentials:true});
+};
+
 //아이디 찾기
 export const find_id = (accountData) => {
     return axios.post(`${BASE_URL}/login/find_id`, accountData);

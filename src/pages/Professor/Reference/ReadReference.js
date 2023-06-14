@@ -30,8 +30,19 @@ const ReadReference = () => {
     const [refData, setRefData] = useState();
 
     const getRefData = async () => {
-        const response = await reference_read(currSubjectID, currSemester);
-        setRefData(response.data);
+        try{
+            const response = await reference_read(currSubjectID, currSemester, refID);
+            if(response.status === 201){
+                setRefData(response.data);
+            }
+        } catch (err) {
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
+        }
     };
     useEffect(() => {
         getRefData();
@@ -128,7 +139,7 @@ const ReadReference = () => {
                         <ContentText variant="h6" sx={{ color: "#FA9A00" }}>조회수: {view}</ContentText>
                     </Row>
                     <FieldText label="제목" name="title" variant="outlined" sx={{ my: 3, width: "80%" }} defaultValue={title} disabled/>
-                    <FieldText label="내용" name="content" variant="outlined" multiline rows={18} sx={{ width: "80%" }} defaultValue={content} disabled/>
+                    <FieldText label="내용" name="content" variant="outlined" multiline rows={18} sx={{ width: "80%" }} InputLabelProps={{ shrink: true }} defaultValue={content} disabled/>
                     <Column sx={{ justifyContent: "flex-start" }}>
                         {fileList && fileList.map((file, idx) => (
                             <div key={idx} onClick={() => handleDownload(file)}>

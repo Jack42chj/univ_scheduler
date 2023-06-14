@@ -43,48 +43,26 @@ const ReadAssignment = () => {
       setPage(newPage - 1);
     };
 
-    const readData = {
-        "assignment": 
-            {
-                "content": "테스트 수정입니다.",
-                "file_name": [
-                    "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg"
-                ]
+    const [readData, setReadData] = useState();
+
+    const getAssignData = async () => {
+        try{
+            const response = await assignment_read(currSubjectID, currSemester, assignID);
+            if(response.status === 201){
+                setReadData(response.data);
             }
-        ,
-        "assignment_submit_list": [
-            {
-                "student_id": "2018202004",
-                "student_name": "이동익",
-                "title": "제출 테스트",
-                "content": "제출 테스트 입니다.",
-                "file_names": [
-                    "butterfly-ge8aa2bc33_640.jpg",
-                    "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg"
-                ]
-            },
-            {
-                "student_id": "1111111111",
-                "student_name": "test",
-                "title": "test 제출 테스트",
-                "content": "test 제출 테스트 입니다.",
-                "file_names": [
-                    "butterfly-ge8aa2bc33_640.jpg",
-                    "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg"
-                ]
+        } catch (err) {
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
             }
-        ]
+        }
     };
-
-    // const [readData, setReadData] = useState();
-
-    // const getAssignData = async () => {
-    //     const response = await assignment_read(currSubjectID, currSemester, assignID);
-    //     setReadData(response.data);
-    // };
-    // useEffect(() => {
-    //     getAssignData();
-    // }, []);
+    useEffect(() => {
+        getAssignData();
+    }, []);
 
     const rows = [];
     if(readData && readData.assignment_submit_list){

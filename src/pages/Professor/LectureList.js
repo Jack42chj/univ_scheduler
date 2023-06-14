@@ -24,7 +24,6 @@ const LectureList = () => {
     const [data, setData] = useState();
     const handleChangeSemester = async (e) => {
         const sendData = { "semester": e.target.value }
-        console.log(sendData);
         try{
             const resp = await professor_change_main(sendData);
             if(resp.status === 201){
@@ -46,9 +45,20 @@ const LectureList = () => {
     const rowsPerPage = 5;
 
     const getData = async () => {
-        const response = await professor_main();
-        setData(response.data);
-    }
+        try{
+            const response = await professor_main();
+            if(response.status === 201){
+                setData(response.data);
+            }
+        } catch (err) {
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
+        }
+    };
     useEffect(() => {
         getData();
     }, []);
