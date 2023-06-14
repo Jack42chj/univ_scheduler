@@ -67,7 +67,7 @@ const MyPage = ({ open, onClose }) => {
         try {
             const res = await change_info(data);
             if(res.status === 200 || res.status === 201){
-                window.alert("개인정보 수정 성공!");
+                alert("개인정보 수정 성공!");
                 setChange(true);
                 onClose();
             }

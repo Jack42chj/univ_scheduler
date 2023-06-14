@@ -34,10 +34,9 @@ const FindId = ({ open, onClose }) => {
         const postData = { name, email };
         try {
             const response = await find_id(postData);
-            if (response.status === 200) {
+            if (response.status === 200 || 201) {
                 setId(response.data.id);
-                console.log("아이디 찾기 성공!");
-                console.log("Response:", response.data);
+                alert("아이디 찾기 성공!");
                 setShowResult(true);
             }
         } catch (err) {

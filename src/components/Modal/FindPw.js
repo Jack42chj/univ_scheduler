@@ -106,8 +106,9 @@ const FindPw = ({ open, onClose }) => {
             else if (response.status === 201) {
                 console.log("교수 비밀번호 변경 성공!");
             }
+            handleButtonClick();
             window.alert("비밀번호 재설정 성공!");
-            navigate('/');
+            window.location.reload();
         } catch (err) {
             console.log(err);
         }
