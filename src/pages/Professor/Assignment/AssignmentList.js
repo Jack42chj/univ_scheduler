@@ -1,136 +1,99 @@
 import { MenuItem, Pagination, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import FilePresentIcon from '@mui/icons-material/FilePresent';
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { notice_list } from "../../../services/userServices";
 import HeaderPro from "../../../components/Header/HeaderPro";
 import BgcolorStack from "../../../components/Stack/BackgroundStack";
 import OuterBox from "../../../components/Box/OuterBox";
 import Row from "../../../components/Stack/Row";
 import ContentText from "../../../components/Input/ContentText";
 import CommonButton from "../../../components/Button/CommonButton";
-import { handleChangeSemester } from "../LectureList";
+import { assignment_list } from "../../../services/proServices";
 
 const columns = [
     { id: "num", label: "번호"},
     { id: "title", label: "제목" },
-    { id: "filexo", label: "파일" },
-    { id: "writer", label: "작성자" },
-    { id: "date", label: "작성일" },
-    { id: "view_count", label: "조회수" },
+    { id: "creat_time", label: "작성일" },
+    { id: "due_time", label: "마감일" },
 ];
 
-function createData(num, title, filexo, writer, date, view_count) {
-    if(filexo === 1) filexo = <FilePresentIcon />;
-    else filexo = "";
-    return {num ,title, filexo, writer, date, view_count};
+function createData(num ,title, creat_time, due_time) {
+    return {num ,title, creat_time, due_time};
 };
 
 const AssignmentList = () => {
     const navigate = useNavigate();
     const recvData = useLocation().state;
-    const currSemester = recvData.currSemester;
-    const semesterList = recvData.semesterList;
-    const currSubject = recvData.currSubject;
-    const subjectList = recvData.subjectList;
-    const currSubjectID = recvData.currSubjectID;
-
-    //     const handleChangeSubject = async (e) => {
-    //     const sendData = { "subject": e.target.value }
-    //     try{
-    //         const resp = await professor_change_main(sendData);
-    //         if(resp.status === 201){
-    //             setData(resp.data);
-    //         }
-    //     }
-    //     catch(err){console.log(err)}
-    // };
+    // const currSemester = recvData.currSemester;
+    // const semesterList = recvData.semesterList;
+    // const currSubject = recvData.currSubject;
+    // const subjectList = recvData.subjectList;
+    // const currSubjectID = recvData.currSubjectID;
+    const currSemester = '2022-3';
+    const semesterList = ['2023-1'];
+    const currSubject = 'asd';
+    const subjectList = ['asd'];
+    const currSubjectID = ['123123-123123'];
 
     const [page, setPage] = useState(0);
     const rowsPerPage = 5;
-  
-    const [index, setIndex] = useState(1);
-
     const handleChangePage = (event, newPage) => {
       setPage(newPage - 1);
-      setIndex((newPage - 1) * rowsPerPage + 1);
     };
 
-    // const [noticeList, setNoticeList] = useState();
+    // const [assignList, setAssignList] = useState();
 
-    // const getNoticeList = async () => {
-    //     const response = await notice_list(currSubjectID, currSemester);
-    //     setNoticeList(response.data);
+    // const getAssignList = async () => {
+    //     const response = await assignment_list(currSubjectID, currSemester);
+    //     setAssignList(response.data);
     // };
     // useEffect(() => {
-    //     getNoticeList();
+    //     getAssignList();
     // }, []);
 
-    const noticeList = {
-        "notice": [
-            {
-                "id": 112,
-                "sub_code": "H020-1-0019-02",
-                "professor_name": "이우신",
-                "title": "test",
-                "writer": "이우신",
-                "created_time": "2023-06-05",
-                "view": 1,
-                "semester": "2023-1",
-                "file_names": [
-                    "butterfly-ge8aa2bc33_640.jpg"
-                ]
-            },
+    const assignList = {
+        "assignment": [
             {
                 "id": 113,
-                "sub_code": "H020-1-0019-02",
-                "professor_name": "이우신",
                 "title": "test",
-                "writer": "이우신",
-                "created_time": "2023-06-05",
-                "view": 1,
-                "semester": "2023-1",
-                "file_names": [
-                    "butterfly-ge8aa2bc33_640.jpg",
-                    "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg"
-                ]
-            }
+                "start_date": "2023-06-05 12:00:00",
+                "due_date" : "2023-12-24 12:00:00",
+            },
+            {
+                "id": 123,
+                "title": "test",
+                "start_date": "2023-06-05 12:00:00",
+                "due_date" : "2023-12-24 12:00:00",
+            },
         ]
     };
 
     const rows = [];
-    if(Object.keys(noticeList).length !== 0){
-        for(let i = 0; i < noticeList.notice.length; i++){
-            let file_exist = 0;
-            if(noticeList.notice[i].file_names) file_exist = 1;
-            rows.push(createData(noticeList.notice[i].id, noticeList.notice[i].title, file_exist , noticeList.notice[i].writer, noticeList.notice[i].created_time, noticeList.notice[i].view));
+    if(assignList && assignList.assignment){
+        for(let i = 0; i < assignList.assignment.length; i++){
+            rows.push(createData(assignList.assignment[i].id, assignList.assignment[i].title, assignList.assignment[i].start_date, assignList.assignment[i].due_date));
         };
     };
 
     const handleClickRow = (data) => {
-        const notice_ID = data.num;
-        const title = data.title;
-        const writer = data.writer;
-        const date = data.date;
-        const view = data.view_count;
-        const url = `/professor/read_notice/${currSemester}/${currSubjectID}/${notice_ID}`;
+        const assign_ID = data.num;
+        const due_date = data.due_time;
+        const title = data.title;   
+        const url = `/professor/read_assign/${currSemester}/${currSubjectID}/${assign_ID}`;
         const sendData = {
             "currSemester": currSemester,
             "currSubject": currSubject,
             "currSubjectID": currSubjectID,
             "semesterList" : semesterList,
             "subjectList" : subjectList,
-            "noticeID" : notice_ID,
+            "assignID" : assign_ID,
             "title" : title,
-            "writer" : writer,
-            "date" : date,
-            "view" : view,
+            "due_date" : due_date,
         };
         navigate(url, { state: sendData });
     };
 
     const handleWriteNotice = () => {
-        const url = `/professor/write_notice/${currSemester}/${currSubjectID}`;
+        const url = `/professor/write_assign/${currSemester}/${currSubjectID}`;
         const sendWriteData = {
             "currSemester": currSemester,
             "currSubject": currSubject,
@@ -151,7 +114,6 @@ const AssignmentList = () => {
                         <Select
                             value={currSemester}
                             name="semester"
-                            //onChange={changeSemester}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
                         >
@@ -163,7 +125,6 @@ const AssignmentList = () => {
                         <Select
                             value={currSubject}
                             name="subject"
-                            //onChange={handleChangeSubject}
                             displayEmpty
                             sx={{ width: "30%", height: "48px" }}
                         >
@@ -174,7 +135,7 @@ const AssignmentList = () => {
                     </Row>
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center",}}>
-                    <ContentText variant="h4">강의 공지사항</ContentText>
+                    <ContentText variant="h4">과제</ContentText>
                     <TableContainer sx={{ width: "90%", py: 5}}>
                         <Table stickyHeader>
                             <TableHead>

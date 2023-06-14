@@ -97,6 +97,11 @@ export const syllabus_read = (sub_id, sem_id) => {
     return axios.get(`${BASE_URL}/syllabus/${sub_id}/${sem_id}`, {withCredentials:true});
 };
 
+//교수 강의계획서 쓰기 기본정보
+export const syllabus_write_info = (sub_id, sem_id) => {
+    return axios.get(`${BASE_URL}/syllabus/${sub_id}/${sem_id}/create`, {withCredentials:true});
+};
+
 //교수 강의계획서 작성
 export const syllabus_write = (sub_id, sem_id, sylData) => {
     return axios.post(`${BASE_URL}/syllabus/${sub_id}/${sem_id}/create`, sylData, {withCredentials:true});
@@ -105,4 +110,39 @@ export const syllabus_write = (sub_id, sem_id, sylData) => {
 //교수 강의계획서 수정
 export const syllabus_update = (sub_id, sem_id, sylData) => {
     return axios.put(`${BASE_URL}/syllabus/${sub_id}/${sem_id}/update`, sylData, {withCredentials:true});
+};
+
+//교수 과제 목록 조회
+export const assignment_list = (sub_id, sem_id) => {
+    return axios.get(`${BASE_URL}/assignment/${sub_id}/${sem_id}`, {withCredentials:true});
+};
+
+//교수 과제 읽기
+export const assignment_read = (sub_id, sem_id, assign_id) => {
+    return axios.get(`${BASE_URL}/assignment/${sub_id}/${sem_id}/${assign_id}`, {withCredentials:true});
+};
+
+//교수 과제 작성
+export const assignment_write = (sub_id, sem_id, assignData) => {
+    return axios.post(`${BASE_URL}/assignment/${sub_id}/${sem_id}/create`, assignData, { 
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true }
+    );
+};
+
+//교수 과제 수정
+export const assignment_update = (sub_id, sem_id, assign_id, assignData) => {
+    return axios.put(`${BASE_URL}/assignment/${sub_id}/${sem_id}/${assign_id}/update`, assignData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true }
+    );
+};
+
+//교수 과제 삭제
+export const assignment_delete = (sub_id, sem_id, assign_id) => {
+    return axios.delete(`${BASE_URL}/assignment/${sub_id}/${sem_id}/${assign_id}/delete`, {withCredentials:true});
 };

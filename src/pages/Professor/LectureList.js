@@ -30,16 +30,13 @@ const LectureList = () => {
             if(resp.status === 201){
                 setData(resp.data);
             }
-            else if(resp.status === 401){
-                console.log("잘못된 access 토큰!");
-            }
-            else if(resp.status === 419){
-                console.log("access 토큰 만료!");
-            }
-            else
-                alert(resp.data);
         } catch (err) {
-            console.log(err);
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
         }
     };
     

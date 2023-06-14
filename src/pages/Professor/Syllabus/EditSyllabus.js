@@ -22,7 +22,6 @@ const EditSyllabus = () => {
     const subjectList = recvData.subjectList;
     const lectureData = recvData.lectureData;
     const [complete, setComplete] = useState("");
-
     const [sylData, setSylData] = useState();
 
     const getSylData = async () => {
@@ -33,26 +32,26 @@ const EditSyllabus = () => {
         getSylData();
     }, []);
 
-    const ess = sylData ? sylData.syllabus.classification : null;
-    const grade = sylData ? sylData.syllabus.credit : null;
-    const ph_num = sylData ? sylData.syllabus.phone_number : null;
-    const email = sylData ? sylData.syllabus.email : null;
-    const pro_name = sylData ? sylData.syllabus.professor_name : null;
-    const ta_name = sylData ? sylData.syllabus.assistant_name : null;
-    const intro = sylData ? sylData.syllabus.course_summary : null;
-    const achiev = sylData ? sylData.syllabus.course_performance : null;
-    const rule = sylData ? sylData.syllabus.operation_type : null;
-    const book = sylData ? sylData.syllabus.textbook : null;
-    const ratio = sylData ? sylData.syllabus.evaluation_method_ratio : null;
-    const schedule = sylData ? sylData.syllabus.lec_schedule : null;
+    const ess = sylData ? sylData.classification : null;
+    const grade = sylData ? sylData.credit : null;
+    const ph_num = sylData ? sylData.phone_number : null;
+    const email = sylData ? sylData.email : null;
+    const pro_name = sylData ? sylData.professor_name : null;
+    const ta_name = sylData ? sylData.assistant_name : null;
+    const intro = sylData ? sylData.course_sumary : null;
+    const achiev = sylData ? sylData.course_performance : null;
+    const rule = sylData ? sylData.operation_type : null;
+    const book = sylData ? sylData.textbook : null;
+    const ratio = sylData ? sylData.evaluation_method_ratio : null;
+    const schedule = sylData ? sylData.lec_schedule : null;
 
     const onhandlePost = async(data) => {
         console.log(data);
         try{
             const response = await syllabus_update(currSubjectID, currSemester, data);
             if(response.status === 201){
-                console.log("강의계획서 수정 성공!");
-                navigate(`/professor/syllabus_list/${currSemester}/${currSubjectID}`, {
+                alert("강의계획서 수정 성공!");
+                navigate(`/professor/syl_list/${currSemester}/${currSubjectID}`, {
                     state: {
                         "currSemester": currSemester,
                         "currSubject" : currSubject,
@@ -63,18 +62,13 @@ const EditSyllabus = () => {
                     }
                 }
             );}
-            else if(response.status === 401){
-                console.log("잘못된 access 토큰!");
-                navigate("/");
-            }
-            else if(response.status === 419){
-                console.log("access 토큰 만료!");
-                navigate("/");
-            }
-            else
-                alert(response.data);
         } catch (err) {
-            console.log(err);
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
         }
     };
 
@@ -86,13 +80,13 @@ const EditSyllabus = () => {
             sub_name : currSubject,
             sub_code : currSubjectID,
             sem : currSemester,
-            ess : data.get("ess"),
-            grade : data.get("grade"),
+            ess : ess,
+            grade : grade,
             time : lectureData.period,
             room : lectureData.class,
-            ph_num : data.get("ph_num"),
-            email : data.get("email"),
-            pro_name : data.get("pro_name"),
+            ph_num : ph_num,
+            email : email,
+            pro_name : pro_name,
             ta_name : data.get("ta_name"),
             intro : data.get("intro"),
             achiev : data.get("achiev"),
@@ -102,9 +96,8 @@ const EditSyllabus = () => {
             schedule : data.get("schedule"),
         };
 
-        const { ess, grade, ph_num, email, pro_name, ta_name, intro, achiev, rule, book, ratio, schedule } = joinData;
-        if(checkTrim(ess) && checkTrim(grade) && checkTrim(ph_num) && checkTrim(email) && checkTrim(pro_name) && checkTrim(ta_name) && checkTrim(intro) && checkTrim(achiev) 
-            && checkTrim(rule)  && checkTrim(book) && checkTrim(ratio) && checkTrim(schedule))
+        const { ta_name, intro, achiev, rule, book, ratio, schedule } = joinData;
+        if(checkTrim(ta_name) && checkTrim(intro) && checkTrim(achiev) && checkTrim(rule)  && checkTrim(book) && checkTrim(ratio) && checkTrim(schedule))
         {
             setComplete("");
             onhandlePost(joinData);
@@ -141,39 +134,43 @@ const EditSyllabus = () => {
                     </Row>
                 </OuterBox>
                 <OuterBox component="form" onSubmit={handleSubmit} noValidate sx={{ py: 5, justifyContent: "center", alignItems: "center"}}>
-                    <ContentText variant="h4">강의 계획서</ContentText>
-                    <Row spacing={1} sx={{ justifyContent: "center", width: "80%", mt: 5 }}>
-                        <FieldText label="교과명" name="sub_name" variant="outlined" defaultValue={currSubject} fullWidth disabled/>
-                        <FieldText label="학정번호" name="sub_code" variant="outlined" defaultValue={currSubjectID} fullWidth disabled/>
-                    </Row>
-                    <Row spacing={1} sx={{ justifyContent: "center", width: "80%", my: 1 }}>
-                        <FieldText label="년도학기" name="sem" variant="outlined" defaultValue={currSemester} fullWidth disabled/>
-                        <FieldText label="이수구분" name="ess" variant="outlined" defaultValue={ess} InputLabelProps={{ shrink: true }} fullWidth />
-                        <FieldText label="학점" name="grade" variant="outlined" defaultValue={grade} InputLabelProps={{ shrink: true }} fullWidth />
-                    </Row>
-                    <Row spacing={1} sx={{ justifyContent: "center", width: "80%" }}>
-                        <FieldText label="강의시간" name="time" variant="outlined" defaultValue={lectureData.period} fullWidth disabled/>
-                        <FieldText label="강의실" name="room" variant="outlined" defaultValue={lectureData.class} fullWidth disabled/>
-                    </Row>
-                    <Row spacing={1} sx={{ justifyContent: "center", width: "80%", my: 1 }}>
-                        <FieldText label="휴대폰" name="ph_num" variant="outlined" defaultValue={ph_num} InputLabelProps={{ shrink: true }} fullWidth />
-                        <FieldText label="이메일" name="email" variant="outlined" defaultValue={email} InputLabelProps={{ shrink: true }} fullWidth />
-                    </Row>
-                    <Row spacing={1} sx={{ justifyContent: "center", width: "80%" }}>
-                        <FieldText label="담당교수" name="pro_name" variant="outlined" defaultValue={pro_name} InputLabelProps={{ shrink: true }} fullWidth />
-                        <FieldText label="담당조교" name="ta_name" variant="outlined" defaultValue={ta_name} InputLabelProps={{ shrink: true }} fullWidth />
-                    </Row>
-                    <FieldText label="교과목 개요" name="intro" variant="outlined" sx={{ width: "80%", my: 1 }} defaultValue={intro} InputLabelProps={{ shrink: true }} />
-                    <FieldText label="교과목 학습 성과" name="achiev" variant="outlined" multiline rows={5} sx={{ width: "80%" }} defaultValue={achiev} InputLabelProps={{ shrink: true }} />
-                    <FieldText label="강의 운영 방식" name="rule" variant="outlined" sx={{ width: "80%", my: 1 }} defaultValue={rule} InputLabelProps={{ shrink: true }} />
-                    <FieldText label="교재" name="book" variant="outlined" sx={{ width: "80%" }} defaultValue={book} InputLabelProps={{ shrink: true }} />
-                    <FieldText label="평가 방법 비율" name="ratio" variant="outlined" sx={{ width: "80%", my: 1 }} defaultValue={ratio} InputLabelProps={{ shrink: true }} />
-                    <FieldText label="일정" name="schedule" variant="outlined" multiline rows={10} sx={{ mb: 3, width: "80%" }} defaultValue={schedule} InputLabelProps={{ shrink: true }} />
-                    <AuthFormText>{complete}</AuthFormText>
-                    <Row spacing={3} mt={2}>
-                        <CommonButton variant="contained" type="submit">수정</CommonButton>
-                        <CommonButton variant="contained" onClick={() => navigate(-1)}>취소</CommonButton>
-                    </Row>
+                    {sylData && sylData.credit && (
+                        <>
+                            <ContentText variant="h4">강의 계획서</ContentText>
+                            <Row spacing={1} sx={{ justifyContent: "center", width: "80%", mt: 5 }}>
+                                <FieldText label="교과명" name="sub_name" variant="outlined" defaultValue={currSubject} fullWidth disabled/>
+                                <FieldText label="학정번호" name="sub_code" variant="outlined" defaultValue={currSubjectID} fullWidth disabled/>
+                            </Row>
+                            <Row spacing={1} sx={{ justifyContent: "center", width: "80%", my: 1 }}>
+                                <FieldText label="년도학기" name="sem" variant="outlined" defaultValue={currSemester} fullWidth disabled/>
+                                <FieldText label="이수구분" name="ess" variant="outlined" defaultValue={ess} fullWidth disabled/>
+                                <FieldText label="학점" name="grade" variant="outlined" defaultValue={grade} fullWidth disabled/>
+                            </Row>
+                            <Row spacing={1} sx={{ justifyContent: "center", width: "80%" }}>
+                                <FieldText label="강의시간" name="time" variant="outlined" defaultValue={lectureData.period} fullWidth disabled/>
+                                <FieldText label="강의실" name="room" variant="outlined" defaultValue={lectureData.class} fullWidth disabled/>
+                            </Row>
+                            <Row spacing={1} sx={{ justifyContent: "center", width: "80%", my: 1 }}>
+                                <FieldText label="휴대폰" name="ph_num" variant="outlined" defaultValue={ph_num} fullWidth disabled/>
+                                <FieldText label="이메일" name="email" variant="outlined" defaultValue={email} fullWidth disabled/>
+                            </Row>
+                            <Row spacing={1} sx={{ justifyContent: "center", width: "80%" }}>
+                                <FieldText label="담당교수" name="pro_name" variant="outlined" defaultValue={pro_name} fullWidth disabled/>
+                                <FieldText label="담당조교" name="ta_name" variant="outlined" defaultValue={ta_name} fullWidth />
+                            </Row>
+                            <FieldText label="교과목 개요" name="intro" variant="outlined" sx={{ width: "80%", my: 1 }} defaultValue={intro} />
+                            <FieldText label="교과목 학습 성과" name="achiev" variant="outlined" multiline rows={5} sx={{ width: "80%" }} defaultValue={achiev} InputLabelProps={{ shrink: true }} />
+                            <FieldText label="강의 운영 방식" name="rule" variant="outlined" sx={{ width: "80%", my: 1 }} defaultValue={rule} />
+                            <FieldText label="교재" name="book" variant="outlined" sx={{ width: "80%" }} defaultValue={book} />
+                            <FieldText label="평가 방법 비율" name="ratio" variant="outlined" sx={{ width: "80%", my: 1 }} defaultValue={ratio} />
+                            <FieldText label="일정" name="schedule" variant="outlined" multiline rows={10} sx={{ mb: 3, width: "80%" }} defaultValue={schedule} InputLabelProps={{ shrink: true }} />
+                            <AuthFormText>{complete}</AuthFormText>
+                            <Row spacing={3} mt={2}>
+                                <CommonButton variant="contained" type="submit">수정</CommonButton>
+                                <CommonButton variant="contained" onClick={() => navigate(-1)}>취소</CommonButton>
+                            </Row>
+                        </>
+                    )}
                 </OuterBox>
             </BackgroundStack>
         </>

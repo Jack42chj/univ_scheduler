@@ -4,7 +4,7 @@ const BASE_URL = "http://localhost:3001";
 
 // 로그인
 export const signin = (loginData) => {
-    return axios.post(`${BASE_URL}/login`, loginData, loginData, {withCredentials:true});
+    return axios.post(`${BASE_URL}/login`, loginData, {withCredentials:true});
 };
 
 //아이디 찾기
@@ -50,6 +50,11 @@ export const reference_read = (sub_id, sem_id, ref_id) => {
 //강의자료 파일 다운로드
 export const reference_download = (sub_id, sem_id, ref_id, file_id) => {
     return axios.get(`${BASE_URL}/lecture_material/${sub_id}/${sem_id}/${ref_id}/${file_id}/download`, { responseType: 'blob', withCredentials:true });
+};
+
+//과제 파일 다운로드
+export const assignment_download = (sub_id, sem_id, assign_id, file_id, author_id) => {
+    return axios.get(`${BASE_URL}/assignment/${sub_id}/${sem_id}/${assign_id}/${file_id}/${author_id}/download`, { responseType: 'blob', withCredentials:true });
 };
 
 //개인정보 수정 불러오기

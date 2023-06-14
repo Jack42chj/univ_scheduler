@@ -27,31 +27,19 @@ const ReadNotice = () => {
     const date = recvData.date;
     const view = recvData.view;
 
-    const readData = {
-        "notice": {
-            "title": "test",
-            "content": "test content",
-        },
-        "file": {
-            "file_name": [
-                "butterfly-ge8aa2bc33_640.jpg",
-                "thumb_l_CDD94CBD46425E4EDBD18A7A17C199E7.jpg",
-            ],
-        },
+    const [readData, setReadData] = useState();
+
+    const getNoticeData = async () => {
+        const response = await notice_read(currSubjectID, currSemester, noticeID);
+        setReadData(response.data);
     };
-
-    // const [readData, setReadData] = useState();
-
-    // const getNoticeData = async () => {
-    //     const response = await notice_read(currSubjectID, currSemester, noticeID);
-    //     setReadData(response.data);
-    // };
-    // useEffect(() => {
-    //     getNoticeData();
-    // }, []);
+    useEffect(() => {
+        getNoticeData();
+    }, []);
 
     const content = readData ? readData.notice.content : null;
     const fileList = readData ? readData.file.file_name : [];
+
     const onhandleDelete = async () => {
         try{
             const response = await notice_delete(currSubjectID, currSemester, noticeID);
@@ -67,16 +55,13 @@ const ReadNotice = () => {
                     }
                 }
             );}
-            else if(response.status === 401){
-                console.log("잘못된 access 토큰!");
-                navigate("/");
-            }
-            else if(response.status === 419){
-                console.log("access 토큰 만료!");
-                navigate("/");
-            }
         } catch (err) {
-            console.log(err);
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
         }
     };
 
@@ -106,7 +91,6 @@ const ReadNotice = () => {
             document.body.appendChild(link);
             link.click();
             link.remove();
-            console.log("다운로드 성공!");
         }
     };
 

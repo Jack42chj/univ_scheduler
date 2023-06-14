@@ -1,5 +1,5 @@
 import { MenuItem, Select } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BackgroundStack from "../../../components/Stack/BackgroundStack";
 import OuterBox from "../../../components/Box/OuterBox";
 import CommonButton from "../../../components/Button/CommonButton";
@@ -10,7 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { checkTrim } from "../../../utils/Trim";
 import FieldText from "../../../components/Input/FieldText";
 import AuthFormText from "../../../components/Input/AuthFormText";
-import { syllabus_write } from "../../../services/proServices";
+import { syllabus_write, syllabus_write_info } from "../../../services/proServices";
 
 const WriteSyllabus = () => {
     const navigate = useNavigate();
@@ -22,14 +22,28 @@ const WriteSyllabus = () => {
     const subjectList = recvData.subjectList;
     const lectureData = recvData.lectureData;
     const [complete, setComplete] = useState("");
+    const [sylData, setSylData] = useState();
+
+    const getSylData = async () => {
+        const response = await syllabus_write_info(currSubjectID, currSemester);
+        setSylData({"info" : response.data});
+    };
+    useEffect(() => {
+        getSylData();
+    }, []);
+
+    const grade = sylData ? sylData.info.credit : null;
+    const ess = sylData ? sylData.info.classification : null;
+    const ph_num = sylData ? sylData.info.ph_num : null;
+    const email = sylData ? sylData.info.email : null;
+    const pro_name = sylData ? sylData.info.professor_name : null;
 
     const onhandlePost = async(data) => {
-        console.log(data);
         try{
             const response = await syllabus_write(currSubjectID, currSemester, data);
             if(response.status === 201){
-                console.log("강의계획서 생성 성공!");
-                navigate(`/professor/syllabus_list/${currSemester}/${currSubjectID}`, {
+                alert("강의계획서 생성 성공!");
+                navigate(`/professor/syl_list/${currSemester}/${currSubjectID}`, {
                     state: {
                         "currSemester": currSemester,
                         "currSubject" : currSubject,
@@ -40,18 +54,13 @@ const WriteSyllabus = () => {
                     }
                 }
             );}
-            else if(response.status === 401){
-                console.log("잘못된 access 토큰!");
-                navigate("/");
-            }
-            else if(response.status === 419){
-                console.log("access 토큰 만료!");
-                navigate("/");
-            }
-            else
-                alert(response.data);
         } catch (err) {
-            console.log(err);
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
         }
     };
 
@@ -63,13 +72,13 @@ const WriteSyllabus = () => {
             sub_name : currSubject,
             sub_code : currSubjectID,
             sem : currSemester,
-            ess : data.get("ess"),
-            grade : data.get("grade"),
+            ess : ess,
+            grade : grade,
             time : lectureData.period,
             room : lectureData.class,
-            ph_num : data.get("ph_num"),
-            email : data.get("email"),
-            pro_name : data.get("pro_name"),
+            ph_num : ph_num,
+            email : email,
+            pro_name : pro_name,
             ta_name : data.get("ta_name"),
             intro : data.get("intro"),
             achiev : data.get("achiev"),
@@ -78,9 +87,8 @@ const WriteSyllabus = () => {
             ratio : data.get("ratio"),
             schedule : data.get("schedule"),
         };
-        const { ess, grade, ph_num, email, pro_name, ta_name, intro, achiev, rule, book, ratio, schedule } = joinData;
-        if(checkTrim(ess) && checkTrim(grade) && checkTrim(ph_num) && checkTrim(email) && checkTrim(pro_name) && checkTrim(ta_name) && checkTrim(intro) && checkTrim(achiev) 
-            && checkTrim(rule)  && checkTrim(book) && checkTrim(ratio) && checkTrim(schedule)) {
+        const { ta_name, intro, achiev, rule, book, ratio, schedule } = joinData;
+        if(checkTrim(ta_name) && checkTrim(intro) && checkTrim(achiev) && checkTrim(rule)  && checkTrim(book) && checkTrim(ratio) && checkTrim(schedule)) {
             setComplete("");
             onhandlePost(joinData);
         }
@@ -116,39 +124,43 @@ const WriteSyllabus = () => {
                     </Row>
                 </OuterBox>
                 <OuterBox component="form" onSubmit={handleSubmit} noValidate sx={{ py: 5, justifyContent: "center", alignItems: "center"}}>
-                    <ContentText variant="h4">강의 계획서</ContentText>
-                    <Row spacing={1} sx={{ justifyContent: "center", width: "80%", mt: 5 }}>
-                        <FieldText label="교과명" name="sub_name" variant="outlined" defaultValue={currSubject} fullWidth disabled/>
-                        <FieldText label="학정번호" name="sub_code" variant="outlined" defaultValue={currSubjectID} fullWidth disabled/>
-                    </Row>
-                    <Row spacing={1} sx={{ justifyContent: "center", width: "80%", my: 1 }}>
-                        <FieldText label="년도학기" name="sem" variant="outlined" defaultValue={currSemester} fullWidth disabled/>
-                        <FieldText label="이수구분" name="ess" variant="outlined" fullWidth />
-                        <FieldText label="학점" name="grade" variant="outlined" fullWidth />
-                    </Row>
-                    <Row spacing={1} sx={{ justifyContent: "center", width: "80%" }}>
-                        <FieldText label="강의시간" name="time" variant="outlined" defaultValue={lectureData.period} fullWidth disabled/>
-                        <FieldText label="강의실" name="room" variant="outlined" defaultValue={lectureData.class} fullWidth disabled/>
-                    </Row>
-                    <Row spacing={1} sx={{ justifyContent: "center", width: "80%", my: 1 }}>
-                        <FieldText label="휴대폰" name="ph_num" variant="outlined" fullWidth />
-                        <FieldText label="이메일" name="email" variant="outlined" fullWidth />
-                    </Row>
-                    <Row spacing={1} sx={{ justifyContent: "center", width: "80%" }}>
-                        <FieldText label="담당교수" name="pro_name" variant="outlined" fullWidth />
-                        <FieldText label="담당조교" name="ta_name" variant="outlined" fullWidth />
-                    </Row>
-                    <FieldText label="교과목 개요" name="intro" variant="outlined" sx={{ width: "80%", my: 1 }} />
-                    <FieldText label="교과목 학습 성과" name="achiev" variant="outlined" multiline rows={5} sx={{ width: "80%" }} />
-                    <FieldText label="강의 운영 방식" name="rule" variant="outlined" sx={{ width: "80%", my: 1 }} />
-                    <FieldText label="교재" name="book" variant="outlined" sx={{ width: "80%" }} />
-                    <FieldText label="평가 방법 비율" name="ratio" variant="outlined" sx={{ width: "80%", my: 1 }} />
-                    <FieldText label="일정" name="schedule" variant="outlined" multiline rows={10} sx={{ mb: 3, width: "80%" }} />
-                    <AuthFormText>{complete}</AuthFormText>
-                    <Row spacing={3} mt={2}>
-                        <CommonButton variant="contained" type="submit">등록</CommonButton>
-                        <CommonButton variant="contained" onClick={() => navigate(-1)}>취소</CommonButton>
-                    </Row>
+                    {sylData && sylData.credit && (
+                        <>
+                            <ContentText variant="h4">강의 계획서</ContentText>
+                            <Row spacing={1} sx={{ justifyContent: "center", width: "80%", mt: 5 }}>
+                                <FieldText label="교과명" name="sub_name" variant="outlined" defaultValue={currSubject} fullWidth disabled/>
+                                <FieldText label="학정번호" name="sub_code" variant="outlined" defaultValue={currSubjectID} fullWidth disabled/>
+                            </Row>
+                            <Row spacing={1} sx={{ justifyContent: "center", width: "80%", my: 1 }}>
+                                <FieldText label="년도학기" name="sem" variant="outlined" defaultValue={currSemester} fullWidth disabled/>
+                                <FieldText label="이수구분" name="ess" variant="outlined" defaultValue={ess} fullWidth disabled/>
+                                <FieldText label="학점" name="grade" variant="outlined" defaultValue={grade} fullWidth disabled/>
+                            </Row>
+                            <Row spacing={1} sx={{ justifyContent: "center", width: "80%" }}>
+                                <FieldText label="강의시간" name="time" variant="outlined" defaultValue={lectureData.period} fullWidth disabled/>
+                                <FieldText label="강의실" name="room" variant="outlined" defaultValue={lectureData.class} fullWidth disabled/>
+                            </Row>
+                            <Row spacing={1} sx={{ justifyContent: "center", width: "80%", my: 1 }}>
+                                <FieldText label="휴대폰" name="ph_num" variant="outlined" defaultValue={ph_num} fullWidth disabled/>
+                                <FieldText label="이메일" name="email" variant="outlined" defaultValue={email} fullWidth disabled/>
+                            </Row>
+                            <Row spacing={1} sx={{ justifyContent: "center", width: "80%" }}>
+                                <FieldText label="담당교수" name="pro_name" variant="outlined" defaultValue={pro_name} fullWidth disabled/>
+                                <FieldText label="담당조교" name="ta_name" variant="outlined" fullWidth />
+                            </Row>
+                            <FieldText label="교과목 개요" name="intro" variant="outlined" sx={{ width: "80%", my: 1 }} />
+                            <FieldText label="교과목 학습 성과" name="achiev" variant="outlined" multiline rows={5} sx={{ width: "80%" }} />
+                            <FieldText label="강의 운영 방식" name="rule" variant="outlined" sx={{ width: "80%", my: 1 }} />
+                            <FieldText label="교재" name="book" variant="outlined" sx={{ width: "80%" }} />
+                            <FieldText label="평가 방법 비율" name="ratio" variant="outlined" sx={{ width: "80%", my: 1 }} />
+                            <FieldText label="일정" name="schedule" variant="outlined" multiline rows={10} sx={{ mb: 3, width: "80%" }} />
+                            <AuthFormText>{complete}</AuthFormText>
+                            <Row spacing={3} mt={2}>
+                                <CommonButton variant="contained" type="submit">등록</CommonButton>
+                                <CommonButton variant="contained" onClick={() => navigate(-1)}>취소</CommonButton>
+                            </Row>
+                        </>
+                    )}
                 </OuterBox>
             </BackgroundStack>
         </>

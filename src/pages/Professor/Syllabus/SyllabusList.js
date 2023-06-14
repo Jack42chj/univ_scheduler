@@ -30,7 +30,7 @@ const SyllabusList = () => {
     const currSubjectID = recvData.currSubjectID;
     const lectureData = recvData.lectureData;
 
-    const [syllabusList, setSyllabusList] = useState();
+    const [syllabusList, setSyllabusList] = useState("");
 
     const getSyllabusList = async () => {
         const response = await syllabus_list(currSubjectID, currSemester);
@@ -41,8 +41,8 @@ const SyllabusList = () => {
     }, []);
 
     const rows = [];
-    if(syllabusList && syllabusList.syllabus){
-        rows.push(createData(syllabusList.syllabus.sub_code, syllabusList.syllabus.subject_name, syllabusList.syllabus.time, syllabusList.syllabus.class));
+    if(syllabusList && syllabusList.sub_name){
+        rows.push(createData(syllabusList.sub_code, syllabusList.subject_name, syllabusList.time, syllabusList.class));
     };
 
     const handleClickRow = () => {
@@ -103,7 +103,7 @@ const SyllabusList = () => {
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center",}}>
                     <ContentText variant="h4">강의계획서</ContentText>
-                    { syllabusList ? (
+                    { syllabusList && syllabusList.sub_name ?  (
                         <>
                             <TableContainer sx={{ width: "90%", py: 5}}>
                                 <Table stickyHeader>

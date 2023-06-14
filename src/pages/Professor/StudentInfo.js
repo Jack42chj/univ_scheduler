@@ -116,18 +116,13 @@ const StudentInfo = () => {
             if(response.status === 201){
                 setRow((response.data.studentInfo.map((row) => createData(row.major, row.name, row.email, row.phone_number))));
             }
-            else if(response.status === 401){
-                console.log("잘못된 access 토큰!");
-                navigate("/");
-            }
-            else if(response.status === 419){
-                console.log("access 토큰 만료!");
-                navigate("/");
-            }
-            else
-                alert(response.data);
         } catch (err) {
-            console.log(err);
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
         }
     };
 

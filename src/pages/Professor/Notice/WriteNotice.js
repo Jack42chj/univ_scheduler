@@ -28,7 +28,7 @@ const WriteNotice = () => {
         try{
             const response = await notice_write(currSubjectID, currSemester, data);
             if(response.status === 201){
-                console.log("공지사항 생성 성공!");
+                alert("공지사항 생성 성공!");
                 navigate(`/professor/notice_list/${currSemester}/${currSubjectID}`, {
                     state: {
                         "currSemester": currSemester,
@@ -39,18 +39,13 @@ const WriteNotice = () => {
                     }
                 }
             );}
-            else if(response.status === 401){
-                console.log("잘못된 access 토큰!");
-                navigate("/");
-            }
-            else if(response.status === 419){
-                console.log("access 토큰 만료!");
-                navigate("/");
-            }
-            else
-                alert(response.data);
         } catch (err) {
-            console.log(err);
+            if (err.response && err.response.status.toString().startswith('4')) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
         }
     };
 
@@ -83,7 +78,6 @@ const WriteNotice = () => {
 
         if (checkTrim(title) && checkTrim(content)) {
             onhandlePost(formData);
-            console.log(fileList);
         }
     };
 

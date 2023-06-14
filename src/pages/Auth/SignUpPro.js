@@ -73,12 +73,13 @@ const SignUpPro = () => {
                 alert('사용 가능한 아이디입니다.');
                 setCheckId(true);
             }
-            else{
+        } catch (err) {
+            if (err.response && err.response.status === 409) {
                 alert('이미 사용중인 아이디입니다.');
                 setCheckId(false);
+            } else {
+                console.log(err);
             }
-        } catch (err) {
-            console.log(err);
         }
     };
 
