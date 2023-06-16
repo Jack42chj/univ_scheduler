@@ -79,7 +79,7 @@ export const info_change_pw = (changeData) => {
 
 //계정 삭제
 export const delete_user = (id) => {
-    return axios.delete(`${BASE_URL}/withdraw/delete`, {withCredentials:true});
+    return axios.delete(`${BASE_URL}/withdraw/${id}/delete`, {withCredentials:true});
 };
 
 //계정 조회

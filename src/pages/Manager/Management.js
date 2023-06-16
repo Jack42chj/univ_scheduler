@@ -65,6 +65,7 @@ const Management = () => {
             const response = await delete_user(data);
             if(response.status === 200){
                 alert("계정 삭제 성공");
+                window.location.reload();
             }
         } catch (err) {
             if (err.response && (err.response.status === 419 || err.response.status === 401)) {
@@ -85,8 +86,8 @@ const Management = () => {
             id: data.get("id"),
             name: data.get("name"),
         };
-        const { job, id, name } = joinData;
-        if(checkTrim(job) && (checkTrim(id) || checkTrim(name))){
+        const { job } = joinData;
+        if(checkTrim(job)){
             setCheck("");
             onhandlePost(joinData);
         }
@@ -96,10 +97,7 @@ const Management = () => {
     };
 
     const handleClickRow = async(data) => {
-        const deleteData = {
-            "id" : data.id
-        };
-        onhandleDelete(deleteData);
+        onhandleDelete(data.id);
     };
 
     return(
