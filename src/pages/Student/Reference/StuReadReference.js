@@ -4,7 +4,7 @@ import BgcolorBox from "../../../components/Stack/BackgroundStack";
 import OuterBox from "../../../components/Box/OuterBox";
 import CommonButton from "../../../components/Button/CommonButton";
 import Row from "../../../components/Stack/Row";
-import HeaderPro from "../../../components/Header/HeaderPro";
+import HeaderStu from "../../../components/Header/HeaderStu";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ContentText from "../../../components/Input/ContentText";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -65,7 +65,7 @@ const StuReadReference = () => {
 
     return(
         <>
-            <HeaderPro />
+            <HeaderStu />
             <BgcolorBox sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   

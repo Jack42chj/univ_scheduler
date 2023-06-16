@@ -10,71 +10,45 @@ import { student_change_main, student_main } from "../../services/sdtServices";
 
 const Main = () => {
     const navigate = useNavigate();
-    //const [data, setData] = useState();
+    const [data, setData] = useState();
 
-    // const handleChangeSemester = async (e) => {
-    //     const sendData = { "semester": e.target.value }
-    //     try{
-    //         const resp = await student_change_main(sendData);
-    //         if(resp.status === 200){
-    //             setData(resp.data);
-    //         }
-    //     } catch (err) {
-    //         if (err.response && (err.response.status === 419 || err.response.status === 401)) {
-    //             alert('로그인 시간 만료.');
-    //             navigate("/");
-    //         } else {
-    //             console.log(err);
-    //         }
-    //     }
-    // };
-
-    // const getData = async () => {
-    //     try{
-    //         console.log(1);
-    //         const response = await student_main();
-    //         if(response.status === 200){
-    //             setData(response.data);
-    //             console.log(response.data);
-    //         }
-    //     } catch (err) {
-    //         if (err.response && (err.response.status === 419 || err.response.status === 401)) {
-    //             alert('로그인 시간 만료.');
-    //             navigate("/");
-    //         } else {
-    //             console.log(err);
-    //         }
-    //     }
-    // };
-    // useEffect(() => {
-    //     getData();
-    // },[]);
-
-
-    const data = {
-        "all_semester": [
-            {
-                "semester": "2023-1"
+    const handleChangeSemester = async (e) => {
+        const sendData = { "semester": e.target.value }
+        try{
+            const resp = await student_change_main(sendData);
+            if(resp.status === 200){
+                setData(resp.data);
             }
-        ],
-        "semester": "2023-1",
-        "schedule": [
-            {
-                "sub_code": "H020-1-0019-02",
-                "sub_name": "C프로그래밍",
-                "time": "화4/목3",
-                "class": "새빛303",
-                "professor_name": "이우신"
-            },
-            {
-                "sub_code": "H020-1-0242-01",
-                "sub_name": "아무거나",
-                "time": "월4/수6",
-                "class": "새빛302",
-                "professor_name": "이우신"
+        } catch (err) {
+            if (err.response && (err.response.status === 419 || err.response.status === 401)) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
             }
-        ],
-    }
+        }
+    };
+
+    const getData = async () => {
+        try{
+            console.log(1);
+            const response = await student_main();
+            if(response.status === 200){
+                setData(response.data);
+                console.log(response.data);
+            }
+        } catch (err) {
+            if (err.response && (err.response.status === 419 || err.response.status === 401)) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
+        }
+    };
+    useEffect(() => {
+        getData();
+    },[]);
 
     const generateRandomColor = () => {
         const letters = "0123456789ABCDEF";
@@ -154,7 +128,7 @@ const Main = () => {
                         <Select
                             value={currSemester}
                             name="semester"
-                            //onChange={handleChangeSemester}
+                            onChange={handleChangeSemester}
                             displayEmpty
                             sx={{ width: "50%", height: "48px" }}
                         >

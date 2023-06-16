@@ -41,8 +41,6 @@ const FindId = ({ open, onClose }) => {
         } catch (err) {
             if (err.response && err.response.status === 401) {
                 alert('일치하는 정보가 없습니다.');
-                handleButtonClick();
-                window.location.reload();
             } else {
                 console.log(err);
             }

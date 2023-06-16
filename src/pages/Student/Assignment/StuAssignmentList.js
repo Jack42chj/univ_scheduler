@@ -36,59 +36,26 @@ const StuAssignmentList = () => {
       setPage(newPage - 1);
     };
 
-    const assignList = {
-        "assignment": [
-            {
-                "id": 4,
-                "title": "1",
-                "start_date": "2023-06-15 05:40:13",
-                "due_date": "2023-12-31 18:00:00",
-                "submit_check": "미제출"
-            },
-            {
-                "id": 3,
-                "title": "1",
-                "start_date": "2023-06-15 05:37:20",
-                "due_date": "2023-01-12 12:00:00",
-                "submit_check": "미제출"
-            },
-            {
-                "id": 2,
-                "title": "test2",
-                "start_date": "2023-06-12 15:00:00",
-                "due_date": "2023-06-14 16:59:59",
-                "submit_check": "미제출"
-            },
-            {
-                "id": 1,
-                "title": "테스트 수정",
-                "start_date": "2023-06-08 16:23:22",
-                "due_date": "2023-06-10 02:07:31",
-                "submit_check": "제출"
+    const [assignList, setAssignList] = useState();
+
+    const getAssignList = async () => {
+        try{
+            const response = await assignment_list(currSubjectID, currSemester);
+            if(response.status === 200){
+                setAssignList(response.data);
             }
-        ]
-    }
-
-    // const [assignList, setAssignList] = useState();
-
-    // const getAssignList = async () => {
-    //     try{
-    //         const response = await assignment_list(currSubjectID, currSemester);
-    //         if(response.status === 200){
-    //             setAssignList(response.data);
-    //         }
-    //     } catch (err) {
-    //         if (err.response && (err.response.status === 419 || err.response.status === 401)) {
-    //             alert('로그인 시간 만료.');
-    //             navigate("/");
-    //         } else {
-    //             console.log(err);
-    //         }
-    //     }
-    // };
-    // useEffect(() => {
-    //     getAssignList();
-    // }, []);
+        } catch (err) {
+            if (err.response && (err.response.status === 419 || err.response.status === 401)) {
+                alert('로그인 시간 만료.');
+                navigate("/");
+            } else {
+                console.log(err);
+            }
+        }
+    };
+    useEffect(() => {
+        getAssignList();
+    }, []);
 
     const rows = [];
     if(assignList && assignList.assignment){

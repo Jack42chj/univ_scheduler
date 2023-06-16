@@ -131,7 +131,7 @@ const FindPw = ({ open, onClose }) => {
             else setEmail("");
         }
         
-        if (checkTrim(id) && checkTrim(email)) onhandlePost(findData);
+        if (checkTrim(id) && checkTrim(email) && checkEmail(email)) onhandlePost(findData);
         else setCheck("입력한 정보를 다시 확인해주세요.");
     };
 
