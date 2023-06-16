@@ -2,21 +2,24 @@ import { AppBar, Toolbar, Box, Collapse, List, ListItem, ListItemText } from '@m
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import CommonButton from '../Button/CommonButton';
-import CommonText from '../Text/CommonText';
+import CommonText from '../Input/CommonText';
 import IconBtn from '../Button/IconsButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MyPage from '../Modal/MyPage';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../services/userServices';
 
 const listItem = [
-    { link: "/student/lecture_list", text: "강의 목록" },
-    { link: "/student/search_plan", text: "강의계획서 조회"},
-    { link: "/student/schedule", text: "수강 신청"},
+    { link: "/student/main", text: "강의 시간표" },
+    { link: "/student/search_syl", text: "강의계획서 조회"},
+    { link: "/student/enrollment", text: "수강 신청"},
     { link: "/student/score_board", text: "수강/성적 조회"},
     { link: "/student/ranking", text: "석차 조회"},
 ];
 
 const HeaderStu = () => {
+    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [myPageOpen, setMyPageOpen] = useState(false);
     const handleClick = () => {
@@ -24,6 +27,13 @@ const HeaderStu = () => {
     };
     const myPageHandleOpen = () => setMyPageOpen(true);
     const myPageHandleClose = () => setMyPageOpen(false);
+    const handleLogout = async() => {
+        const response = await logout();
+        if(response.status === 200){
+            alert("로그아웃!");
+            navigate("/");
+        }
+    };
 
     return( 
         <AppBar
@@ -44,7 +54,7 @@ const HeaderStu = () => {
                     <IconBtn onClick={myPageHandleOpen}>
                         <SettingsIcon />
                     </IconBtn>
-                    <IconBtn sx={{ mx: 1 }}>
+                    <IconBtn sx={{ mx: 1 }} onClick={handleLogout}>
                         <LogoutIcon />
                     </IconBtn>
                     <IconBtn onClick={handleClick}>

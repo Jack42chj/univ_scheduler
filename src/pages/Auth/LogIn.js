@@ -47,10 +47,12 @@ const LogIn = () => {
                 console.log("Professor Login Success!");
                 navigate('/professor/main');
             }
-            else
-                alert(response.data);
+            else if(response.status === 202){
+                console.log("Manager Login Success!");
+                navigate('/root');
+            }
         } catch (err) {
-            console.log(err);
+            alert("로그인 실패!")
         }
     };
 

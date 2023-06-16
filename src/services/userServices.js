@@ -76,3 +76,13 @@ export const change_info = (changeData) => {
 export const info_change_pw = (changeData) => {
     return axios.post(`${BASE_URL}/information_check/change_pw`, changeData, {withCredentials:true});
 };
+
+//계정 삭제
+export const delete_user = (id) => {
+    return axios.delete(`${BASE_URL}/withdraw/delete`, {withCredentials:true});
+};
+
+//계정 조회
+export const search_user = (data) => {
+    return axios.post(`${BASE_URL}/withdraw`, data, {withCredentials:true});
+};

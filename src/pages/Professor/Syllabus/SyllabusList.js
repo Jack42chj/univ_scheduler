@@ -39,7 +39,7 @@ const SyllabusList = () => {
                 setSyllabusList(response.data);
             }
         } catch (err) {
-            if (err.response && err.response.status.toString().startswith('4')) {
+            if (err.response && (err.response.status === 419 || err.response.status === 401)) {
                 alert('로그인 시간 만료.');
                 navigate("/");
             } else {

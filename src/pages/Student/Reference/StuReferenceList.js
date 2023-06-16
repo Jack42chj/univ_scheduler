@@ -2,8 +2,8 @@ import { MenuItem, Pagination, Select, Table, TableBody, TableCell, TableContain
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { notice_list } from "../../../services/userServices";
-import HeaderPro from "../../../components/Header/HeaderPro";
+import { reference_list } from "../../../services/userServices";
+import HeaderStu from "../../../components/Header/HeaderStu";
 import BgcolorStack from "../../../components/Stack/BackgroundStack";
 import OuterBox from "../../../components/Box/OuterBox";
 import Row from "../../../components/Stack/Row";
@@ -11,7 +11,7 @@ import ContentText from "../../../components/Input/ContentText";
 import CommonButton from "../../../components/Button/CommonButton";
 
 const columns = [
-    { id: "num", label: "번호"},
+    { id: "num", label: "번호" },
     { id: "title", label: "제목" },
     { id: "filexo", label: "파일" },
     { id: "writer", label: "작성자" },
@@ -22,10 +22,10 @@ const columns = [
 function createData(num, title, filexo, writer, date, view_count) {
     if(filexo === 1) filexo = <FilePresentIcon />;
     else filexo = "";
-    return {num ,title, filexo, writer, date, view_count};
+    return { num, title, filexo, writer, date, view_count };
 };
 
-const NoticeList = () => {
+const StuReferenceList = () => {
     const navigate = useNavigate();
     const recvData = useLocation().state;
     const currSemester = recvData.currSemester;
@@ -41,16 +41,16 @@ const NoticeList = () => {
         setPage(newPage - 1);
     };
 
-    const [noticeList, setNoticeList] = useState();
+    const [referenceList, setReferenceList] = useState();
 
-    const getNoticeList = async () => {
+    const getRefList = async () => {
         try{
-            const response = await notice_list(currSubjectID, currSemester);
-            if(response.status === 201){
-                setNoticeList(response.data);
+            const response = await reference_list(currSubjectID, currSemester);
+            if(response.status === 200){
+                setReferenceList(response.data);
             }
         } catch (err) {
-            if (err.response && (err.response.status === 419 || err.response.status === 401)) {
+            if (err.response && err.response.status.toString().startswith('4')) {
                 alert('로그인 시간 만료.');
                 navigate("/");
             } else {
@@ -59,32 +59,33 @@ const NoticeList = () => {
         }
     };
     useEffect(() => {
-        getNoticeList();
+        getRefList();
     }, []);
-
+    
     const rows = [];
-    if(noticeList && noticeList.notice){
-        for(let i = 0; i < noticeList.notice.length; i++){
+    if(referenceList && referenceList.lecture_material){
+        const list = referenceList.lecture_material;
+        for(let i = 0; i < list.length; i++){
             let file_exist = 0;
-            if(noticeList.notice[i].file_names[0] !== null) file_exist = 1;
-            rows.push(createData(noticeList.notice[i].id, noticeList.notice[i].title, file_exist , noticeList.notice[i].writer, noticeList.notice[i].created_time, noticeList.notice[i].view));
+            if(list[i].file_names[0] !== null) file_exist = 1;
+            rows.push(createData(list[i].id, list[i].title, file_exist , list[i].writer, list[i].created_time, list[i].view));
         };
     };
 
     const handleClickRow = (data) => {
-        const notice_ID = data.num;
+        const refID = data.num;
         const title = data.title;
         const writer = data.writer;
         const date = data.date;
         const view = data.view_count;
-        const url = `/professor/read_notice/${currSemester}/${currSubjectID}/${notice_ID}`;
+        const url = `/student/read_ref/${currSemester}/${currSubjectID}/${refID}`;
         const sendData = {
             "currSemester": currSemester,
             "currSubject": currSubject,
             "currSubjectID": currSubjectID,
             "semesterList" : semesterList,
             "subjectList" : subjectList,
-            "noticeID" : notice_ID,
+            "refID" : refID,
             "title" : title,
             "writer" : writer,
             "date" : date,
@@ -93,21 +94,9 @@ const NoticeList = () => {
         navigate(url, { state: sendData });
     };
 
-    const handleWriteNotice = () => {
-        const url = `/professor/write_notice/${currSemester}/${currSubjectID}`;
-        const sendWriteData = {
-            "currSemester": currSemester,
-            "currSubject": currSubject,
-            "currSubjectID" : currSubjectID,
-            "semesterList" : semesterList,
-            "subjectList" : subjectList,
-        };
-        navigate(url, { state: sendWriteData });
-    };
-
     return(
         <>
-            <HeaderPro />
+            <HeaderStu />
             <BgcolorStack sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   
@@ -136,7 +125,7 @@ const NoticeList = () => {
                     </Row>
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center",}}>
-                    <ContentText variant="h4">강의 공지사항</ContentText>
+                    <ContentText variant="h4">강의자료실</ContentText>
                     <TableContainer sx={{ width: "90%", py: 5}}>
                         <Table stickyHeader>
                             <TableHead>
@@ -154,7 +143,7 @@ const NoticeList = () => {
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
-                                                <TableCell key={column.label} align="center">
+                                                <TableCell key={column.id} align="center">
                                                     {value}
                                                 </TableCell>
                                             );
@@ -170,7 +159,6 @@ const NoticeList = () => {
                         onChange={handleChangePage}
                     />
                     <Row spacing={3} mt={3}>
-                        <CommonButton variant="contained" onClick={handleWriteNotice}>작성</CommonButton>
                         <CommonButton variant="contained" onClick={() => navigate(-1)}>이전</CommonButton>
                     </Row>
                 </OuterBox>
@@ -179,4 +167,4 @@ const NoticeList = () => {
     );
 };
 
-export default NoticeList;
+export default StuReferenceList;

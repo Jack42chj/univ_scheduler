@@ -1,31 +1,27 @@
 import { MenuItem, Pagination, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import FilePresentIcon from '@mui/icons-material/FilePresent';
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { notice_list } from "../../../services/userServices";
-import HeaderPro from "../../../components/Header/HeaderPro";
+import HeaderStu from "../../../components/Header/HeaderStu";
 import BgcolorStack from "../../../components/Stack/BackgroundStack";
 import OuterBox from "../../../components/Box/OuterBox";
 import Row from "../../../components/Stack/Row";
 import ContentText from "../../../components/Input/ContentText";
 import CommonButton from "../../../components/Button/CommonButton";
+import { assignment_list } from "../../../services/sdtServices";
 
 const columns = [
     { id: "num", label: "번호"},
     { id: "title", label: "제목" },
-    { id: "filexo", label: "파일" },
-    { id: "writer", label: "작성자" },
-    { id: "date", label: "작성일" },
-    { id: "view_count", label: "조회수" },
+    { id: "creat_time", label: "작성일" },
+    { id: "due_time", label: "마감일" },
+    { id: "submit_check", label: "제출여부"},
 ];
 
-function createData(num, title, filexo, writer, date, view_count) {
-    if(filexo === 1) filexo = <FilePresentIcon />;
-    else filexo = "";
-    return {num ,title, filexo, writer, date, view_count};
+function createData(num ,title, creat_time, due_time, submit_check) {
+    return {num ,title, creat_time, due_time, submit_check};
 };
 
-const NoticeList = () => {
+const StuAssignmentList = () => {
     const navigate = useNavigate();
     const recvData = useLocation().state;
     const currSemester = recvData.currSemester;
@@ -36,78 +32,92 @@ const NoticeList = () => {
 
     const [page, setPage] = useState(0);
     const rowsPerPage = 5;
-
     const handleChangePage = (event, newPage) => {
-        setPage(newPage - 1);
+      setPage(newPage - 1);
     };
 
-    const [noticeList, setNoticeList] = useState();
+    const assignList = {
+        "assignment": [
+            {
+                "id": 4,
+                "title": "1",
+                "start_date": "2023-06-15 05:40:13",
+                "due_date": "2023-12-31 18:00:00",
+                "submit_check": "미제출"
+            },
+            {
+                "id": 3,
+                "title": "1",
+                "start_date": "2023-06-15 05:37:20",
+                "due_date": "2023-01-12 12:00:00",
+                "submit_check": "미제출"
+            },
+            {
+                "id": 2,
+                "title": "test2",
+                "start_date": "2023-06-12 15:00:00",
+                "due_date": "2023-06-14 16:59:59",
+                "submit_check": "미제출"
+            },
+            {
+                "id": 1,
+                "title": "테스트 수정",
+                "start_date": "2023-06-08 16:23:22",
+                "due_date": "2023-06-10 02:07:31",
+                "submit_check": "제출"
+            }
+        ]
+    }
 
-    const getNoticeList = async () => {
-        try{
-            const response = await notice_list(currSubjectID, currSemester);
-            if(response.status === 201){
-                setNoticeList(response.data);
-            }
-        } catch (err) {
-            if (err.response && (err.response.status === 419 || err.response.status === 401)) {
-                alert('로그인 시간 만료.');
-                navigate("/");
-            } else {
-                console.log(err);
-            }
-        }
-    };
-    useEffect(() => {
-        getNoticeList();
-    }, []);
+    // const [assignList, setAssignList] = useState();
+
+    // const getAssignList = async () => {
+    //     try{
+    //         const response = await assignment_list(currSubjectID, currSemester);
+    //         if(response.status === 200){
+    //             setAssignList(response.data);
+    //         }
+    //     } catch (err) {
+    //         if (err.response && (err.response.status === 419 || err.response.status === 401)) {
+    //             alert('로그인 시간 만료.');
+    //             navigate("/");
+    //         } else {
+    //             console.log(err);
+    //         }
+    //     }
+    // };
+    // useEffect(() => {
+    //     getAssignList();
+    // }, []);
 
     const rows = [];
-    if(noticeList && noticeList.notice){
-        for(let i = 0; i < noticeList.notice.length; i++){
-            let file_exist = 0;
-            if(noticeList.notice[i].file_names[0] !== null) file_exist = 1;
-            rows.push(createData(noticeList.notice[i].id, noticeList.notice[i].title, file_exist , noticeList.notice[i].writer, noticeList.notice[i].created_time, noticeList.notice[i].view));
+    if(assignList && assignList.assignment){
+        for(let i = 0; i < assignList.assignment.length; i++){
+            rows.push(createData(assignList.assignment[i].id, assignList.assignment[i].title, assignList.assignment[i].start_date, assignList.assignment[i].due_date, assignList.assignment[i].submit_check));
         };
     };
 
     const handleClickRow = (data) => {
-        const notice_ID = data.num;
-        const title = data.title;
-        const writer = data.writer;
-        const date = data.date;
-        const view = data.view_count;
-        const url = `/professor/read_notice/${currSemester}/${currSubjectID}/${notice_ID}`;
+        const assign_ID = data.num;
+        const due_date = data.due_time;
+        const title = data.title;   
+        const url = `/student/read_assign/${currSemester}/${currSubjectID}/${assign_ID}`;
         const sendData = {
             "currSemester": currSemester,
             "currSubject": currSubject,
             "currSubjectID": currSubjectID,
             "semesterList" : semesterList,
             "subjectList" : subjectList,
-            "noticeID" : notice_ID,
+            "assignID" : assign_ID,
             "title" : title,
-            "writer" : writer,
-            "date" : date,
-            "view" : view,
+            "due_date" : due_date,
         };
         navigate(url, { state: sendData });
     };
 
-    const handleWriteNotice = () => {
-        const url = `/professor/write_notice/${currSemester}/${currSubjectID}`;
-        const sendWriteData = {
-            "currSemester": currSemester,
-            "currSubject": currSubject,
-            "currSubjectID" : currSubjectID,
-            "semesterList" : semesterList,
-            "subjectList" : subjectList,
-        };
-        navigate(url, { state: sendWriteData });
-    };
-
     return(
         <>
-            <HeaderPro />
+            <HeaderStu />
             <BgcolorStack sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   
@@ -136,7 +146,7 @@ const NoticeList = () => {
                     </Row>
                 </OuterBox>
                 <OuterBox sx={{ py: 5, justifyContent: "center", alignItems: "center",}}>
-                    <ContentText variant="h4">강의 공지사항</ContentText>
+                    <ContentText variant="h4">과제</ContentText>
                     <TableContainer sx={{ width: "90%", py: 5}}>
                         <Table stickyHeader>
                             <TableHead>
@@ -170,7 +180,6 @@ const NoticeList = () => {
                         onChange={handleChangePage}
                     />
                     <Row spacing={3} mt={3}>
-                        <CommonButton variant="contained" onClick={handleWriteNotice}>작성</CommonButton>
                         <CommonButton variant="contained" onClick={() => navigate(-1)}>이전</CommonButton>
                     </Row>
                 </OuterBox>
@@ -179,4 +188,4 @@ const NoticeList = () => {
     );
 };
 
-export default NoticeList;
+export default StuAssignmentList;

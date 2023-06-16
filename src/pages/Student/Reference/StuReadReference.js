@@ -11,9 +11,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { reference_download, reference_read } from "../../../services/userServices";
 import FieldText from "../../../components/Input/FieldText";
 import Column from "../../../components/Stack/Column";
-import { reference_delete } from "../../../services/proServices";
 
-const ReadReference = () => {
+const StuReadReference = () => {
     const navigate = useNavigate();
     const recvData = useLocation().state;
     const currSemester = recvData.currSemester;
@@ -32,7 +31,7 @@ const ReadReference = () => {
     const getRefData = async () => {
         try{
             const response = await reference_read(currSubjectID, currSemester, refID);
-            if(response.status === 201){
+            if(response.status === 200){
                 setRefData(response.data);
             }
         } catch (err) {
@@ -50,47 +49,6 @@ const ReadReference = () => {
 
     const content = refData ? refData.lecture_material.content : null;
     const fileList = refData ? refData.file.file_name : [];
-
-    const onhandleDelete = async () => {
-        try{
-            const response = await reference_delete(currSubjectID, currSemester, refID);
-            if(response.status === 201){
-                alert("강의자료 삭제 성공!");
-                navigate(`/professor/ref_list/${currSemester}/${currSubjectID}`, {
-                    state: {
-                        "currSemester": currSemester,
-                        "currSubject" : currSubject,
-                        "semesterList" : semesterList,
-                        "subjectList" : subjectList,
-                        "currSubjectID": currSubjectID,
-                    }
-                }
-            );}
-        } catch (err) {
-            if (err.response && (err.response.status === 419 || err.response.status === 401)) {
-                alert('로그인 시간 만료.');
-                navigate("/");
-            } else {
-                console.log(err);
-            }
-        }
-    };
-
-    const handleEdit = () => {
-        const url = `/professor/edit_ref/${currSemester}/${currSubjectID}/${refID}`;
-        const sendData = {
-            "currSemester": currSemester,
-            "currSubject": currSubject,
-            "currSubjectID": currSubjectID,
-            "subjectList" : subjectList,
-            "semesterList" : semesterList,
-            "refID" : refID,
-            "title" : title,
-            "view" : view,
-            "content" : content,
-        }
-        navigate(url, { state: sendData });
-    };
 
     const handleDownload = async (file) => {
         const resp = await reference_download(currSubjectID, currSemester, refID, file);
@@ -150,8 +108,6 @@ const ReadReference = () => {
                         ))}
                     </Column>
                     <Row spacing={3} mt={2}>
-                        <CommonButton onClick={handleEdit} variant="contained">수정</CommonButton>
-                        <CommonButton variant="contained" onClick={onhandleDelete}>삭제</CommonButton>
                         <CommonButton onClick={()=> navigate(-1)} variant="contained">목록</CommonButton>
                     </Row>
                 </OuterBox>
@@ -160,4 +116,4 @@ const ReadReference = () => {
     );
 };
 
-export default ReadReference;
+export default StuReadReference;

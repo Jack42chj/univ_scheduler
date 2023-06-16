@@ -12,7 +12,6 @@ import { change_pw, find_pw } from "../../services/userServices";
 import ModalBox from "../Box/ModalBox";
 import { checkEmail, checkPassword } from "../../utils/Regex";
 import { checkTrim } from "../../utils/Trim";
-import { useNavigate } from "react-router-dom";
 
 const FindPw = ({ open, onClose }) => {
     const [id, setId] = useState("");
@@ -75,23 +74,22 @@ const FindPw = ({ open, onClose }) => {
             const response = await find_pw(postData);
             if (response.status === 200) {
                 setAuthor(1);
-                console.log("학생 비밀번호 찾기 성공!");
-
             }
             else if (response.status === 201) {
                 setAuthor(2);
-                console.log("교수 비밀번호 찾기 성공!");
-            }
-            else{
-                console.log(response.data);
             }
             setCheckId(id);
         } catch (err) {
-            console.log(err);
+            if (err.response && err.response.status === 401) {
+                alert('일치하는 정보가 없습니다.');
+                handleButtonClick();
+                window.location.reload();
+            } else {
+                console.log(err);
+            }
         }
     };
 
-    const navigate = useNavigate();
     const onhandleNewPost = async (data1, data2, data3) => {
         const postData = { 
             "password": data1, 
@@ -129,7 +127,7 @@ const FindPw = ({ open, onClose }) => {
 
         if (!checkTrim(email)) setEmail("이메일을 입력해주세요.");
         else {
-            if (checkEmail(email)) setEmail("이메일이 올바르지 않습니다.");
+            if (!checkEmail(email)) setEmail("이메일이 올바르지 않습니다.");
             else setEmail("");
         }
         
@@ -157,7 +155,7 @@ const FindPw = ({ open, onClose }) => {
             if(checkPw === password) setCheckpw("");
             else setCheckpw("비밀번호가 일치하지 않습니다.")
         }
-        if (checkTrim(password) && checkTrim(checkPw)) {
+        if (checkTrim(password) && checkTrim(checkPw) && (password === checkPw)) {
             onhandleNewPost(password, author, checkId);
         }
         else setChangePw("입력한 정보를 다시 확인해주세요.");

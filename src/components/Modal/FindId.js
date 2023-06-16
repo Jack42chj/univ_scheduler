@@ -36,11 +36,16 @@ const FindId = ({ open, onClose }) => {
             const response = await find_id(postData);
             if (response.status === 200 || 201) {
                 setId(response.data.id);
-                alert("아이디 찾기 성공!");
                 setShowResult(true);
             }
         } catch (err) {
-            console.log(err);
+            if (err.response && err.response.status === 401) {
+                alert('일치하는 정보가 없습니다.');
+                handleButtonClick();
+                window.location.reload();
+            } else {
+                console.log(err);
+            }
         }
     };
 

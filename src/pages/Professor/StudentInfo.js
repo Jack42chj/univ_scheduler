@@ -82,7 +82,7 @@ const StudentInfo = () => {
                 setRow((response.data.studentInfo.map((row) => createData(row.major, row.name, row.email, row.phone_number))));
             }
         } catch (err) {
-            if (err.response && err.response.status.toString().startswith('4')) {
+            if (err.response && (err.response.status === 419 || err.response.status === 401)) {
                 alert('로그인 시간 만료.');
                 navigate("/");
             } else {

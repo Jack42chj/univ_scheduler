@@ -59,7 +59,7 @@ const HeaderPro = () => {
                 <IconBtn onClick={myPageHandleOpen} sx={{ display: { xs: 'none', md: 'flex' }, mx: 1 }}>
                     <SettingsIcon />
                 </IconBtn>
-                <IconBtn sx={{ display: { xs: 'none', md: 'flex' } }}>
+                <IconBtn onClick={handleLogout} sx={{ display: { xs: 'none', md: 'flex' } }}>
                     <LogoutIcon />
                 </IconBtn>
                 <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

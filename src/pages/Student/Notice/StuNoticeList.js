@@ -3,7 +3,7 @@ import FilePresentIcon from '@mui/icons-material/FilePresent';
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { notice_list } from "../../../services/userServices";
-import HeaderPro from "../../../components/Header/HeaderPro";
+import HeaderStu from "../../../components/Header/HeaderStu";
 import BgcolorStack from "../../../components/Stack/BackgroundStack";
 import OuterBox from "../../../components/Box/OuterBox";
 import Row from "../../../components/Stack/Row";
@@ -25,7 +25,7 @@ function createData(num, title, filexo, writer, date, view_count) {
     return {num ,title, filexo, writer, date, view_count};
 };
 
-const NoticeList = () => {
+const StuNoticeList = () => {
     const navigate = useNavigate();
     const recvData = useLocation().state;
     const currSemester = recvData.currSemester;
@@ -46,7 +46,7 @@ const NoticeList = () => {
     const getNoticeList = async () => {
         try{
             const response = await notice_list(currSubjectID, currSemester);
-            if(response.status === 201){
+            if(response.status === 200){
                 setNoticeList(response.data);
             }
         } catch (err) {
@@ -61,7 +61,7 @@ const NoticeList = () => {
     useEffect(() => {
         getNoticeList();
     }, []);
-
+    
     const rows = [];
     if(noticeList && noticeList.notice){
         for(let i = 0; i < noticeList.notice.length; i++){
@@ -77,7 +77,7 @@ const NoticeList = () => {
         const writer = data.writer;
         const date = data.date;
         const view = data.view_count;
-        const url = `/professor/read_notice/${currSemester}/${currSubjectID}/${notice_ID}`;
+        const url = `/student/read_notice/${currSemester}/${currSubjectID}/${notice_ID}`;
         const sendData = {
             "currSemester": currSemester,
             "currSubject": currSubject,
@@ -93,21 +93,9 @@ const NoticeList = () => {
         navigate(url, { state: sendData });
     };
 
-    const handleWriteNotice = () => {
-        const url = `/professor/write_notice/${currSemester}/${currSubjectID}`;
-        const sendWriteData = {
-            "currSemester": currSemester,
-            "currSubject": currSubject,
-            "currSubjectID" : currSubjectID,
-            "semesterList" : semesterList,
-            "subjectList" : subjectList,
-        };
-        navigate(url, { state: sendWriteData });
-    };
-
     return(
         <>
-            <HeaderPro />
+            <HeaderStu />
             <BgcolorStack sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   
@@ -170,7 +158,6 @@ const NoticeList = () => {
                         onChange={handleChangePage}
                     />
                     <Row spacing={3} mt={3}>
-                        <CommonButton variant="contained" onClick={handleWriteNotice}>작성</CommonButton>
                         <CommonButton variant="contained" onClick={() => navigate(-1)}>이전</CommonButton>
                     </Row>
                 </OuterBox>
@@ -179,4 +166,4 @@ const NoticeList = () => {
     );
 };
 
-export default NoticeList;
+export default StuNoticeList;

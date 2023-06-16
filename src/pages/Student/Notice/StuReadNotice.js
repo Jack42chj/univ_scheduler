@@ -1,19 +1,18 @@
 import { MenuItem, Select } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import BgcolorBox from "../../../components/Stack/BackgroundStack";
 import OuterBox from "../../../components/Box/OuterBox";
 import CommonButton from "../../../components/Button/CommonButton";
 import Row from "../../../components/Stack/Row";
-import HeaderPro from "../../../components/Header/HeaderPro";
+import HeaderStu from "../../../components/Header/HeaderStu";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ContentText from "../../../components/Input/ContentText";
 import { useLocation, useNavigate } from "react-router-dom";
-import { reference_download, reference_read } from "../../../services/userServices";
+import { notice_download, notice_read } from "../../../services/userServices";
 import FieldText from "../../../components/Input/FieldText";
 import Column from "../../../components/Stack/Column";
-import { reference_delete } from "../../../services/proServices";
 
-const ReadReference = () => {
+const StuReadNotice = () => {
     const navigate = useNavigate();
     const recvData = useLocation().state;
     const currSemester = recvData.currSemester;
@@ -21,19 +20,19 @@ const ReadReference = () => {
     const currSubjectID = recvData.currSubjectID;
     const semesterList = recvData.semesterList;
     const subjectList = recvData.subjectList;
-    const refID = recvData.refID;
+    const noticeID = recvData.noticeID;
     const title = recvData.title;
     const writer = recvData.writer;
     const date = recvData.date;
     const view = recvData.view;
 
-    const [refData, setRefData] = useState();
+    const [readData, setReadData] = useState();
 
-    const getRefData = async () => {
+    const getNoticeData = async () => {
         try{
-            const response = await reference_read(currSubjectID, currSemester, refID);
-            if(response.status === 201){
-                setRefData(response.data);
+            const response = await notice_read(currSubjectID, currSemester, noticeID);
+            if(response.status === 200){
+                setReadData(response.data);
             }
         } catch (err) {
             if (err.response && (err.response.status === 419 || err.response.status === 401)) {
@@ -45,55 +44,14 @@ const ReadReference = () => {
         }
     };
     useEffect(() => {
-        getRefData();
+        getNoticeData();
     }, []);
 
-    const content = refData ? refData.lecture_material.content : null;
-    const fileList = refData ? refData.file.file_name : [];
-
-    const onhandleDelete = async () => {
-        try{
-            const response = await reference_delete(currSubjectID, currSemester, refID);
-            if(response.status === 201){
-                alert("강의자료 삭제 성공!");
-                navigate(`/professor/ref_list/${currSemester}/${currSubjectID}`, {
-                    state: {
-                        "currSemester": currSemester,
-                        "currSubject" : currSubject,
-                        "semesterList" : semesterList,
-                        "subjectList" : subjectList,
-                        "currSubjectID": currSubjectID,
-                    }
-                }
-            );}
-        } catch (err) {
-            if (err.response && (err.response.status === 419 || err.response.status === 401)) {
-                alert('로그인 시간 만료.');
-                navigate("/");
-            } else {
-                console.log(err);
-            }
-        }
-    };
-
-    const handleEdit = () => {
-        const url = `/professor/edit_ref/${currSemester}/${currSubjectID}/${refID}`;
-        const sendData = {
-            "currSemester": currSemester,
-            "currSubject": currSubject,
-            "currSubjectID": currSubjectID,
-            "subjectList" : subjectList,
-            "semesterList" : semesterList,
-            "refID" : refID,
-            "title" : title,
-            "view" : view,
-            "content" : content,
-        }
-        navigate(url, { state: sendData });
-    };
+    const content = readData ? readData.notice.content : null;
+    const fileList = readData ? readData.file.file_name : [];
 
     const handleDownload = async (file) => {
-        const resp = await reference_download(currSubjectID, currSemester, refID, file);
+        const resp = await notice_download(currSubjectID, currSemester, noticeID, file);
         if(resp.status === 200){
             const downloadUrl = window.URL.createObjectURL(new Blob([resp.data]));
             const link = document.createElement('a');
@@ -107,7 +65,7 @@ const ReadReference = () => {
 
     return(
         <>
-            <HeaderPro />
+            <HeaderStu />
             <BgcolorBox sx={{ minHeight: "100vh", alignItems: "center" }}>
                 <OuterBox sx={{ my: 5, py: 1 }}>
                     <Row sx={{ justifyContent: "space-around"}}>   
@@ -132,7 +90,7 @@ const ReadReference = () => {
                     </Row>
                 </OuterBox>
                 <OuterBox sx={{ py: 5, mb: 1, alignItems: "center"}}>
-                    <ContentText variant="h4">강의자료실</ContentText>
+                    <ContentText variant="h4">강의 공지사항</ContentText>
                     <Row sx={{ width: "100%", justifyContent: "space-evenly", mt: 3 }}>
                         <ContentText variant="h6" sx={{ color: "#FA9A00" }}>작성자: {writer}</ContentText>
                         <ContentText variant="h6" sx={{ color: "#FA9A00" }}>등록일: {date}</ContentText>
@@ -150,8 +108,6 @@ const ReadReference = () => {
                         ))}
                     </Column>
                     <Row spacing={3} mt={2}>
-                        <CommonButton onClick={handleEdit} variant="contained">수정</CommonButton>
-                        <CommonButton variant="contained" onClick={onhandleDelete}>삭제</CommonButton>
                         <CommonButton onClick={()=> navigate(-1)} variant="contained">목록</CommonButton>
                     </Row>
                 </OuterBox>
@@ -160,4 +116,4 @@ const ReadReference = () => {
     );
 };
 
-export default ReadReference;
+export default StuReadNotice;
